@@ -1,7 +1,10 @@
 package it.polimi.se2018.classes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Round {
 
-    public Dice leftDices[1...9];
+    public List<Dice> leftDices;
 
 }

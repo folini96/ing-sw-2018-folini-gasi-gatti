@@ -2,11 +2,11 @@ package it.polimi.se2018.classes;
 
 public class WindowCard {
 
-    private integer name;
+    private int name;
     private WindowSide front;
     private WindowSide back;
 
-    public integer getName(){
+    public int getName(){
 
 
     }

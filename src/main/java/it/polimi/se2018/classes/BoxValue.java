@@ -1,10 +1,10 @@
 package it.polimi.se2018.classes;
 
-public class BoxValue {
+public class BoxValue extends Box{
 
-    private integer value;
+    private int value;
 
-    public integer getValue(){
+    public int getValue(){
 
 
     }

@@ -1,10 +1,10 @@
 package it.polimi.se2018.classes;
 
-public class BoxColor {
+public class BoxColor extends Box {
 
-    private string color;
+    private String color;
 
-    public string getColor(){
+    public String getColor(){
 
 
     }

@@ -2,34 +2,31 @@ package it.polimi.se2018.classes;
 
 public abstract class ToolCard {
 
-    private string name;
-    private integer token;
-    private string color;
+    private String name;
+    private int token;
+    private String color;
 
     public void setToken(){
 
 
     }
 
-    public integer getToken(){
+    public int getToken(){
 
 
     }
 
-    public string getName(){
+    public String getName(){
 
 
     }
 
-    public string getColor(){
+    public String getColor(){
 
 
     }
 
-    public abstract void useTool(){
-
-
-    }
+    public abstract void useTool()
 
 
 }

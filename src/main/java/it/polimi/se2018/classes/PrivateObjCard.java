@@ -2,14 +2,14 @@ package it.polimi.se2018.classes;
 
 public class PrivateObjCard {
 
-    private string color;
+    private String color;
 
-    public string getColor(){
+    public String getColor(){
 
 
     }
 
-    public integer getScore(){
+    public int getScore(){
 
 
     }

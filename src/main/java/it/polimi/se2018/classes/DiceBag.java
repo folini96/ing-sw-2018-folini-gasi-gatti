@@ -1,10 +1,12 @@
 package it.polimi.se2018.classes;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DiceBag {
+    private Dice[] diceSet;
 
-    public Dice diceSet[90];
-
-    public Dice[4...9] extraxtDice(){
+    public List<Dice> extractDice(){
 
 
     }

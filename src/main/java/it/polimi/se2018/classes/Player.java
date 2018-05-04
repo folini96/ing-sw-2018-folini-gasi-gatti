@@ -2,11 +2,11 @@ package it.polimi.se2018.classes;
 
 public class Player {
 
-    private string playerName;
-    private string color;
+    private String playerName;
+    private String color;
     private PrivateObjCard privateObj;
     private WindowSide chosenSide;
-    private integer favorToken;
+    private int favorToken;
 
     public void setSide(){
 
@@ -17,7 +17,7 @@ public class Player {
 
     }
 
-    public string getName(){
+    public String getName(){
 
 
     }
@@ -32,12 +32,12 @@ public class Player {
 
     }
 
-    public integer getToken(){
+    public int getToken(){
 
 
     }
 
-    public string getColor(){
+    public String getColor(){
 
 
     }

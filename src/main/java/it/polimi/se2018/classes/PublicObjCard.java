@@ -2,23 +2,23 @@ package it.polimi.se2018.classes;
 
 public abstract class PublicObjCard {
 
-    private integer name;
-    private integer value;
+    private int name;
+    private int value;
 
-    public integer getName(){
-
-
-    }
-
-    public integer getValue(){
+    public int getName(){
 
 
     }
 
-    public abstract integer getScore(){
+    public int getValue(){
 
 
     }
+
+    public abstract int getScore();
+
+
+
 
 
 

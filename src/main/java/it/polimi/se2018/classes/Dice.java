@@ -2,25 +2,25 @@ package it.polimi.se2018.classes;
 
 public class Dice {
 
-    private string color;
-    private integer usedValue;
+    private String color;
+    private int usedValue;
 
     public void setValue(){
 
 
     }
 
-    public integer getRandomValue(){
+    public int getRandomValue(){
 
 
     }
 
-    public string getColor(){
+    public String getColor(){
 
 
     }
 
-    public integer getValue(){
+    public int getValue(){
 
 
     }

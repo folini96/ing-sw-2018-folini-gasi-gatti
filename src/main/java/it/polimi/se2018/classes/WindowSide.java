@@ -2,16 +2,16 @@ package it.polimi.se2018.classes;
 
 public class WindowSide {
 
-    private string name;
-    private integer difficult;
-    public Box boxScheme[4][5];
+    private String name;
+    private int difficult;
+    private Box [][] boxScheme;
 
-    public string getName(){
+    public String getName(){
 
 
     }
 
-    public integer getDifficult(){
+    public int getDifficult(){
 
 
     }
