@@ -6,16 +6,16 @@ public abstract class PublicObjCard {
     private int value;
 
     public int getName(){
-
+        return name;
 
     }
 
     public int getValue(){
-
+        return value;
 
     }
 
-    public abstract int getScore();
+    public abstract int getScore(WindowSide window);
 
 
 

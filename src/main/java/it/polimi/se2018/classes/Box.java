@@ -10,7 +10,7 @@ public class Box {
     }
 
     public Dice getDice(){
-
+        return dice;
 
     }
 

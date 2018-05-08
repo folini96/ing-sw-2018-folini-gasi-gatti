@@ -4,7 +4,7 @@ public abstract class ToolCard {
 
     private String name;
     private int token;
-    private String color;
+    private Color color;
 
     public void setToken(){
 

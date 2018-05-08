@@ -2,7 +2,7 @@ package it.polimi.se2018.classes;
 
 public class Dice {
 
-    private String color;
+    private Color color;
     private int usedValue;
 
     public void setValue(){
@@ -15,13 +15,13 @@ public class Dice {
 
     }
 
-    public String getColor(){
-
+    public Color getColor(){
+        return color;
 
     }
 
     public int getValue(){
-
+        return usedValue;
 
     }
 
