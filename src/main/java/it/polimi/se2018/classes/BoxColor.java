@@ -4,9 +4,15 @@ public class BoxColor extends Box {
 
     private Color color;
 
-    public Color getColor(){
+    public BoxColor(Color color){
 
+        this.color=color;
+    }
+
+    public Color getColor(){
+        return color;
 
     }
+
 
 }

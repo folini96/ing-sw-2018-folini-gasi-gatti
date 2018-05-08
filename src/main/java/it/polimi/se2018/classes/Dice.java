@@ -1,17 +1,21 @@
 package it.polimi.se2018.classes;
 
+import java.util.Random;
+
 public class Dice {
 
     private Color color;
     private int usedValue;
 
-    public void setValue(){
-
+    public void setValue( int value){
+        usedValue=value;
 
     }
 
-    public int getRandomValue(){
-
+    public void getRandomValue(){
+        Random random = new Random();
+        int randomInt = random.nextInt(5)+1;
+        this.setValue(randomInt);
 
     }
 

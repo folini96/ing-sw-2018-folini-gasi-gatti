@@ -6,13 +6,19 @@ public class WindowSide {
     private int difficult;
     private Box [][] boxScheme;
 
-    public String getName(){
+    public WindowSide( String name, int difficult, Box[][] boxScheme){
+        this.name = name;
+        this.difficult = difficult;
+        this.boxScheme = boxScheme;
+    }
 
+    public String getName(){
+        return name;
 
     }
 
     public int getDifficult(){
-
+        return difficult;
 
     }
 

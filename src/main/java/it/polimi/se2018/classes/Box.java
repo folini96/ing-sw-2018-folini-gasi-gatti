@@ -4,9 +4,9 @@ public class Box {
 
     private Dice dice;
 
-    public void setDice(){
 
-
+    public void setDice(Dice dice){
+        this.dice=dice;
     }
 
     public Dice getDice(){
