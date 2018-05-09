@@ -5,6 +5,12 @@ import java.util.List;
 
 public class Round {
 
-    public List<Dice> leftDices;
+    private ArrayList<Dice> leftDices;
+
+    public List<Dice> getLeftDices(){
+
+        return leftDices;
+
+    }
 
 }

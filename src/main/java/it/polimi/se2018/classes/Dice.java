@@ -7,6 +7,12 @@ public class Dice {
     private Color color;
     private int usedValue;
 
+    //costruttore della classe
+    public Dice(Color color){
+
+        this.color = color;
+    }
+
     public void setValue( int value){
         usedValue=value;
 
