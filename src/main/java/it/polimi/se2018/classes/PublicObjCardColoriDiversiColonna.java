@@ -2,13 +2,17 @@ package it.polimi.se2018.classes;
 
 public class PublicObjCardColoriDiversiColonna extends PublicObjCard {
 
+    public PublicObjCardColoriDiversiColonna(){
+        super("ColoriDiversiColonna", 5);
+    }
+
     @Override
     public int getScore(WindowSide window){
         // restituisce il punteggio per un certo obiettivo pubblico ottenuto nella scheda in ingresso
         int i, j, completeColumn=0, red, yellow, green, blue, purple, nullcheck;
         Color[] columnColors= new Color[4];
         Box[][] boxScheme;
-
+        boxScheme =window.getBoxScheme();
         for (i=0; i<=4;i++) {
             red=0;
             yellow=0;
@@ -17,7 +21,7 @@ public class PublicObjCardColoriDiversiColonna extends PublicObjCard {
             purple=0;
             nullcheck=0;
             for (j=0; j<=3; j++){
-               boxScheme =window.getBoxScheme();
+
                if (boxScheme[j][i].getDice()!=null){
                    columnColors[j]= boxScheme[j][i].getDice().getColor();
                }

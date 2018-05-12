@@ -2,16 +2,20 @@ package it.polimi.se2018.classes;
 
 public class PublicObjCardSfumatureDiverseColonna extends PublicObjCard {
 
+    public PublicObjCardSfumatureDiverseColonna(){
+        super("SfumatureDiverseColonna", 4);
+    }
+
     @Override
     public int getScore(WindowSide window){
         // restituisce il punteggio per un certo obiettivo pubblico ottenuto nella scheda in ingresso
         int i, j, completeColumn=0, one, two, three, four, five, six, nullcheck;
-        int[] columNumbers= new int[4];
+        int[] columnNumbers= new int[4];
         Box[][] boxScheme;
-
+        boxScheme =window.getBoxScheme();
         for (i=0; i<=4;i++) {
             for (j=0; j<=3; j++){
-                columNumbers[j]=0;
+                columnNumbers[j]=0;
             }
             one=0;
             two=0;
@@ -21,16 +25,16 @@ public class PublicObjCardSfumatureDiverseColonna extends PublicObjCard {
             six=0;
             nullcheck=0;
             for (j=0; j<=3; j++){
-                boxScheme =window.getBoxScheme();
+
                 if (boxScheme[j][i].getDice()!=null){
-                    columNumbers[j]= boxScheme[j][i].getDice().getValue();
+                    columnNumbers[j]= boxScheme[j][i].getDice().getValue();
                 }
 
             }
             j=0;
             while ((j<4) && (nullcheck==0)){
-                if (columNumbers[j]!=0){
-                    switch (columNumbers[j]){
+                if (columnNumbers[j]!=0){
+                    switch (columnNumbers[j]){
                         case 1:
                             one++;
                             break;

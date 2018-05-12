@@ -2,10 +2,14 @@ package it.polimi.se2018.classes;
 
 public abstract class PublicObjCard {
 
-    private int name;
+    private String name;
     private int value;
 
-    public int getName(){
+    public PublicObjCard(String name,int value){
+        this.name=name;
+        this.value=value;
+    }
+    public String getName(){
         return name;
 
     }
