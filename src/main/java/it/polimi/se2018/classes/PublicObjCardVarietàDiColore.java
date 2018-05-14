@@ -12,7 +12,7 @@ public class PublicObjCardVarietàDiColore extends PublicObjCard {
         int[] colors= new int[5];
         Box[][] boxScheme;
         boxScheme =window.getBoxScheme();
-        for (i=0; i<=5; i++){
+        for (i=0; i<=4; i++){
             colors[i]=0;
         }
         for (i=0; i<=3;i++) {
@@ -45,7 +45,7 @@ public class PublicObjCardVarietàDiColore extends PublicObjCard {
 
         }
         differentColor=colors[0];
-        for (i=1; i<=5; i++){
+        for (i=1; i<=4; i++){
             if (colors[i]<differentColor){
                 differentColor=colors[i];
             }

@@ -6,27 +6,27 @@ public abstract class ToolCard {
     private int token;
     private Color color;
 
-    public void setToken(){
-
+    public void setToken(int token){
+        this.token=token;
 
     }
 
     public int getToken(){
-
+        return token;
 
     }
 
     public String getName(){
-
-
-    }
-
-    public String getColor(){
-
+        return name;
 
     }
 
-    public abstract void useTool()
+    public Color getColor(){
+        return color;
+
+    }
+
+    public abstract void useTool();
 
 
 }

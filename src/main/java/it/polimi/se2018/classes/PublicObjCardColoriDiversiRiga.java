@@ -32,18 +32,23 @@ public class PublicObjCardColoriDiversiRiga extends PublicObjCard {
                 if (rowColors[j]!=null){
                     switch (rowColors[j]){
                         case ROSSO:
+                            rowColors[j]=null;
                             red++;
                             break;
                         case GIALLO:
+                            rowColors[j]=null;
                             yellow++;
                             break;
                         case VERDE:
+                            rowColors[j]=null;
                             green++;
                             break;
                         case BLU:
+                            rowColors[j]=null;
                             blue++;
                             break;
                         case VIOLA:
+                            rowColors[j]=null;
                             purple++;
                             break;
 

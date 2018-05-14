@@ -31,33 +31,38 @@ public class PublicObjCardColoriDiversiColonna extends PublicObjCard {
                 if (columnColors[j]!=null){
                     switch (columnColors[j]){
                         case ROSSO:
+                            columnColors[j]=null;
                             red++;
                             break;
                         case GIALLO:
+                            columnColors[j]=null;
                             yellow++;
                             break;
                         case VERDE:
+                            columnColors[j]=null;
                             green++;
                             break;
                         case BLU:
+                            columnColors[j]=null;
                             blue++;
                             break;
                         case VIOLA:
+                            columnColors[j]=null;
                             purple++;
                             break;
-
                     }
                 }else{
                     nullcheck=1;
                 }
                 j++;
-
             }
+
             if ((red<2)&&(yellow<2)&&(green<2)&&(blue<2)&&(purple<2)&&(nullcheck==0)){
-               completeColumn++;
+                completeColumn++;
             }
 
         }
+
         return completeColumn*this.getValue();
     }
 

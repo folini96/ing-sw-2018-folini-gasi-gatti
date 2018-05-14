@@ -25,8 +25,8 @@ public class PublicObjCardDiagonaliColorate extends PublicObjCard {
             }
 
         }
-        for (i=0; i<=4; i++){
-            for (j=0; j<=3; j++){
+        for (i=0; i<=3; i++){
+            for (j=0; j<=4; j++){
                 if (colorScheme[i][j]!=null){
                     currentColor=colorScheme[i][j];
                     streak=calculateStreak(colorScheme, i, j, currentColor);
