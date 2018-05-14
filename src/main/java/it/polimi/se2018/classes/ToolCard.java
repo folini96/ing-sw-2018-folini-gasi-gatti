@@ -13,20 +13,23 @@ public abstract class ToolCard {
 
     public int getToken(){
 
+        return token;
 
     }
 
     public String getName(){
 
+        return name;
 
     }
 
-    public String getColor(){
+    public Color getColor(){
 
+        return color;
 
     }
 
-    public abstract void useTool()
+    public abstract void useTool();
 
 
 }

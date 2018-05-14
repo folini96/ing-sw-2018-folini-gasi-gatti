@@ -1,20 +1,33 @@
 package it.polimi.se2018.classes;
 
+/**
+ * @author Alessandro Gatti
+ */
 public class PrivateObjCard {
 
     private Color color;
 
-    //costruttore della classe
+    /**
+     *Costruttore della classe
+     * @param color the color of the card
+     */
     public PrivateObjCard(Color color){
 
         this.color = color;
     }
 
+    /**
+     * @return the color of the card
+     */
     public Color getColor(){
 
         return this.color;
     }
 
+    /**
+     * @param window the window from which the score will be calculated
+     * @return the score gained according to the private objective
+     */
     public int getScore(WindowSide window){
         int i, j, score=0;
         Box[][] boxScheme;
@@ -31,7 +44,6 @@ public class PrivateObjCard {
                     }
 
                 }
-
             }
         }
         return score;
