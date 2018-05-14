@@ -13,6 +13,7 @@ public class Dice {
         this.color = color;
     }
 
+
     public void setValue( int value){
         usedValue=value;
 

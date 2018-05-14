@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * @author Alessandro Gatti
+ */
 public class DiceBag {
     private Dice[] diceSet;
 
-    //costruttore della classe
+    /**
+     * Costruttore della classe
+     */
     public DiceBag(){
         int i;
 
@@ -36,6 +41,10 @@ public class DiceBag {
         }
     }
 
+    /**
+     * @param number the number of dices to extract form the bag
+     * @return the extracted dices, each with a color and a random value
+     */
     public List<Dice> extractDice(int number){
 
         int i, randomInt;
