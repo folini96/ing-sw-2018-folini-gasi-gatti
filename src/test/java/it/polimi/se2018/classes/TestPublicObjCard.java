@@ -3,6 +3,10 @@ import it.polimi.se2018.classes.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ * @author Andrea Folini
+ */
+
 public class TestPublicObjCard {
 
     PublicObjCardColoriDiversiColonna coloriDiversiColonna=new PublicObjCardColoriDiversiColonna();
@@ -16,6 +20,9 @@ public class TestPublicObjCard {
     PublicObjCardSfumatureMedie sfumatureMedie=new PublicObjCardSfumatureMedie();
     PublicObjCardSfumatureScure sfumatureScure=new PublicObjCardSfumatureScure();
     @Test
+    /**
+     *ensure that a with a blank window every card return 0 points
+     */
         public void testZeroPoint() {
             WindowSide window=new WindowSide("test",5);
             assertEquals(0,coloriDiversiColonna.getScore(window));
@@ -30,6 +37,9 @@ public class TestPublicObjCard {
             assertEquals(0,sfumatureScure.getScore(window));
         }
 
+    /**
+     * ensure that the calculated points on a not blank window are correct
+     */
     @Test
         public void testRealWindow(){
             WindowSide window=new WindowSide("test",4);
