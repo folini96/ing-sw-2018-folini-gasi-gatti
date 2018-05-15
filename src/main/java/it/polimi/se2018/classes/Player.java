@@ -1,5 +1,8 @@
 package it.polimi.se2018.classes;
 
+/**
+ * @author Leonard Gasi
+ */
 public class Player {
 
     private String playerName;
@@ -8,6 +11,12 @@ public class Player {
     private WindowSide chosenSide;
     private int favorToken;
 
+    /**
+     * costruttore della classe
+     * @param playerName the name of the player
+     * @param color the color to identify the player
+     * @param privateObj the private objective card associated with the player
+     */
     public Player( String playerName, String color, PrivateObjCard privateObj){
         this.playerName = playerName;
         this.color = color;
@@ -15,6 +24,10 @@ public class Player {
 
     }
 
+    /**
+     * @param chosenCard the window card given to the player
+     * @param chosen the window chosen by the player
+     */
     public void setSide( WindowCard chosenCard, boolean chosen){
         if (chosen) {
             this.chosenSide = chosenCard.getBack();
@@ -25,35 +38,52 @@ public class Player {
         this.setToken(chosenSide.getDifficult());
     }
 
+    /**
+     * @param favorToken the tokens the player get from the window
+     */
     public void setToken(int favorToken){
         this.favorToken = favorToken;
 
     }
 
+    /**
+     * @return the name of the player
+     */
     public String getName(){
         return playerName;
 
     }
 
+    /**
+     * @return the private objective card associated to the player
+     */
     public PrivateObjCard getPrivateObj(){
         return privateObj;
 
     }
 
+    /**
+     * @return the window of the player
+     */
     public WindowSide getSide(){
         return chosenSide;
 
     }
 
+    /**
+     * @return the number of the tokens of the player
+     */
     public int getToken(){
         return favorToken;
 
     }
 
+    /**
+     * @return the color to identify the player
+     */
     public String getColor(){
         return color;
 
     }
-
 
 }
