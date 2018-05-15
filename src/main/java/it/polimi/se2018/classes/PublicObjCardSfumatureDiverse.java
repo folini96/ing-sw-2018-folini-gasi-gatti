@@ -1,5 +1,7 @@
 package it.polimi.se2018.classes;
-
+/**
+ * @author Andrea Folini
+ */
 public class PublicObjCardSfumatureDiverse extends PublicObjCard {
 
     public PublicObjCardSfumatureDiverse(){

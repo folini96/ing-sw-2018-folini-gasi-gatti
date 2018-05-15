@@ -1,8 +1,10 @@
 package it.polimi.se2018.classes;
+/**
+ * @author Andrea Folini
+ */
+public class PublicObjCardVarietaDiColore extends PublicObjCard {
 
-public class PublicObjCardVarietàDiColore extends PublicObjCard {
-
-    public PublicObjCardVarietàDiColore(){
+    public PublicObjCardVarietaDiColore(){
         super("VarietàdiColore", 4);
     }
 

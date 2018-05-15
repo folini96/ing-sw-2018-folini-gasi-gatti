@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 public class TestPublicObjCard {
 
     PublicObjCardColoriDiversiColonna coloriDiversiColonna=new PublicObjCardColoriDiversiColonna();
-    PublicObjCardVarietàDiColore varietàDiColore=new PublicObjCardVarietàDiColore();
+    PublicObjCardVarietaDiColore varietaDiColore=new PublicObjCardVarietaDiColore();
     PublicObjCardSfumatureDiverse sfumatureDiverse=new PublicObjCardSfumatureDiverse();
     PublicObjCardSfumatureDiverseRiga sfumatureDiverseRiga=new PublicObjCardSfumatureDiverseRiga();
     PublicObjCardSfumatureDiverseColonna sfumatureDiverseColonna=new PublicObjCardSfumatureDiverseColonna();
@@ -19,7 +19,7 @@ public class TestPublicObjCard {
         public void testZeroPoint() {
             WindowSide window=new WindowSide("test",5);
             assertEquals(0,coloriDiversiColonna.getScore(window));
-            assertEquals(0,varietàDiColore.getScore(window));
+            assertEquals(0,varietaDiColore.getScore(window));
             assertEquals(0,sfumatureDiverse.getScore(window));
             assertEquals(0,sfumatureDiverseRiga.getScore(window));
             assertEquals(0,sfumatureDiverseColonna.getScore(window));
@@ -92,7 +92,7 @@ public class TestPublicObjCard {
             boxScheme[3][4].setDice(dice34);
 
             assertEquals(10,coloriDiversiColonna.getScore(window));
-            assertEquals(12,varietàDiColore.getScore(window));
+            assertEquals(12,varietaDiColore.getScore(window));
             assertEquals(15,sfumatureDiverse.getScore(window));
             assertEquals(15,sfumatureDiverseRiga.getScore(window));
             assertEquals(4,sfumatureDiverseColonna.getScore(window));

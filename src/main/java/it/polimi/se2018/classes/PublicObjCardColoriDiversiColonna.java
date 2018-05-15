@@ -1,5 +1,8 @@
 package it.polimi.se2018.classes;
 
+/**
+ * @author Andrea Folini
+ */
 public class PublicObjCardColoriDiversiColonna extends PublicObjCard {
 
     public PublicObjCardColoriDiversiColonna(){
@@ -8,7 +11,6 @@ public class PublicObjCardColoriDiversiColonna extends PublicObjCard {
 
     @Override
     public int getScore(WindowSide window){
-        // restituisce il punteggio per un certo obiettivo pubblico ottenuto nella scheda in ingresso
         int i, j, completeColumn=0, red, yellow, green, blue, purple, nullcheck;
         Color[] columnColors= new Color[4];
         Box[][] boxScheme;
