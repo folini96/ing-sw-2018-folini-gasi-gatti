@@ -1,31 +1,31 @@
-package it.polimi.se2018.classes;
+package it.polimi.se2018.classes.model;
+
 /**
  * @author Andrea Folini
  */
-public class PublicObjCardSfumatureChiare extends PublicObjCard {
+public class PublicObjCardSfumatureScure extends PublicObjCard {
 
-    public PublicObjCardSfumatureChiare(){
-        super("SfumatureChiare", 2);
+    public PublicObjCardSfumatureScure(){
+        super("SfumatureScure", 2);
     }
-
 
     @Override
     public int getScore(WindowSide window){
-        int i, j, one, two;
+        int i, j, five, six;
         Box[][] boxScheme;
         boxScheme =window.getBoxScheme();
-        one=0;
-        two=0;
+        five=0;
+        six=0;
         for (i=0; i<=3;i++) {
 
             for (j=0; j<=4; j++){
                 if (boxScheme[i][j].getDice()!=null){
                     switch (boxScheme[i][j].getDice().getValue()){
                         case 1:
-                            one++;
+                            five++;
                             break;
                         case 2:
-                            two++;
+                            six++;
                             break;
                         default:
                             break;
@@ -37,12 +37,13 @@ public class PublicObjCardSfumatureChiare extends PublicObjCard {
 
 
         }
-        if (one<two){
-            return one*this.getValue();
+        if (five<six){
+            return five*this.getValue();
         }else{
-            return two*this.getValue();
+            return six*this.getValue();
         }
 
     }
+
 
 }

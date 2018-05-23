@@ -1,4 +1,4 @@
-package it.polimi.se2018.classes;
+package it.polimi.se2018.classes.model;
 
 /**
  * @author Andrea Folini
@@ -42,10 +42,6 @@ public abstract class PublicObjCard {
      * @return the points calculated
      */
     public abstract int getScore(WindowSide window);
-
-
-
-
 
 
 }

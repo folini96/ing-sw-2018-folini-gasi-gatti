@@ -1,4 +1,4 @@
-package it.polimi.se2018.classes;
+package it.polimi.se2018.classes.model;
 
 /**
  * @author Leonard Gasi
@@ -44,6 +44,5 @@ public class WindowCard {
         return back;
 
     }
-
 
 }

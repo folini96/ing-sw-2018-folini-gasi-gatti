@@ -1,4 +1,5 @@
-package it.polimi.se2018.classes;
+package it.polimi.se2018.classes.model;
+
 /**
  * @author Andrea Folini
  */
@@ -73,5 +74,6 @@ public class PublicObjCardSfumatureDiverseRiga extends PublicObjCard {
 
 
     }
+
 
 }

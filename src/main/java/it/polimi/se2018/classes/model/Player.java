@@ -1,4 +1,4 @@
-package it.polimi.se2018.classes;
+package it.polimi.se2018.classes.model;
 
 /**
  * @author Leonard Gasi
@@ -28,7 +28,7 @@ public class Player {
      * @param chosenCard the window card given to the player
      * @param chosen the window chosen by the player
      */
-    public void setSide( WindowCard chosenCard, boolean chosen){
+    public void setSide(WindowCard chosenCard, boolean chosen){
         if (chosen) {
             this.chosenSide = chosenCard.getBack();
         }
@@ -85,5 +85,6 @@ public class Player {
         return color;
 
     }
+
 
 }
