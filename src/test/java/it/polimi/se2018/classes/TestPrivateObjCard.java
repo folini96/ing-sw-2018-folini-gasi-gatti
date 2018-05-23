@@ -1,4 +1,5 @@
 package it.polimi.se2018.classes;
+import it.polimi.se2018.classes.model.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -8,7 +9,7 @@ import static org.junit.Assert.*;
 public class TestPrivateObjCard {
 
     private PrivateObjCard privateCardTest;
-    private Box [][] boxSchemeTest = new Box[4][5];
+    private Box[][] boxSchemeTest = new Box[4][5];
     private WindowSide windowTest;
     private Dice dice1;
     private Dice dice2;
