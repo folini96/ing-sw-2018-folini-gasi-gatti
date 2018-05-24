@@ -1,11 +1,12 @@
 package it.polimi.se2018.classes.model;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * @author Leonard Gasi
  */
-public class Dice {
+public class Dice implements Cloneable,Serializable {
 
     private Color color;
     private int usedValue;

@@ -1,9 +1,11 @@
 package it.polimi.se2018.classes.model;
 
+import java.io.Serializable;
+
 /**
  * @author Andrea Folini
  */
-public abstract class PublicObjCard {
+public abstract class PublicObjCard implements Cloneable,Serializable {
 
     private String name;
     private int value;

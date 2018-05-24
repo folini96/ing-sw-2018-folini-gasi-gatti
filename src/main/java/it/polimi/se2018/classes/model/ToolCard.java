@@ -2,7 +2,9 @@ package it.polimi.se2018.classes.model;
 
 import it.polimi.se2018.classes.model.Color;
 
-public abstract class ToolCard {
+import java.io.Serializable;
+
+public abstract class ToolCard implements Cloneable, Serializable {
 
     private String name;
     private int token;

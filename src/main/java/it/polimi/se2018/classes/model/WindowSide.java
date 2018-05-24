@@ -1,9 +1,11 @@
 package it.polimi.se2018.classes.model;
 
+import java.io.Serializable;
+
 /**
  * @author Leonard Gasi
  */
-public class WindowSide {
+public class WindowSide implements Cloneable,Serializable {
 
     private String name;
     private int difficult;
