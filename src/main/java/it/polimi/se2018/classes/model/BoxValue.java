@@ -8,7 +8,7 @@ public class BoxValue extends Box{
     private int value;
 
     /**
-     * costruttore della classe
+     * Constructor
      * @param value the value of the box
      */
     public BoxValue(int value){
@@ -19,9 +19,30 @@ public class BoxValue extends Box{
     /**
      * @return the value of the box
      */
+    @Override
     public int getValue(){
         return value;
 
+    }
+
+    @Override
+    public Color getColor(){
+        return null;
+    }
+
+    @Override
+    public boolean isBlank(){
+        return false;
+    }
+
+    @Override
+    public boolean isColor(){
+        return false;
+    }
+
+    @Override
+    public boolean isValue(){
+        return true;
     }
 
 

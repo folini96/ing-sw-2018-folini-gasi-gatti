@@ -11,7 +11,7 @@ public class DiceBag {
     private Dice[] diceSet;
 
     /**
-     * Costruttore della classe
+     * Constructor
      */
     public DiceBag(){
         int i;

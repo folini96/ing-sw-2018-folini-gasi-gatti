@@ -10,7 +10,7 @@ public class PrivateObjCard implements Cloneable, Serializable {
     private Color color;
 
     /**
-     *Costruttore della classe
+     *Constructor
      * @param color the color of the card
      */
     public PrivateObjCard(Color color){

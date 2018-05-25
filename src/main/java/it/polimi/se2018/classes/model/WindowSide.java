@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * @author Leonard Gasi
+ * @author Alessandro Gatti
  */
 public class WindowSide implements Cloneable,Serializable {
 
@@ -12,20 +13,15 @@ public class WindowSide implements Cloneable,Serializable {
     private Box [][] boxScheme;
 
     /**
-     * costruttore della classe
+     * Constructor
      * @param name the name of the window
-     * @param difficult the difficulty associated with the window
+     * @param difficult the difficulty associated to the window
      */
-    public WindowSide( String name, int difficult){
+    public WindowSide( String name, int difficult, Box[][] boxScheme){
         int i,j;
         this.name = name;
         this.difficult = difficult;
-        this.boxScheme = new Box[4][5];
-        for (i=0;i<=3;i++){
-            for (j=0;j<=4;j++){
-                this.boxScheme[i][j]=new Box();
-            }
-        }
+        this.boxScheme = boxScheme;
 
     }
 
@@ -51,6 +47,24 @@ public class WindowSide implements Cloneable,Serializable {
     public Box [][] getBoxScheme(){
         return boxScheme;
 
+    }
+
+    /**
+     * @return the points lost for every open space left on the window
+     */
+    public int getLostPoints(){
+        int lostPoints=0;
+        int i, j;
+
+        for (i=0;i<=3;i++){
+            for (j=0;j<=4;j++){
+                if(this.boxScheme[i][j].getDice() == null){
+                    lostPoints++;
+                }
+            }
+        }
+
+        return lostPoints;
     }
 
 

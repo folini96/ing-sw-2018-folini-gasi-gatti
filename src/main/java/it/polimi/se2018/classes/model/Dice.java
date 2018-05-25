@@ -12,7 +12,7 @@ public class Dice implements Cloneable,Serializable {
     private int usedValue;
 
     /**
-     * costruttore della classe
+     * Constructor
      * @param color the color of the dice
      */
     public Dice(Color color){

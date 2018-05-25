@@ -12,7 +12,7 @@ public class Player {
     private int favorToken;
 
     /**
-     * costruttore della classe
+     * Constructor
      * @param playerName the name of the player
      * @param color the color to identify the player
      * @param privateObj the private objective card associated with the player

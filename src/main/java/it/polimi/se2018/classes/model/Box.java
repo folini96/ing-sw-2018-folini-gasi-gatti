@@ -3,7 +3,7 @@ package it.polimi.se2018.classes.model;
 /**
  * @author Leonard Gasi
  */
-public class Box {
+public abstract class Box {
 
     private Dice dice;
 
@@ -21,5 +21,11 @@ public class Box {
         return dice;
 
     }
+
+    public abstract boolean isBlank();
+    public abstract boolean isColor();
+    public abstract boolean isValue();
+    public abstract Color getColor();
+    public abstract int getValue();
 
 }
