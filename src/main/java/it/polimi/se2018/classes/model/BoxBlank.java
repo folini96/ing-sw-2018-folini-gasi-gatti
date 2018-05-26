@@ -2,6 +2,10 @@ package it.polimi.se2018.classes.model;
 
 public class BoxBlank extends Box {
 
+    //contructor of blank box
+    public BoxBlank() {
+    }
+
     @Override
     public Color getColor(){
         return null;

@@ -10,6 +10,7 @@ public class TestPrivateObjCard {
 
     private PrivateObjCard privateCardTest;
     private Box[][] boxSchemeTest = new Box[4][5];
+    private Box[][] boxSchemeTestBlank = new Box[4][5];
     private WindowSide windowTest;
     private Dice dice1;
     private Dice dice2;
@@ -23,9 +24,14 @@ public class TestPrivateObjCard {
      */
     @Test
     public void testZeroScore() {
-
+        int i, j;
+        for(i=0; i<=3; i++){
+            for(j=0; j<=4; j++){
+                boxSchemeTestBlank[i][j]= new BoxBlank();
+            }
+        }
         privateCardTest= new PrivateObjCard(Color.ROSSO);
-        windowTest = new WindowSide("test", 4);
+        windowTest = new WindowSide("test", 4, boxSchemeTestBlank);
 
         assertEquals(0, privateCardTest.getScore(windowTest));
     }
@@ -35,9 +41,21 @@ public class TestPrivateObjCard {
      */
     @Test
     public void testRightScore() {
+        int i, j;
+
+        for(i=0; i<=3; i++){
+            for(j=0; j<=4; j++){
+                boxSchemeTest[i][j]= new BoxBlank();
+            }
+        }
+        boxSchemeTest[0][4] = new BoxColor(Color.ROSSO);
+        boxSchemeTest[1][1] = new BoxColor(Color.ROSSO);
+        boxSchemeTest[1][2] = new BoxColor(Color.BLU);
+        boxSchemeTest[1][3] = new BoxColor(Color.VERDE);
+        boxSchemeTest[2][2] = new BoxColor(Color.ROSSO);
 
         privateCardTest= new PrivateObjCard(Color.ROSSO);
-        windowTest = new WindowSide("test", 4);
+        windowTest = new WindowSide("test", 4, boxSchemeTest);
 
         dice1 = new Dice(Color.ROSSO);
         dice1.setValue(4);
@@ -52,17 +70,10 @@ public class TestPrivateObjCard {
         dice6 = new Dice(Color.ROSSO);
         dice6.setValue(6);
 
-        boxSchemeTest = windowTest.getBoxScheme();
-
-        boxSchemeTest[0][4] = new BoxColor(Color.ROSSO);
         boxSchemeTest[0][4].setDice(dice1);
-        boxSchemeTest[1][1] = new BoxColor(Color.ROSSO);
         boxSchemeTest[1][1].setDice(dice2);
-        boxSchemeTest[1][2] = new BoxColor(Color.BLU);
         boxSchemeTest[1][2].setDice(dice3);
-        boxSchemeTest[1][3] = new BoxColor(Color.VERDE);
         boxSchemeTest[1][3].setDice(dice4);
-        boxSchemeTest[2][2] = new BoxColor(Color.ROSSO);
         boxSchemeTest[2][2].setDice(dice5);
         boxSchemeTest[3][1].setDice(dice6);
 

@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
  */
 public class TestPublicObjCard {
 
+    private Box[][] boxScheme= new Box[4][5];
     PublicObjCardColoriDiversiColonna coloriDiversiColonna=new PublicObjCardColoriDiversiColonna();
     PublicObjCardVarietaDiColore varietaDiColore=new PublicObjCardVarietaDiColore();
     PublicObjCardSfumatureDiverse sfumatureDiverse=new PublicObjCardSfumatureDiverse();
@@ -24,7 +25,15 @@ public class TestPublicObjCard {
      */
     @Test
     public void testZeroPoint() {
-        WindowSide window=new WindowSide("test",5);
+        int i, j;
+
+        for(i=0; i<=3; i++){
+            for(j=0; j<=4; j++){
+                boxScheme[i][j]= new BoxBlank();
+            }
+        }
+
+        WindowSide window=new WindowSide("test",5, boxScheme);
         assertEquals(0,coloriDiversiColonna.getScore(window));
         assertEquals(0,varietaDiColore.getScore(window));
         assertEquals(0,sfumatureDiverse.getScore(window));
@@ -42,8 +51,15 @@ public class TestPublicObjCard {
      */
     @Test
     public void testRealWindow(){
-        WindowSide window=new WindowSide("test",4);
-        Box[][] boxScheme=window.getBoxScheme();
+        int i, j;
+
+        for(i=0; i<=3; i++){
+            for(j=0; j<=4; j++){
+                boxScheme[i][j]= new BoxBlank();
+            }
+        }
+
+        WindowSide window=new WindowSide("test",4, boxScheme);
         Dice dice00, dice01, dice02, dice03, dice04, dice10, dice11, dice12, dice13, dice14, dice21, dice22, dice23, dice30, dice31, dice32, dice33, dice34;
         dice00=new Dice(Color.VIOLA);
         dice00.setValue(3);
