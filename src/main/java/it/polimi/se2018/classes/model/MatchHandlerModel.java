@@ -1,6 +1,6 @@
 package it.polimi.se2018.classes.model;
 
-import it.polimi.se2018.classes.Events.SelectedCoordinate;
+import it.polimi.se2018.classes.events.SelectedCoordinate;
 
 import java.util.ArrayList;
 
@@ -36,11 +36,67 @@ public class MatchHandlerModel {
      * @param dice the dice that is to set
      * @param coordinate the coordinate of the box the player wants to put the dice into
      * @param player the player making the move
-     * @return if the placement is allowed or not
+     * @return true if the placement is allowed, false if not
      */
     public boolean checkCorrectMove(Dice dice, SelectedCoordinate coordinate, Player player){
 
-        int i, j, prosimityCheck=0;
+        int i, j;
+        int countDice=0;
+        Box[][] boxScheme;
+
+        WindowSide window = player.getSide();
+        boxScheme = window.getBoxScheme();
+
+        //checking if window is empty
+        for(i=0; i<=3; i++){
+            for(j=0; j<=4; j++) {
+                if(boxScheme[i][j].getDice() != null){
+                    countDice++;
+                }
+            }
+        }
+        if(countDice ==0){
+            if(!checkCorrectFirstMove(coordinate)) return false;
+            if(!checkCorrectColorMatching(dice, coordinate, player)) return false;
+            if(!checkCorrectValueMatching(dice, coordinate, player)) return false;
+            return true;
+        }
+        else{
+            if(!checkCorrectColorMatching(dice, coordinate, player)) return false;
+            if(!checkCorrectValueMatching(dice, coordinate, player)) return false;
+            if(!checkBoxNotEmpty(coordinate, player)) return false;
+            if(!checkColorOrValueVicinity(dice, coordinate, player)) return false;
+            if(!checkDiceVicinity(coordinate, player)) return false;
+            return true;
+        }
+    }
+
+    /**
+     * @param coordinate the coordinate of the box the player wants to put the dice into
+     * @return true if the coordinates of the first dice are allowed, false if not
+     */
+    private boolean checkCorrectFirstMove(SelectedCoordinate coordinate){
+        int row=coordinate.getRow();
+        int column=coordinate.getColumn();
+
+        //checking that the first dice is placed on the edge of the window
+        if(row ==1 || row == 2){
+            return false;
+        }
+        if(column ==1 || column == 2 || column ==3){
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param dice the dice that is to set
+     * @param coordinate the coordinate of the box the player wants to put the dice into
+     * @param player the player making the move
+     * @return true if the color of the box is compatible, false if not
+     */
+    private boolean checkCorrectColorMatching(Dice dice, SelectedCoordinate coordinate, Player player){
         int row=coordinate.getRow();
         int column=coordinate.getColumn();
         Box[][] boxScheme;
@@ -49,14 +105,73 @@ public class MatchHandlerModel {
         boxScheme = window.getBoxScheme();
 
         //checking that a dice is set in a box that matches color or value
-        if(boxScheme[row][column].isBlank() == false){
+        if(!boxScheme[row][column].isBlank()){
             if(boxScheme[row][column].isColor()  && dice.getColor() != boxScheme[row][column].getColor()){
                 return false;
             }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param dice the dice that is to set
+     * @param coordinate the coordinate of the box the player wants to put the dice into
+     * @param player the player making the move
+     * @return true if the value of the box is compatible, false if not
+     */
+    private boolean checkCorrectValueMatching(Dice dice, SelectedCoordinate coordinate, Player player){
+        int row=coordinate.getRow();
+        int column=coordinate.getColumn();
+        Box[][] boxScheme;
+
+        WindowSide window = player.getSide();
+        boxScheme = window.getBoxScheme();
+
+        //checking that a dice is set in a box that matches color or value
+        if(!boxScheme[row][column].isBlank()){
             if(boxScheme[row][column].isValue()  && dice.getValue() != boxScheme[row][column].getValue()){
                 return false;
             }
         }
+
+        return true;
+    }
+
+    /**
+     * @param coordinate the coordinate of the box the player wants to put the dice into
+     * @param player the player making the move
+     * @return true if the box is empty, false if not
+     */
+    private boolean checkBoxNotEmpty(SelectedCoordinate coordinate, Player player){
+        int row=coordinate.getRow();
+        int column=coordinate.getColumn();
+        Box[][] boxScheme;
+
+        WindowSide window = player.getSide();
+        boxScheme = window.getBoxScheme();
+
+        //checking that a dice isn't placed in a box that already has a dice
+        if(boxScheme[row][column].getDice() != null){
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param coordinate the coordinate of the box the player wants to put the dice into
+     * @param player the player making the move
+     * @return true if the dice is near another dice, false if not
+     */
+    private boolean checkDiceVicinity(SelectedCoordinate coordinate, Player player){
+        int i, j, vicinityCheck=0;
+        int row=coordinate.getRow();
+        int column=coordinate.getColumn();
+        Box[][] boxScheme;
+
+        WindowSide window = player.getSide();
+        boxScheme = window.getBoxScheme();
 
         //checking that a dice is placed near another dice
         for(i=0; i<=3; i++){
@@ -64,15 +179,33 @@ public class MatchHandlerModel {
                 if(i==row-1 || i==row || i==row+1){
                     if(j==column-1 || j==column || j==column+1){
                         if(boxScheme[i][j].getDice()!=null){
-                            prosimityCheck++;
+                            vicinityCheck++;
                         }
                     }
                 }
             }
         }
-        if(prosimityCheck==0){
+        if(vicinityCheck==0){
             return false;
         }
+
+        return true;
+    }
+
+    /**
+     * @param dice the dice that is to set
+     * @param coordinate the coordinate of the box the player wants to put the dice into
+     * @param player the player making the move
+     * @return true if the dice isn't adjacent to a dice of same color or value, false if not
+     */
+    private boolean checkColorOrValueVicinity(Dice dice, SelectedCoordinate coordinate, Player player){
+        int i, j;
+        int row=coordinate.getRow();
+        int column=coordinate.getColumn();
+        Box[][] boxScheme;
+
+        WindowSide window = player.getSide();
+        boxScheme = window.getBoxScheme();
 
         //checking that a dice isn't placed adjacent to a dice of the same color or value
         for(i=0; i<=3; i++) {
@@ -97,7 +230,6 @@ public class MatchHandlerModel {
         }
 
         return true;
-
     }
 
     /**
@@ -107,17 +239,16 @@ public class MatchHandlerModel {
     public int calculateScore(Player player){
 
         int i, publicObjCardPoints=0;
-        int privateObjCardPoints, tokenPoints, lostPoints, playerScore;
+        int privateObjCardPoints, lostPoints, playerScore;
 
         for(i=0; i<=2; i++){
             publicObjCardPoints = publicObjCardPoints + publicObjDeck[i].getScore(player.getSide());
         }
 
         privateObjCardPoints = player.getPrivateObj().getScore(player.getSide());
-        tokenPoints = player.getToken();
         lostPoints = player.getSide().getLostPoints();
 
-        playerScore = publicObjCardPoints + privateObjCardPoints + tokenPoints - lostPoints;
+        playerScore = publicObjCardPoints + privateObjCardPoints + player.getToken() - lostPoints;
 
         return playerScore;
     }

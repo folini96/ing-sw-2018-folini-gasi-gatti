@@ -1,5 +1,8 @@
 package it.polimi.se2018.classes.controller;
+import it.polimi.se2018.classes.events.SelectedCoordinate;
+import it.polimi.se2018.classes.model.Dice;
 import it.polimi.se2018.classes.model.MatchHandlerModel;
+import it.polimi.se2018.classes.model.Player;
 
 public class MatchHadlerController {
 
@@ -22,7 +25,13 @@ public class MatchHadlerController {
 
     }
 
-    public void handlePlaceDice(){
+    public void handlePlaceDice(Dice dice, SelectedCoordinate coordinate, Player player){
+        if(model.checkCorrectMove(dice, coordinate, player)){
+            //place dice;
+        }
+        else{
+           //messaggio errore
+        }
 
     }
 
