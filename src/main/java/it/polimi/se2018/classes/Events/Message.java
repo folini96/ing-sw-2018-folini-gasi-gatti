@@ -1,4 +1,4 @@
-package it.polimi.se2018.classes.Events;
+package it.polimi.se2018.classes.events;
 
 import java.io.Serializable;
 

@@ -1,7 +1,7 @@
 package it.polimi.se2018;
 
 import it.polimi.se2018.classes.*;
-import it.polimi.se2018.classes.Events.Message;
+import it.polimi.se2018.classes.events.Message;
 import it.polimi.se2018.classes.network.RMIClient;
 import it.polimi.se2018.classes.network.Server;
 
