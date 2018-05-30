@@ -10,15 +10,15 @@ public class RMIClientImplementation implements RMIRemoteClientInterface {
     @Override
 
     public void sendMessage(Message message) throws RemoteException {
-
+        System.out.println(message.getMessage());
     }
-    public void sendPublicObjDeck (PublicObjCard[] publicObjCardDeck) throws RemoteException{
+    public void sendPublicObjDeck (PublicObjCard[] publicObjDeck) throws RemoteException{
 
     }
     public void sendPrivateObjCard (PrivateObjCard privateObjCard) throws RemoteException{
 
     }
-    public void sendToolCard (ToolCard[] toolCardDeck) throws RemoteException{
+    public void sendToolCardDeck (ToolCard[] toolDeck) throws RemoteException{
 
     }
     public void sendWindowSide (WindowSide windowSide) throws RemoteException{

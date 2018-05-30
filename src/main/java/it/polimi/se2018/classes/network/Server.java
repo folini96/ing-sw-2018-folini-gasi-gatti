@@ -1,17 +1,21 @@
 package it.polimi.se2018.classes.network;
 
+import it.polimi.se2018.classes.Events.Message;
+
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
-public class Server implements RMIServerInterface, SocketServerInterface {
+public class Server  {
     private static int PORT = 1099; // porta di default
-    public static void main(String[] args){
+    private RMIServerImplementation rmiHandler;
+    public void main(){
         rmiMain();
+        socketMain();
     }
 
-    public static void rmiMain() {
+    public void rmiMain() {
 
         try {
 
@@ -24,42 +28,24 @@ public class Server implements RMIServerInterface, SocketServerInterface {
 
         try {
 
-            RMIServerImplementation serverImplementation = new RMIServerImplementation();
+            rmiHandler = new RMIServerImplementation();
+            Naming.rebind("//localhost/MyServer", rmiHandler);
 
-
-            Naming.rebind("//localhost/MyServer", serverImplementation);
-
-
-        } catch (MalformedURLException e) {
+        }catch (MalformedURLException e) {
             System.err.println("Impossibile registrare l'oggetto indicato!");
-        } catch (RemoteException e) {
+        }
+         catch (RemoteException e) {
             System.err.println("Errore di connessione: " + e.getMessage() + "!");
         }
 
     }
-
-    public void notValideMoveMessage (){
-
-    }
-    public void sendPublicObjCard(){
+    public static void socketMain(){
 
     }
-    public void sendPrivateObjCard(){
 
+    public void sendMessage(Message message){
+        rmiHandler.notValideMoveMessage(message);
     }
-    public void sendToolCard(){
 
-    }
-    public void sendWindow(){
 
-    }
-    public void sendDraftPool(){
-
-    }
-    public void sendRoundTrack(){
-
-    }
-    public void removeFavorToken(){
-
-    }
 }

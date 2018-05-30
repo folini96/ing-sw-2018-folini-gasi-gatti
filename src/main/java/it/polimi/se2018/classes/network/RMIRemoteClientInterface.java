@@ -12,7 +12,7 @@ public interface RMIRemoteClientInterface extends Remote {
      public void sendMessage(Message message) throws RemoteException;
      public void sendPublicObjDeck (PublicObjCard[] publicObjCardDeck) throws RemoteException;
      public void sendPrivateObjCard (PrivateObjCard privateObjCard) throws RemoteException;
-     public void sendToolCard (ToolCard[] toolCardDeck) throws RemoteException;
+     public void sendToolCardDeck (ToolCard[] toolCardDeck) throws RemoteException;
      public void sendWindowSide (WindowSide windowSide) throws RemoteException;
      public void sendDraftPool (ArrayList<Dice> draftPool)throws RemoteException;
      public void sendRoundTrack(Round[] roundTrack) throws RemoteException;

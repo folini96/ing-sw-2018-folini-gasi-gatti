@@ -3,8 +3,8 @@ package it.polimi.se2018.classes.network;
 import it.polimi.se2018.classes.Events.Message;
 import it.polimi.se2018.classes.Events.SelectedCoordinate;
 import it.polimi.se2018.classes.Events.SelectedRoundTrackDice;
-import it.polimi.se2018.classes.model.PrivateObjCard;
-import it.polimi.se2018.classes.model.ToolCard;
+import it.polimi.se2018.classes.model.*;
+
 import java.rmi.ConnectException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -18,7 +18,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIR
     }
 
     @Override
-    public void addClient(RMIRemoteClientInterface client, String playerName) throws RemoteException {
+    public void addClient(RMIRemoteClientInterface client) throws RemoteException {
         rmiClients.add(client);
         System.out.println("Il client "+(rmiClients.indexOf(client)+1) + " connesso!");
     }
@@ -47,7 +47,72 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIR
     public void endTurn() throws RemoteException{
 
     }
+    public void notValideMoveMessage (Message message){
 
+    }
+    public void sendPublicObjDeck(PublicObjCard[] publicObjDeck){
+        for (RMIRemoteClientInterface client:rmiClients){
+            try{
+                client.sendPublicObjDeck(publicObjDeck);
+            }catch(RemoteException e){
+                System.out.println("Errore di comunicazione con il client RMI "+ rmiClients.indexOf(client)+1);
+            }
+
+        }
+    }
+    public void sendPrivateObjCard(PrivateObjCard privateObjCard){
+
+    }
+    public void sendToolCardDeck(ToolCard[] toolDeck){
+        for (RMIRemoteClientInterface client:rmiClients){
+            try{
+                client.sendToolCardDeck(toolDeck);
+            }catch(RemoteException e){
+                System.out.println("Errore di comunicazione con il client RMI "+ rmiClients.indexOf(client)+1);
+            }
+
+        }
+    }
+    public void sendWindow(WindowSide window){
+        for (RMIRemoteClientInterface client:rmiClients){
+            try{
+                client.sendWindowSide(window);
+            }catch(RemoteException e){
+                System.out.println("Errore di comunicazione con il client RMI "+ rmiClients.indexOf(client)+1);
+            }
+
+        }
+    }
+    public void sendDraftPool(ArrayList<Dice> draftPool){
+        for (RMIRemoteClientInterface client:rmiClients){
+            try{
+                client.sendDraftPool(draftPool);
+            }catch(RemoteException e){
+                System.out.println("Errore di comunicazione con il client RMI "+ rmiClients.indexOf(client)+1);
+            }
+
+        }
+    }
+    public void sendRoundTrack(Round[] roundTrack){
+        for (RMIRemoteClientInterface client:rmiClients){
+            try{
+                client.sendRoundTrack(roundTrack);
+            }catch(RemoteException e){
+                System.out.println("Errore di comunicazione con il client RMI "+ rmiClients.indexOf(client)+1);
+            }
+
+        }
+    }
+    public void removeFavorToken(int removedToken){
+        for (RMIRemoteClientInterface client:rmiClients){
+            try{
+                client.removeFavorToken(removedToken);
+            }catch(RemoteException e){
+                System.out.println("Errore di comunicazione con il client RMI "+ rmiClients.indexOf(client)+1);
+            }
+
+        }
+    }
 
 
 }
