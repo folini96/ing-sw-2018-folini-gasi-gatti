@@ -1,6 +1,6 @@
 package it.polimi.se2018.classes.model;
 
-import it.polimi.se2018.classes.events.SelectedCoordinate;
+import it.polimi.se2018.classes.eventi.SelectedCoordinate;
 
 import java.util.ArrayList;
 
