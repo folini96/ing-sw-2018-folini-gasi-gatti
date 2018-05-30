@@ -10,7 +10,7 @@ public class RMIClientImplementation implements RMIRemoteClientInterface {
 
 
     public void sendMessage(Message message) throws RemoteException {
-        System.out.println(message.getMessage());
+
     }
     public void sendPublicObjDeck (PublicObjCard[] publicObjDeck) throws RemoteException{
 

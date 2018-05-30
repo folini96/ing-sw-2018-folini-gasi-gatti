@@ -12,7 +12,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
 public interface ClientInterface {
-     void main();
+     void main(String username);
      void placeDiceFromDraft(int draftDice, SelectedCoordinate coordinate);
      void useToolCard (int toolCard) throws RemoteException;
      void switchDraftDiceRoundTrackDice (int draftDice, SelectedRoundTrackDice roundTrackDice) throws RemoteException;

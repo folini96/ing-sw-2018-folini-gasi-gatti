@@ -18,9 +18,9 @@ public class App
         RMIClient client1=new RMIClient();
 
         server.main();
-        client.main();
-        client1.main();
-        server.sendMessage(new Message("prova"));
+        client.main("Icardi");
+        client1.main("Highuain");
+
 
     }
 }

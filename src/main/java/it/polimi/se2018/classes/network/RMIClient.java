@@ -13,13 +13,13 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class RMIClient implements ClientInterface {
    private RMIRemoteServerInterface server;
-   public void main(){
+   public void main(String username){
 
       try {
          server = (RMIRemoteServerInterface)Naming.lookup("//localhost/MyServer");
          RMIClientImplementation client= new RMIClientImplementation();
          RMIRemoteClientInterface remoteRef = (RMIRemoteClientInterface) UnicastRemoteObject.exportObject(client, 0);
-         server.addClient(remoteRef);
+         server.addClient(remoteRef, username);
 
       }catch (MalformedURLException e) {
          System.err.println("URL non trovato!");
