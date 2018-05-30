@@ -1,8 +1,8 @@
 package it.polimi.se2018.classes.network;
 
-import it.polimi.se2018.classes.events.Message;
-import it.polimi.se2018.classes.events.SelectedCoordinate;
-import it.polimi.se2018.classes.events.SelectedRoundTrackDice;
+import it.polimi.se2018.classes.Events.Message;
+import it.polimi.se2018.classes.Events.SelectedCoordinate;
+import it.polimi.se2018.classes.Events.SelectedRoundTrackDice;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

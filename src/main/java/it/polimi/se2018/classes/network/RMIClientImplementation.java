@@ -1,13 +1,13 @@
 package it.polimi.se2018.classes.network;
 
-import it.polimi.se2018.classes.events.Message;
+import it.polimi.se2018.classes.Events.Message;
 import it.polimi.se2018.classes.model.*;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class RMIClientImplementation implements RMIRemoteClientInterface {
-    @Override
+
 
     public void sendMessage(Message message) throws RemoteException {
         System.out.println(message.getMessage());
