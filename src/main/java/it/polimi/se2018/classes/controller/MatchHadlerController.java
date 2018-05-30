@@ -1,5 +1,5 @@
 package it.polimi.se2018.classes.controller;
-import it.polimi.se2018.classes.eventi.SelectedCoordinate;
+import it.polimi.se2018.classes.events.SelectedCoordinate;
 import it.polimi.se2018.classes.model.Dice;
 import it.polimi.se2018.classes.model.MatchHandlerModel;
 import it.polimi.se2018.classes.model.Player;
