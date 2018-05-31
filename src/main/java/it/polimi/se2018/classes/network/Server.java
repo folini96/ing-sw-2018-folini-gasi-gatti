@@ -63,37 +63,37 @@ public class Server  {
         }
         return  true;
     }
-    public void placeDiceFromDraft(int draftDice, SelectedCoordinate coordinate) throws RemoteException{
+    public void placeDiceFromDraft(int draftDice, SelectedCoordinate coordinate){
 
     }
 
-    public void useToolCard(int toolCard) throws RemoteException{
+    public void useToolCard(int toolCard){
 
     }
 
-    public void switchDraftDiceRoundTrackDice(int draftDice, SelectedRoundTrackDice roundTrackDice) throws RemoteException{
+    public void switchDraftDiceRoundTrackDice(int draftDice, SelectedRoundTrackDice roundTrackDice){
 
     }
 
-    public void moveWindowDice(SelectedCoordinate currentPosition, SelectedCoordinate newPosition) throws RemoteException{
+    public void moveWindowDice(SelectedCoordinate currentPosition, SelectedCoordinate newPosition){
 
     }
 
     public void endTurn() throws RemoteException{
 
     }
-    public void notValideMoveMessage(Message message, int player) throws RemoteException {
+    public void notValideMoveMessage(Message message, int player) {
         clients.get(player).notValideMoveMessage(message);
     }
-    public void sendPublicObjDeck (PublicObjCard[] publicObjDeck) throws RemoteException{
+    public void sendPublicObjDeck (PublicObjCard[] publicObjDeck) {
         for (VirtualClientInterface client: clients){
             client.sendPublicObjDeck(publicObjDeck);
         }
     }
-    public void sendPrivateObjCard (PrivateObjCard privateObjCard, int player) throws RemoteException{
+    public void sendPrivateObjCard (PrivateObjCard privateObjCard, int player) {
         clients.get(player).sendPrivateObjCard(privateObjCard);
     }
-    public void sendToolCardDeck (ToolCard[] toolDeck) throws RemoteException{
+    public void sendToolCardDeck (ToolCard[] toolDeck) {
         for (VirtualClientInterface client: clients){
             client.sendToolCardDeck(toolDeck);
         }
@@ -104,22 +104,22 @@ public class Server  {
             clients.get(player).sendWindow(windowSideDeck[i]);
         }
     }
-    public void sendWindowSide (WindowSide windowSide) throws RemoteException{
+    public void sendWindowSide (WindowSide windowSide) {
         for (VirtualClientInterface client: clients){
             client.sendWindow(windowSide);
         }
     }
-    public void sendDraftPool (ArrayList<Dice> draftPool)throws RemoteException{
+    public void sendDraftPool (ArrayList<Dice> draftPool){
         for (VirtualClientInterface client: clients){
             client.sendDraftPool(draftPool);
         }
     }
-    public void sendRoundTrack(Round[] roundTrack) throws RemoteException{
+    public void sendRoundTrack(Round[] roundTrack){
         for (VirtualClientInterface client: clients){
             client.sendRoundTrack(roundTrack);
         }
     }
-    public void removeFavorToken(int removedFavorToken) throws RemoteException{
+    public void removeFavorToken(int removedFavorToken){
         for (VirtualClientInterface client: clients){
             client.removeFavorToken(removedFavorToken);
         }

@@ -1,13 +1,15 @@
 package it.polimi.se2018.classes.model;
 
 import it.polimi.se2018.classes.events.SelectedCoordinate;
+import it.polimi.se2018.classes.view.VirtualView;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  * @author Alessandro Gatti
  */
-public class MatchHandlerModel {
+public class MatchHandlerModel extends Observable {
 
     private ArrayList <Player> players;
     private int playerNumber;
@@ -21,9 +23,13 @@ public class MatchHandlerModel {
     private int firstPlayer;
     private ArrayList <Dice> draftPool;
 
+    public MatchHandlerModel(VirtualView view){
+        addObserver(view);
+    }
+
+
 
     public void startRound(){
-
 
     }
 
@@ -39,7 +45,6 @@ public class MatchHandlerModel {
      * @return true if the placement is allowed, false if not
      */
     public boolean checkCorrectMove(Dice dice, SelectedCoordinate coordinate, Player player){
-
         int i, j;
         int countDice=0;
         Box[][] boxScheme;
