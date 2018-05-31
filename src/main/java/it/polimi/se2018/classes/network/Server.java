@@ -12,7 +12,8 @@ import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
 
 public class Server  {
-    private static int PORT = 1099; // porta di default
+    private static int RMIPORT = 1099; // porta di default RMI
+    private static int SOCKETPORT = 9000; //porta di default SOCKET
     private RMIServerImplementation rmiHandler;
     private ArrayList<VirtualClientInterface> clients = new ArrayList<VirtualClientInterface>();
     public void main(){
@@ -24,7 +25,7 @@ public class Server  {
 
         try {
 
-            LocateRegistry.createRegistry(PORT);
+            LocateRegistry.createRegistry(RMIPORT);
 
         } catch (RemoteException e) {
 
@@ -44,13 +45,23 @@ public class Server  {
         }
 
     }
-    public static void socketMain(){
+    public void socketMain(){
+        (new SocketClientGatherer(this, SOCKETPORT)).start();
 
     }
     public void addClient(VirtualClientInterface newClient){
 
         clients.add(newClient);
         System.out.println("Il client "+ newClient.getUsername() + " è connesso!");
+    }
+    public Boolean checkUsername(String username){
+        for(VirtualClientInterface client:clients){
+
+            if (client.getUsername().equals(username)){
+                return false;
+            }
+        }
+        return  true;
     }
     public void placeDiceFromDraft(int draftDice, SelectedCoordinate coordinate) throws RemoteException{
 

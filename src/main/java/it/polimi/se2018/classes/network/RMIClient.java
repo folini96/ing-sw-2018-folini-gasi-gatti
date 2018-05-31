@@ -17,7 +17,7 @@ public class RMIClient implements ClientInterface {
 
       try {
          server = (RMIRemoteServerInterface)Naming.lookup("//localhost/MyServer");
-         RMIClientImplementation client= new RMIClientImplementation();
+         RMIClientImplementation client= new RMIClientImplementation(this);
          RMIRemoteClientInterface remoteRef = (RMIRemoteClientInterface) UnicastRemoteObject.exportObject(client, 0);
          server.addClient(remoteRef, username);
 
@@ -29,6 +29,7 @@ public class RMIClient implements ClientInterface {
          System.err.println("Il riferimento passato non è associato a nulla!");
       }
    }
+
    public void placeDiceFromDraft(int draftDice, SelectedCoordinate coordinate){
        try{
            server.placeDiceFromDraft(draftDice, coordinate);
@@ -71,6 +72,9 @@ public class RMIClient implements ClientInterface {
         }catch (RemoteException e){
             System.out.println("Errore nella comunicazione con il server");
         }
+    }
+    public String askUsername(){
+       return "Not implemented yet";
     }
     public void notValideMoveMessage (Message message){
 

@@ -8,7 +8,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface RMIRemoteServerInterface extends Remote {
-        void addClient (RMIRemoteClientInterface client, String username) throws RemoteException;
+        void addClient (RMIRemoteClientInterface client,String firstUsername) throws RemoteException;
         void placeDiceFromDraft (int draftDice, SelectedCoordinate coordinate) throws RemoteException;
         void useToolCard (int toolCard) throws RemoteException;
         void switchDraftDiceRoundTrackDice (int draftDice, SelectedRoundTrackDice roundTrackDice) throws RemoteException;

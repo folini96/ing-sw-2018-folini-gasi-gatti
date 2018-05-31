@@ -19,7 +19,18 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIR
     }
 
     @Override
-    public void addClient(RMIRemoteClientInterface client, String username) throws RemoteException {
+    public void addClient(RMIRemoteClientInterface client, String firstUsername) throws RemoteException {
+        String username=firstUsername;
+
+        while (!server.checkUsername(username)){
+            System.out.println("The username "+username+" is already used. Waiting for another username");
+            try{
+                username=client.askUsername();
+            }catch(RemoteException e){
+                System.out.println("Errore di comunicazione con il client RMI ");
+            }
+
+        }
         server.addClient(new RMIVirtualClient(client, username));
 
     }

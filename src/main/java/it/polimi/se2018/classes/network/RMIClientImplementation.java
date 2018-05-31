@@ -7,7 +7,13 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class RMIClientImplementation implements RMIRemoteClientInterface {
-
+    private RMIClient client;
+    public  RMIClientImplementation(RMIClient client){
+        this.client=client;
+    }
+    public String askUsername() throws RemoteException{
+        return client.askUsername();
+    }
 
     public void sendMessage(Message message) throws RemoteException {
 

@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public interface RMIRemoteClientInterface extends Remote {
+     public String askUsername() throws RemoteException;
      public void sendMessage(Message message) throws RemoteException;
      public void sendPublicObjDeck (PublicObjCard[] publicObjCardDeck) throws RemoteException;
      public void sendPrivateObjCard (PrivateObjCard privateObjCard) throws RemoteException;

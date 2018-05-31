@@ -4,7 +4,7 @@ import it.polimi.se2018.classes.model.Dice;
 import it.polimi.se2018.classes.model.MatchHandlerModel;
 import it.polimi.se2018.classes.model.Player;
 
-public class MatchHadlerController {
+public class MatchHandlerController {
 
     private MatchHandlerModel model;
     //private ViewHandler view;

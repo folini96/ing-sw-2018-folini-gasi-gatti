@@ -3,11 +3,18 @@ package it.polimi.se2018.classes.network;
 import it.polimi.se2018.classes.events.Message;
 import it.polimi.se2018.classes.model.*;
 
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class SocketVirtualClient implements VirtualClientInterface{
+    private String username;
+    private Socket socket;
+    public SocketVirtualClient(Socket clientConnession, String username){
+        socket=clientConnession;
+        this.username=username;
+    }
     public String getUsername(){
-        return "ancora da fare";
+        return username;
     }
     public void notValideMoveMessage (Message message){
 

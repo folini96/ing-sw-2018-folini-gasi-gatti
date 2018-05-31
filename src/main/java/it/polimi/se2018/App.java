@@ -18,8 +18,8 @@ public class App
         RMIClient client1=new RMIClient();
 
         server.main();
-        client.main("Icardi");
-        client1.main("Highuain");
+        //client.main("Icardi");
+        //client1.main("Icardi");
 
 
     }
