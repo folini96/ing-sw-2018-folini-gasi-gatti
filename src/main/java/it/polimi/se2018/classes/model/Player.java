@@ -25,16 +25,11 @@ public class Player {
     }
 
     /**
-     * @param chosenCard the window card given to the player
-     * @param chosen the window chosen by the player
+     * @param window the window card given to the player
      */
-    public void setSide(WindowCard chosenCard, boolean chosen){
-        if (chosen) {
-            this.chosenSide = chosenCard.getBack();
-        }
-        else {
-            this.chosenSide = chosenCard.getFront();
-        }
+    public void setSide(WindowSide window){
+        this.chosenSide = window;
+
         this.setToken(chosenSide.getDifficult());
     }
 

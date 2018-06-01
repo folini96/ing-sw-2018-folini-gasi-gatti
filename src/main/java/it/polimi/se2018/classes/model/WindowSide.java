@@ -67,5 +67,24 @@ public class WindowSide implements Cloneable,Serializable {
         return lostPoints;
     }
 
+    /**
+     * @return true if the window is empty, false if not
+     */
+    public boolean isEmpty(){
+        int i, j;
+        int countDice=0;
+
+        for(i=0; i<=3; i++){
+            for(j=0; j<=4; j++) {
+                if(this.boxScheme[i][j].getDice() != null){
+                    countDice++;
+                }
+            }
+        }
+
+        if(countDice == 0) return true;
+        else return false;
+    }
 
 }
+

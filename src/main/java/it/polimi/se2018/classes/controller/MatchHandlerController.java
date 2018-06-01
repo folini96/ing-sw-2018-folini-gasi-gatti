@@ -6,7 +6,7 @@ import it.polimi.se2018.classes.model.Player;
 
 public class MatchHandlerController {
 
-    private MatchHandlerModel model;
+    private MatchHandlerModel matchHandlerModel;
     //private ViewHandler view;
 
     public void handleStartMatch(){
@@ -26,7 +26,7 @@ public class MatchHandlerController {
     }
 
     public void handlePlaceDice(Dice dice, SelectedCoordinate coordinate, Player player){
-        if(model.checkCorrectMove(dice, coordinate, player)){
+        if(matchHandlerModel.checkCorrectMove(dice, coordinate, player)){
             //place dice;
         }
         else{
