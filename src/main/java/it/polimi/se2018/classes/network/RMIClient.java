@@ -76,6 +76,7 @@ public class RMIClient implements ClientInterface {
     public String askUsername(){
        return "Not implemented yet";
     }
+
     public void notValideMoveMessage (Message message){
 
     }
