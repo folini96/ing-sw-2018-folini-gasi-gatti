@@ -3,10 +3,14 @@ package it.polimi.se2018.classes.model;
 /**
  * @author Leonard Gasi
  */
-public abstract class Box {
-
+public class Box {
+    private Color color;
+    private int value;
     private Dice dice;
-
+    public Box(Color color, int value){
+        this.color=color;
+        this.value=value;
+    }
     /**
      * @param dice the dice the player is going to place
      */
@@ -22,10 +26,13 @@ public abstract class Box {
 
     }
 
-    public abstract boolean isBlank();
-    public abstract boolean isColor();
-    public abstract boolean isValue();
-    public abstract Color getColor();
-    public abstract int getValue();
+
+    public Color getColor(){
+        return color;
+    }
+
+    public int getValue(){
+        return value;
+    }
 
 }

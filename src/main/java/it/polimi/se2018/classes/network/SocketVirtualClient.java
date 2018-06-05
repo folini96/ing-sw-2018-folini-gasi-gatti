@@ -8,7 +8,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class SocketVirtualClient implements VirtualClientInterface{
+public class SocketVirtualClient extends Thread implements VirtualClientInterface{
     private static String SENDMESSAGE = "message";
     private static String SENDPUBLICOBJDECK = "public card deck";
     private static String SENDPRIVATEOBJCARD = "private card";

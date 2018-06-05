@@ -32,10 +32,10 @@ public class TestMatchHandlerModel {
 
         for(i=0; i<=3; i++){
             for(j=0; j<=4; j++){
-                boxSchemeTest[i][j]= new BoxBlank();
+                boxSchemeTest[i][j]= new Box(null, 0);
             }
         }
-        boxSchemeTest[0][4] = new BoxColor(Color.ROSSO);
+        boxSchemeTest[0][4] = new Box(Color.ROSSO, 0);
         windowTest = new WindowSide("test", 4, boxSchemeTest);
 
         player.setSide(windowTest);
@@ -54,10 +54,10 @@ public class TestMatchHandlerModel {
 
         for(i=0; i<=3; i++){
             for(j=0; j<=4; j++){
-                boxSchemeTest[i][j]= new BoxBlank();
+                boxSchemeTest[i][j]= new Box(null, 0);
             }
         }
-        boxSchemeTest[0][4] = new BoxColor(Color.ROSSO);
+        boxSchemeTest[0][4] = new Box(Color.ROSSO, 0);
         windowTest = new WindowSide("test", 4, boxSchemeTest);
 
         player.setSide(windowTest);
@@ -83,16 +83,16 @@ public class TestMatchHandlerModel {
 
         for(i=0; i<=3; i++){
             for(j=0; j<=4; j++){
-                boxSchemeTest[i][j]= new BoxBlank();
+                boxSchemeTest[i][j]= new Box(null, 0);
             }
         }
-        boxSchemeTest[0][4] = new BoxColor(Color.ROSSO);
+        boxSchemeTest[0][4] = new Box(Color.ROSSO, 0);
         boxSchemeTest[0][4].setDice(dice1);
-        boxSchemeTest[0][3] = new BoxColor(Color.VERDE);
+        boxSchemeTest[0][3] = new Box(Color.VERDE, 0);
         boxSchemeTest[0][3].setDice(dice2);
-        boxSchemeTest[0][4] = new BoxValue(3);
+        boxSchemeTest[0][4] = new Box(null,3);
         boxSchemeTest[0][4].setDice(dice3);
-        boxSchemeTest[1][3] = new BoxColor(Color.BLU);
+        boxSchemeTest[1][3] = new Box(Color.BLU, 0);
 
 
         windowTest = new WindowSide("test", 4, boxSchemeTest);
@@ -120,16 +120,16 @@ public class TestMatchHandlerModel {
 
         for(i=0; i<=3; i++){
             for(j=0; j<=4; j++){
-                boxSchemeTest[i][j]= new BoxBlank();
+                boxSchemeTest[i][j]= new Box(null, 0);
             }
         }
-        boxSchemeTest[0][4] = new BoxColor(Color.ROSSO);
+        boxSchemeTest[0][4] = new Box(Color.ROSSO, 0);
         boxSchemeTest[0][4].setDice(dice1);
-        boxSchemeTest[0][3] = new BoxColor(Color.VERDE);
+        boxSchemeTest[0][3] = new Box(Color.VERDE, 0);
         boxSchemeTest[0][3].setDice(dice2);
-        boxSchemeTest[0][4] = new BoxValue(3);
+        boxSchemeTest[0][4] = new Box(null, 3);
         boxSchemeTest[0][4].setDice(dice3);
-        boxSchemeTest[1][3] = new BoxColor(Color.BLU);
+        boxSchemeTest[1][3] = new Box(Color.BLU, 0);
 
 
         windowTest = new WindowSide("test", 4, boxSchemeTest);
@@ -157,16 +157,16 @@ public class TestMatchHandlerModel {
 
         for(i=0; i<=3; i++){
             for(j=0; j<=4; j++){
-                boxSchemeTest[i][j]= new BoxBlank();
+                boxSchemeTest[i][j]= new Box(null, 0);
             }
         }
-        boxSchemeTest[0][4] = new BoxColor(Color.ROSSO);
+        boxSchemeTest[0][4] = new Box(Color.ROSSO, 0);
         boxSchemeTest[0][4].setDice(dice1);
-        boxSchemeTest[0][3] = new BoxColor(Color.VERDE);
+        boxSchemeTest[0][3] = new Box(Color.VERDE, 0);
         boxSchemeTest[0][3].setDice(dice2);
-        boxSchemeTest[0][4] = new BoxValue(3);
+        boxSchemeTest[0][4] = new Box(null,3);
         boxSchemeTest[0][4].setDice(dice3);
-        boxSchemeTest[1][3] = new BoxColor(Color.BLU);
+        boxSchemeTest[1][3] = new Box(Color.BLU, 0);
 
 
         windowTest = new WindowSide("test", 4, boxSchemeTest);
@@ -194,16 +194,16 @@ public class TestMatchHandlerModel {
 
         for(i=0; i<=3; i++){
             for(j=0; j<=4; j++){
-                boxSchemeTest[i][j]= new BoxBlank();
+                boxSchemeTest[i][j]= new Box(null, 0);
             }
         }
-        boxSchemeTest[0][4] = new BoxColor(Color.ROSSO);
+        boxSchemeTest[0][4] = new Box(Color.ROSSO, 0);
         boxSchemeTest[0][4].setDice(dice1);
-        boxSchemeTest[0][3] = new BoxColor(Color.VERDE);
+        boxSchemeTest[0][3] = new Box(Color.VERDE, 0);
         boxSchemeTest[0][3].setDice(dice2);
-        boxSchemeTest[0][4] = new BoxValue(3);
+        boxSchemeTest[0][4] = new Box(null,3);
         boxSchemeTest[0][4].setDice(dice3);
-        boxSchemeTest[1][3] = new BoxColor(Color.VERDE);
+        boxSchemeTest[1][3] = new Box(Color.VERDE, 0);
 
 
         windowTest = new WindowSide("test", 4, boxSchemeTest);
@@ -231,16 +231,16 @@ public class TestMatchHandlerModel {
 
         for(i=0; i<=3; i++){
             for(j=0; j<=4; j++){
-                boxSchemeTest[i][j]= new BoxBlank();
+                boxSchemeTest[i][j]= new Box(null, 0);
             }
         }
-        boxSchemeTest[0][4] = new BoxColor(Color.ROSSO);
+        boxSchemeTest[0][4] = new Box(Color.ROSSO, 0);
         boxSchemeTest[0][4].setDice(dice1);
-        boxSchemeTest[0][3] = new BoxColor(Color.VERDE);
+        boxSchemeTest[0][3] = new Box(Color.VERDE, 0);
         boxSchemeTest[0][3].setDice(dice2);
-        boxSchemeTest[0][4] = new BoxValue(3);
+        boxSchemeTest[0][4] = new Box(null,3);
         boxSchemeTest[0][4].setDice(dice3);
-        boxSchemeTest[1][3] = new BoxColor(Color.BLU);
+        boxSchemeTest[1][3] = new Box(Color.BLU, 0);
 
 
         windowTest = new WindowSide("test", 4, boxSchemeTest);

@@ -95,8 +95,8 @@ public class MatchHandlerModel extends Observable {
         WindowSide window = player.getSide();
         boxScheme = window.getBoxScheme();
 
-        if(!boxScheme[row][column].isBlank()){
-            if(boxScheme[row][column].isColor()  && dice.getColor() != boxScheme[row][column].getColor()){
+        if(boxScheme[row][column].getColor()!=null) {
+            if(dice.getColor() != boxScheme[row][column].getColor()){
                 return false;
             }
         }
@@ -118,8 +118,8 @@ public class MatchHandlerModel extends Observable {
         WindowSide window = player.getSide();
         boxScheme = window.getBoxScheme();
 
-        if(!boxScheme[row][column].isBlank()){
-            if(boxScheme[row][column].isValue()  && dice.getValue() != boxScheme[row][column].getValue()){
+        if(boxScheme[row][column].getValue()!=0){
+            if(dice.getValue() != boxScheme[row][column].getValue()){
                 return false;
             }
         }

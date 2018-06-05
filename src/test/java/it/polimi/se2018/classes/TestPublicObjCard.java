@@ -29,7 +29,7 @@ public class TestPublicObjCard {
 
         for(i=0; i<=3; i++){
             for(j=0; j<=4; j++){
-                boxScheme[i][j]= new BoxBlank();
+                boxScheme[i][j]= new Box(null, 0);
             }
         }
 
@@ -55,7 +55,7 @@ public class TestPublicObjCard {
 
         for(i=0; i<=3; i++){
             for(j=0; j<=4; j++){
-                boxScheme[i][j]= new BoxBlank();
+                boxScheme[i][j]= new Box(null, 0);
             }
         }
 
