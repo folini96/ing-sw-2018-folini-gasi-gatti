@@ -6,6 +6,7 @@ import it.polimi.se2018.classes.events.SelectedCoordinate;
 import it.polimi.se2018.classes.model.*;
 import it.polimi.se2018.classes.network.Server;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -24,34 +25,35 @@ public class VirtualView implements Observer, ViewInterface{
 
     @Override
     public void update(Observable model, Object arg) {
-
-        //model and virtual view data sharing still needs to be implemented
+        ModelViewEvent event=(ModelViewEvent)arg;
+        event.accept(this);
     }
 
     public void showMessage (Message message){
 
     }
 
-    private void sendPublicObjDeck(PublicObjCard[] publicObjCards){
-        server.sendPublicObjDeck(publicObjCards);
+
+    public void visit(PublicObjCard publicObjCard){
+        //server.sendPublicObjCard(publicObjCard);
+        System.out.println("ok");
     }
-    private void sendPrivateCard (PrivateObjCard privateObjCard){
-
+    public void visit(Player player){
+        server.sendPrivateObjCard(player.getPrivateObj(), player.getName());
     }
-
-    private void sendToolCardDeck (ToolCard[] toolDeck){
-
+    public void visit(ToolCard toolCard){
+        server.sendToolCard(toolCard);
     }
-    private void sendWindow(WindowSide window){
-
+    public void visit(WindowSide window){
+        server.sendWindowSide(window);
     }
-    private void sendDraftPool(ArrayList<Dice> draftPool){
-
+    public void visit(Dice dice){
+        server.sendDice(dice);
     }
-    private void sendRoundTrack(Round[] roundTrack){
-
+    public void visit(Round round){
+        server.sendRound(round);
     }
-    private void removeFavorToken(int removedToken){
-
+    public void visit(int removedToken){
+        server.removeFavorToken(removedToken);
     }
 }

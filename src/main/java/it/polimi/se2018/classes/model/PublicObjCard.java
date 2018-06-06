@@ -1,11 +1,13 @@
 package it.polimi.se2018.classes.model;
 
+import it.polimi.se2018.classes.view.VirtualView;
+
 import java.io.Serializable;
 
 /**
  * @author Andrea Folini
  */
-public abstract class PublicObjCard implements Cloneable,Serializable {
+public abstract class PublicObjCard implements ModelViewEvent,Serializable {
 
     private String name;
     private int value;
@@ -44,6 +46,8 @@ public abstract class PublicObjCard implements Cloneable,Serializable {
      * @return the points calculated
      */
     public abstract int getScore(WindowSide window);
-
+    public void accept(VirtualView visitor){
+        visitor.visit(this);
+    }
 
 }

@@ -1,12 +1,14 @@
 package it.polimi.se2018.classes.model;
 
+import it.polimi.se2018.classes.view.VirtualView;
+
 import java.io.Serializable;
 
 /**
  * @author Leonard Gasi
  * @author Alessandro Gatti
  */
-public class WindowSide implements Cloneable,Serializable {
+public class WindowSide implements ModelViewEvent,Serializable {
 
     private String name;
     private int difficult;
@@ -84,6 +86,9 @@ public class WindowSide implements Cloneable,Serializable {
 
         if(countDice == 0) return true;
         else return false;
+    }
+    public void accept(VirtualView visitor){
+        visitor.visit(this);
     }
 
 }

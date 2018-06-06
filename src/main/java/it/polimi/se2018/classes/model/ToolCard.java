@@ -1,10 +1,11 @@
 package it.polimi.se2018.classes.model;
 
 import it.polimi.se2018.classes.model.Color;
+import it.polimi.se2018.classes.view.VirtualView;
 
 import java.io.Serializable;
 
-public abstract class ToolCard implements Cloneable, Serializable {
+public class ToolCard implements ModelViewEvent, Serializable {
 
     private String name;
     private int token;
@@ -30,6 +31,8 @@ public abstract class ToolCard implements Cloneable, Serializable {
 
     }
 
-    public abstract void useTool();
+    public void accept(VirtualView visitor){
+        visitor.visit(this);
+    }
 
 }

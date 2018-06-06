@@ -85,23 +85,30 @@ public class Server  {
     public void notValideMoveMessage(Message message, int player) {
         clients.get(player).notValideMoveMessage(message);
     }
-    public void sendPublicObjDeck (PublicObjCard[] publicObjDeck) {
+    public void sendPublicObjCard (PublicObjCard publicObjCard) {
         for (VirtualClientInterface client: clients){
-            client.sendPublicObjDeck(publicObjDeck);
+            client.sendPublicObjCard(publicObjCard);
         }
     }
-    public void sendPrivateObjCard (PrivateObjCard privateObjCard, int player) {
-        clients.get(player).sendPrivateObjCard(privateObjCard);
+    public void sendPrivateObjCard (PrivateObjCard privateObjCard, String player) {
+
+        for (VirtualClientInterface client:clients){
+            if (client.getUsername()==player){
+                client.sendPrivateObjCard(privateObjCard);
+            }
+        }
+
     }
-    public void sendToolCardDeck (ToolCard[] toolDeck) {
+    public void sendToolCard (ToolCard toolCard) {
         for (VirtualClientInterface client: clients){
-            client.sendToolCardDeck(toolDeck);
+            client.sendToolCard(toolCard);
         }
     }
-    public void sendWindowDeck (WindowSide[] windowSideDeck, int player){
-        int i;
-        for (i=0;i<4;i++){
-            clients.get(player).sendWindow(windowSideDeck[i]);
+    public void sendWindowToChose (WindowSide window, String player){
+        for (VirtualClientInterface client:clients){
+            if (client.getUsername()==player){
+                client.sendWindow(window);
+            }
         }
     }
     public void sendWindowSide (WindowSide windowSide) {
@@ -109,14 +116,14 @@ public class Server  {
             client.sendWindow(windowSide);
         }
     }
-    public void sendDraftPool (ArrayList<Dice> draftPool){
+    public void sendDice (Dice dice){
         for (VirtualClientInterface client: clients){
-            client.sendDraftPool(draftPool);
+            client.sendDice(dice);
         }
     }
-    public void sendRoundTrack(Round[] roundTrack){
+    public void sendRound(Round round){
         for (VirtualClientInterface client: clients){
-            client.sendRoundTrack(roundTrack);
+            client.sendRound(round);
         }
     }
     public void removeFavorToken(int removedFavorToken){

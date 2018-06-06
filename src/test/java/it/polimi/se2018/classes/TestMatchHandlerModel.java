@@ -19,7 +19,7 @@ public class TestMatchHandlerModel {
     private Dice dice4;
     private SelectedCoordinate coordinateTest;
     private PrivateObjCard privateObjCardTest = new PrivateObjCard(Color.ROSSO);
-    private Player player = new Player("test", "test", privateObjCardTest);
+    private Player player;
 
     /**
      * to verify that the first placement of the dice is handled right
@@ -38,9 +38,9 @@ public class TestMatchHandlerModel {
         boxSchemeTest[0][4] = new Box(Color.ROSSO, 0);
         windowTest = new WindowSide("test", 4, boxSchemeTest);
 
-        player.setSide(windowTest);
+        modelTest.addPlayer(new Player("test", privateObjCardTest,windowTest));
 
-        assertTrue(modelTest.checkCorrectMove(dice, coordinateTest, player));
+        assertTrue(modelTest.checkCorrectMove(dice, coordinateTest));
     }
 
     /**
@@ -60,9 +60,9 @@ public class TestMatchHandlerModel {
         boxSchemeTest[0][4] = new Box(Color.ROSSO, 0);
         windowTest = new WindowSide("test", 4, boxSchemeTest);
 
-        player.setSide(windowTest);
+        modelTest.addPlayer(new Player("test", privateObjCardTest,windowTest));
 
-        assertFalse(modelTest.checkCorrectMove(dice, coordinateTest, player));
+        assertFalse(modelTest.checkCorrectMove(dice, coordinateTest));
     }
 
     /**
@@ -97,9 +97,9 @@ public class TestMatchHandlerModel {
 
         windowTest = new WindowSide("test", 4, boxSchemeTest);
 
-        player.setSide(windowTest);
+        modelTest.addPlayer(new Player("test", privateObjCardTest,windowTest));
 
-        assertTrue(modelTest.checkCorrectMove(dice4, coordinateTest, player));
+        assertTrue(modelTest.checkCorrectMove(dice4, coordinateTest));
     }
 
     /**
@@ -134,9 +134,9 @@ public class TestMatchHandlerModel {
 
         windowTest = new WindowSide("test", 4, boxSchemeTest);
 
-        player.setSide(windowTest);
+        modelTest.addPlayer(new Player("test", privateObjCardTest,windowTest));
 
-        assertFalse(modelTest.checkCorrectMove(dice4, coordinateTest, player));
+        assertFalse(modelTest.checkCorrectMove(dice4, coordinateTest));
     }
 
     /**
@@ -171,9 +171,9 @@ public class TestMatchHandlerModel {
 
         windowTest = new WindowSide("test", 4, boxSchemeTest);
 
-        player.setSide(windowTest);
+        modelTest.addPlayer(new Player("test", privateObjCardTest,windowTest));
 
-        assertFalse(modelTest.checkCorrectMove(dice4, coordinateTest, player));
+        assertFalse(modelTest.checkCorrectMove(dice4, coordinateTest));
     }
 
     /**
@@ -208,9 +208,9 @@ public class TestMatchHandlerModel {
 
         windowTest = new WindowSide("test", 4, boxSchemeTest);
 
-        player.setSide(windowTest);
+        modelTest.addPlayer(new Player("test", privateObjCardTest,windowTest));
 
-        assertFalse(modelTest.checkCorrectMove(dice4, coordinateTest, player));
+        assertFalse(modelTest.checkCorrectMove(dice4, coordinateTest));
     }
 
     /**
@@ -245,9 +245,9 @@ public class TestMatchHandlerModel {
 
         windowTest = new WindowSide("test", 4, boxSchemeTest);
 
-        player.setSide(windowTest);
+        modelTest.addPlayer(new Player("test", privateObjCardTest,windowTest));
 
-        assertFalse(modelTest.checkCorrectMove(dice4, coordinateTest, player));
+        assertFalse(modelTest.checkCorrectMove(dice4, coordinateTest));
     }
 
 }

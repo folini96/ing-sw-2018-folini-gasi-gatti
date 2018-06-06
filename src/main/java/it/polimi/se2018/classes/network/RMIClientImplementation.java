@@ -18,22 +18,22 @@ public class RMIClientImplementation implements RMIRemoteClientInterface {
     public void sendMessage(Message message) throws RemoteException {
 
     }
-    public void sendPublicObjDeck (PublicObjCard[] publicObjDeck) throws RemoteException{
+    public void sendPublicObjCard (PublicObjCard publicObjCard) throws RemoteException{
 
     }
     public void sendPrivateObjCard (PrivateObjCard privateObjCard) throws RemoteException{
 
     }
-    public void sendToolCardDeck (ToolCard[] toolDeck) throws RemoteException{
+    public void sendToolCard (ToolCard toolCard) throws RemoteException{
 
     }
     public void sendWindowSide (WindowSide windowSide) throws RemoteException{
 
     }
-    public void sendDraftPool (ArrayList<Dice> draftPool)throws RemoteException{
+    public void sendDice (Dice dice) throws RemoteException{
 
     }
-    public void sendRoundTrack(Round[] roundTrack) throws RemoteException{
+    public void sendRound(Round round) throws RemoteException{
 
     }
     public void removeFavorToken(int removedFavorToken) throws RemoteException{

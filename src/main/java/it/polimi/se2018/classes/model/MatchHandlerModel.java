@@ -3,17 +3,19 @@ package it.polimi.se2018.classes.model;
 import it.polimi.se2018.classes.events.SelectedCoordinate;
 import it.polimi.se2018.classes.view.VirtualView;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 
 /**
  * @author Alessandro Gatti
  */
 public class MatchHandlerModel extends Observable {
 
-    private ArrayList <Player> players;
+    private ArrayList <Player> players= new ArrayList<>();
     private int playerNumber;
-    private int currentPlayer;
+    private int currentPlayer=0;
     private ToolCard[] toolDeck;
     private PublicObjCard[] publicObjDeck;
     //private PrivateObjCard[] privateObjDeck;
@@ -23,14 +25,40 @@ public class MatchHandlerModel extends Observable {
     private int firstPlayer;
     private ArrayList <Dice> draftPool;
 
-    /*public MatchHandlerModel(VirtualView view){
+    public MatchHandlerModel(VirtualView view){
         addObserver(view);
-    }*/
+    }
 
     public MatchHandlerModel(){
 
     }
+    public void addPlayer(Player player){
+        players.add(player);
+    }
+    public void prepareMatch(int playerNumber, String[] playerNames, PublicObjCard[] publicObjCards, ToolCard[] toolCards, PrivateObjCard[] privateObjCards, WindowSide[] playerWindows){
+        int i;
+        this.playerNumber=playerNumber;
+        diceBag= new DiceBag();
+        roundTrack=new Round[10];
+        round=0;
+        draftPool=new ArrayList<>();
 
+        for (i=0; i<this.playerNumber;i++){
+           addPlayer(new Player(playerNames[i], privateObjCards[i], playerWindows[i]));
+        }
+        publicObjDeck=publicObjCards;
+        toolDeck=toolCards;
+        for (PublicObjCard publicObjCard:publicObjDeck){
+            notifyObservers(publicObjCard);
+        }
+        for (ToolCard toolCard:toolDeck){
+            notifyObservers(toolCard);
+        }
+        for (Player player:players){
+            notifyObservers(player);
+        }
+
+    }
 
     public void startRound(){
 
@@ -44,24 +72,23 @@ public class MatchHandlerModel extends Observable {
     /**
      * @param dice the dice that is to set
      * @param coordinate the coordinate of the box the player wants to put the dice into
-     * @param player the player making the move
      * @return true if the placement is allowed, false if not
      */
-    public boolean checkCorrectMove(Dice dice, SelectedCoordinate coordinate, Player player){
+    public boolean checkCorrectMove(Dice dice, SelectedCoordinate coordinate){
 
-        if(player.getSide().isEmpty()){
+        if(players.get(currentPlayer).getWindow().isEmpty()){
             if(!checkCorrectFirstMove(coordinate)) return false;
-            if(!checkCorrectColorMatching(dice, coordinate, player)) return false;
-            if(!checkCorrectValueMatching(dice, coordinate, player)) return false;
+            if(!checkCorrectColorMatching(dice, coordinate)) return false;
+            if(!checkCorrectValueMatching(dice, coordinate)) return false;
             return true;
         }
         else{
-            if(!checkCorrectColorMatching(dice, coordinate, player)) return false;
-            if(!checkCorrectValueMatching(dice, coordinate, player)) return false;
-            if(!checkBoxNotEmpty(coordinate, player)) return false;
-            if(!checkColorVicinity(dice, coordinate, player)) return false;
-            if(!checkValueVicinity(dice, coordinate, player)) return false;
-            if(!checkDiceVicinity(coordinate, player)) return false;
+            if(!checkCorrectColorMatching(dice, coordinate)) return false;
+            if(!checkCorrectValueMatching(dice, coordinate)) return false;
+            if(!checkBoxNotEmpty(coordinate)) return false;
+            if(!checkColorVicinity(dice, coordinate)) return false;
+            if(!checkValueVicinity(dice, coordinate)) return false;
+            if(!checkDiceVicinity(coordinate)) return false;
             return true;
         }
     }
@@ -84,15 +111,14 @@ public class MatchHandlerModel extends Observable {
     /**
      * @param dice the dice that is to set
      * @param coordinate the coordinate of the box the player wants to put the dice into
-     * @param player the player making the move
      * @return true if the color of the box is compatible, false if not
      */
-    private boolean checkCorrectColorMatching(Dice dice, SelectedCoordinate coordinate, Player player){
+    private boolean checkCorrectColorMatching(Dice dice, SelectedCoordinate coordinate){
         int row=coordinate.getRow();
         int column=coordinate.getColumn();
         Box[][] boxScheme;
 
-        WindowSide window = player.getSide();
+        WindowSide window = players.get(currentPlayer).getWindow();
         boxScheme = window.getBoxScheme();
 
         if(boxScheme[row][column].getColor()!=null) {
@@ -107,15 +133,14 @@ public class MatchHandlerModel extends Observable {
     /**
      * @param dice the dice that is to set
      * @param coordinate the coordinate of the box the player wants to put the dice into
-     * @param player the player making the move
      * @return true if the value of the box is compatible, false if not
      */
-    private boolean checkCorrectValueMatching(Dice dice, SelectedCoordinate coordinate, Player player){
+    private boolean checkCorrectValueMatching(Dice dice, SelectedCoordinate coordinate){
         int row=coordinate.getRow();
         int column=coordinate.getColumn();
         Box[][] boxScheme;
 
-        WindowSide window = player.getSide();
+        WindowSide window = players.get(currentPlayer).getWindow();
         boxScheme = window.getBoxScheme();
 
         if(boxScheme[row][column].getValue()!=0){
@@ -129,15 +154,14 @@ public class MatchHandlerModel extends Observable {
 
     /**
      * @param coordinate the coordinate of the box the player wants to put the dice into
-     * @param player the player making the move
      * @return true if the box is empty, false if not
      */
-    private boolean checkBoxNotEmpty(SelectedCoordinate coordinate, Player player){
+    private boolean checkBoxNotEmpty(SelectedCoordinate coordinate){
         int row=coordinate.getRow();
         int column=coordinate.getColumn();
         Box[][] boxScheme;
 
-        WindowSide window = player.getSide();
+        WindowSide window = players.get(currentPlayer).getWindow();
         boxScheme = window.getBoxScheme();
 
         if(boxScheme[row][column].getDice() != null){
@@ -149,16 +173,15 @@ public class MatchHandlerModel extends Observable {
 
     /**
      * @param coordinate the coordinate of the box the player wants to put the dice into
-     * @param player the player making the move
      * @return true if the dice is near another dice, false if not
      */
-    private boolean checkDiceVicinity(SelectedCoordinate coordinate, Player player){
+    private boolean checkDiceVicinity(SelectedCoordinate coordinate){
         int i, j, vicinityCheck=0;
         int row=coordinate.getRow();
         int column=coordinate.getColumn();
         Box[][] boxScheme;
 
-        WindowSide window = player.getSide();
+        WindowSide window = players.get(currentPlayer).getWindow();
         boxScheme = window.getBoxScheme();
 
         for(i=0; i<=3; i++){
@@ -182,16 +205,15 @@ public class MatchHandlerModel extends Observable {
     /**
      * @param dice the dice that is to set
      * @param coordinate the coordinate of the box the player wants to put the dice into
-     * @param player the player making the move
      * @return true if the dice isn't adjacent to a dice of same color, false if not
      */
-    private boolean checkColorVicinity(Dice dice, SelectedCoordinate coordinate, Player player){
+    private boolean checkColorVicinity(Dice dice, SelectedCoordinate coordinate){
         int i, j;
         int row=coordinate.getRow();
         int column=coordinate.getColumn();
         Box[][] boxScheme;
 
-        WindowSide window = player.getSide();
+        WindowSide window = players.get(currentPlayer).getWindow();
         boxScheme = window.getBoxScheme();
 
         for(i=0; i<=3; i++) {
@@ -219,16 +241,15 @@ public class MatchHandlerModel extends Observable {
     /**
      * @param dice the dice that is to set
      * @param coordinate the coordinate of the box the player wants to put the dice into
-     * @param player the player making the move
      * @return true if the dice isn't adjacent to a dice of same value, false if not
      */
-    private boolean checkValueVicinity(Dice dice, SelectedCoordinate coordinate, Player player){
+    private boolean checkValueVicinity(Dice dice, SelectedCoordinate coordinate){
         int i, j;
         int row=coordinate.getRow();
         int column=coordinate.getColumn();
         Box[][] boxScheme;
 
-        WindowSide window = player.getSide();
+        WindowSide window = players.get(currentPlayer).getWindow();
         boxScheme = window.getBoxScheme();
 
         for(i=0; i<=3; i++) {
@@ -263,11 +284,11 @@ public class MatchHandlerModel extends Observable {
         int privateObjCardPoints, lostPoints, playerScore;
 
         for(i=0; i<=2; i++){
-            publicObjCardPoints = publicObjCardPoints + publicObjDeck[i].getScore(player.getSide());
+            publicObjCardPoints = publicObjCardPoints + publicObjDeck[i].getScore(player.getWindow());
         }
 
-        privateObjCardPoints = player.getPrivateObj().getScore(player.getSide());
-        lostPoints = player.getSide().getLostPoints();
+        privateObjCardPoints = player.getPrivateObj().getScore(player.getWindow());
+        lostPoints = player.getWindow().getLostPoints();
 
         playerScore = publicObjCardPoints + privateObjCardPoints + player.getToken() - lostPoints;
 

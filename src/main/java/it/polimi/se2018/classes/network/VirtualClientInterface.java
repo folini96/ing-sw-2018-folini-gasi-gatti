@@ -7,11 +7,11 @@ import java.util.ArrayList;
 public interface VirtualClientInterface {
     public String getUsername();
     public void notValideMoveMessage (Message message);
-    public void sendPublicObjDeck(PublicObjCard[] publicObjDeck);
+    public void sendPublicObjCard(PublicObjCard publicObjCard);
     public void sendPrivateObjCard(PrivateObjCard privateObjCard);
-    public void sendToolCardDeck(ToolCard[] toolDeck);
+    public void sendToolCard(ToolCard toolCard);
     public void sendWindow(WindowSide window);
-    public void sendDraftPool(ArrayList<Dice> draftPool);
-    public void sendRoundTrack(Round[] roundTrack);
+    public void sendDice(Dice dice);
+    public void sendRound(Round round);
     public void removeFavorToken(int removedToken);
 }

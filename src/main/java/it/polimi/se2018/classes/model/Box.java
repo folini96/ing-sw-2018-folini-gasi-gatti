@@ -1,9 +1,11 @@
 package it.polimi.se2018.classes.model;
 
+import java.io.Serializable;
+
 /**
  * @author Leonard Gasi
  */
-public class Box {
+public class Box implements Serializable {
     private Color color;
     private int value;
     private Dice dice;

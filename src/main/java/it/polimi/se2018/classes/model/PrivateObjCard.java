@@ -1,11 +1,13 @@
 package it.polimi.se2018.classes.model;
 
+import it.polimi.se2018.classes.view.VirtualView;
+
 import java.io.Serializable;
 
 /**
  * @author Alessandro Gatti
  */
-public class PrivateObjCard implements Cloneable, Serializable {
+public class PrivateObjCard implements  Serializable {
 
     private Color color;
 
@@ -51,5 +53,6 @@ public class PrivateObjCard implements Cloneable, Serializable {
         return score;
 
     }
+
 
 }

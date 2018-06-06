@@ -1,37 +1,30 @@
 package it.polimi.se2018.classes.model;
 
+import it.polimi.se2018.classes.view.VirtualView;
+
 /**
  * @author Leonard Gasi
  */
-public class Player {
+public class Player implements ModelViewEvent{
 
     private String playerName;
-    private String color;
     private PrivateObjCard privateObj;
-    private WindowSide chosenSide;
+    private WindowSide window;
     private int favorToken;
 
     /**
      * Constructor
      * @param playerName the name of the player
-     * @param color the color to identify the player
      * @param privateObj the private objective card associated with the player
      */
-    public Player( String playerName, String color, PrivateObjCard privateObj){
+    public Player( String playerName, PrivateObjCard privateObj,WindowSide window){
         this.playerName = playerName;
-        this.color = color;
         this.privateObj = privateObj;
-
+        this.window= window;
+        this.setToken(window.getDifficult());
     }
 
-    /**
-     * @param window the window card given to the player
-     */
-    public void setSide(WindowSide window){
-        this.chosenSide = window;
 
-        this.setToken(chosenSide.getDifficult());
-    }
 
     /**
      * @param favorToken the tokens the player get from the window
@@ -60,8 +53,8 @@ public class Player {
     /**
      * @return the window of the player
      */
-    public WindowSide getSide(){
-        return chosenSide;
+    public WindowSide getWindow(){
+        return window;
 
     }
 
@@ -76,10 +69,9 @@ public class Player {
     /**
      * @return the color to identify the player
      */
-    public String getColor(){
-        return color;
 
+    public void accept(VirtualView visitor){
+        visitor.visit(this);
     }
-
 
 }

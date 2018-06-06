@@ -25,8 +25,8 @@ public class MatchHandlerController {
 
     }
 
-    public void handlePlaceDice(Dice dice, SelectedCoordinate coordinate, Player player){
-        if(matchHandlerModel.checkCorrectMove(dice, coordinate, player)){
+    public void handlePlaceDice(Dice dice, SelectedCoordinate coordinate){
+        if(matchHandlerModel.checkCorrectMove(dice, coordinate)){
             //place dice;
         }
         else{

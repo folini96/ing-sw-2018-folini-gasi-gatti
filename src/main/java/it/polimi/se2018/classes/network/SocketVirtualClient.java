@@ -45,22 +45,22 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
         }
 
     }
-    public void sendPublicObjDeck(PublicObjCard[] publicObjDeck){
+    public void sendPublicObjCard(PublicObjCard publicObjCard){
 
     }
     public void sendPrivateObjCard(PrivateObjCard privateObjCard){
 
     }
-    public void sendToolCardDeck(ToolCard[] toolDeck){
+    public void sendToolCard(ToolCard toolCard){
 
     }
     public void sendWindow(WindowSide window){
 
     }
-    public void sendDraftPool(ArrayList<Dice> draftPool){
+    public void sendDice(Dice dice){
 
     }
-    public void sendRoundTrack(Round[] roundTrack){
+    public void sendRound(Round round){
 
     }
     public void removeFavorToken(int removedToken){

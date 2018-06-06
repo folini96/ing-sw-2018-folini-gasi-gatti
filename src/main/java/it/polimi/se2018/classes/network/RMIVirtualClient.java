@@ -23,9 +23,9 @@ public class RMIVirtualClient implements VirtualClientInterface {
             System.out.println("Errore di comunicazione con il client RMI ");
         }
     }
-    public void sendPublicObjDeck(PublicObjCard[] publicObjDeck){
+    public void sendPublicObjCard(PublicObjCard publicObjCard){
         try{
-            rmiClient.sendPublicObjDeck(publicObjDeck);
+            rmiClient.sendPublicObjCard(publicObjCard);
         }catch(RemoteException e){
             System.out.println("Errore di comunicazione con il client RMI ");
         }
@@ -38,9 +38,9 @@ public class RMIVirtualClient implements VirtualClientInterface {
             System.out.println("Errore di comunicazione con il client RMI ");
         }
     }
-    public void sendToolCardDeck(ToolCard[] toolDeck){
+    public void sendToolCard(ToolCard toolCard){
         try{
-            rmiClient.sendToolCardDeck(toolDeck);
+            rmiClient.sendToolCard(toolCard);
         }catch(RemoteException e){
             System.out.println("Errore di comunicazione con il client RMI ");
         }
@@ -52,16 +52,16 @@ public class RMIVirtualClient implements VirtualClientInterface {
             System.out.println("Errore di comunicazione con il client RMI ");
         }
     }
-    public void sendDraftPool(ArrayList<Dice> draftPool){
+    public void sendDice(Dice dice){
         try{
-            rmiClient.sendDraftPool(draftPool);
+            rmiClient.sendDice(dice);
         }catch(RemoteException e){
             System.out.println("Errore di comunicazione con il client RMI ");
         }
     }
-    public void sendRoundTrack(Round[] roundTrack){
+    public void sendRound(Round round){
         try{
-            rmiClient.sendRoundTrack(roundTrack);
+            rmiClient.sendRound(round);
         }catch(RemoteException e){
             System.out.println("Errore di comunicazione con il client RMI ");
         }
