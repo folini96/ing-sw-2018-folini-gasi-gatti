@@ -1,18 +1,36 @@
 package it.polimi.se2018.classes.controller;
 import it.polimi.se2018.classes.events.SelectedCoordinate;
-import it.polimi.se2018.classes.model.Dice;
-import it.polimi.se2018.classes.model.MatchHandlerModel;
-import it.polimi.se2018.classes.model.Player;
+import it.polimi.se2018.classes.model.*;
+import it.polimi.se2018.classes.view.VirtualView;
 
 public class MatchHandlerController {
 
     private MatchHandlerModel matchHandlerModel;
-    //private ViewHandler view;
-
-    public void handleStartMatch(){
-
+    private VirtualView view;
+    public MatchHandlerController(VirtualView view){
+        this.view =view;
     }
 
+    public void handleStartMatch(String[] usernames){
+        int playerNumber=0;
+        for(String name:usernames){
+            playerNumber++;
+        }
+        matchHandlerModel=new MatchHandlerModel(view);
+        //matchHandlerModel.prepareMatch(playerNumber, usernames,createPublicObjDeck(),createPrivateObjDeck(),createToolCardDeck(),handleWindowChoice());
+    }
+    /*public PublicObjCard[] createPublicObjDeck(){
+
+    }
+    public PrivateObjCard[] createPrivateObjDeck(){
+
+    }
+    public ToolCard[] createToolCardDeck(){
+
+    }
+    public WindowSide[] handleWindowChoice(){
+
+    }*/
     public void  handleStartRound(){
 
     }

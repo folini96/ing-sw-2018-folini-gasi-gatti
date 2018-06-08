@@ -16,12 +16,11 @@ public class App
 
     public static void main( String[] args ) {
         Server server=new Server();
-        RMIClient client= new RMIClient();
-        RMIClient client1=new RMIClient();
+        //RMIClient client= new RMIClient();
+        //RMIClient client1=new RMIClient();
 
-        //server.main();
-        //client.main("Icardi");
-        //client1.main("Icardi");
+        server.main();
+
 
 
     }

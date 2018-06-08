@@ -1,24 +1,32 @@
 package it.polimi.se2018.classes.network;
 
+import it.polimi.se2018.classes.controller.MatchHandlerController;
 import it.polimi.se2018.classes.events.Message;
 import it.polimi.se2018.classes.events.SelectedCoordinate;
 import it.polimi.se2018.classes.events.SelectedRoundTrackDice;
 import it.polimi.se2018.classes.model.*;
+import it.polimi.se2018.classes.view.VirtualView;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Server  {
     private static int RMIPORT = 1099; // porta di default RMI
     private static int SOCKETPORT = 9000; //porta di default SOCKET
+    private Timer lobbyTimer=new Timer();
     private RMIServerImplementation rmiHandler;
+    private VirtualView proxyView;
+    private MatchHandlerController controller;
     private ArrayList<VirtualClientInterface> clients = new ArrayList<VirtualClientInterface>();
     public void main(){
         rmiMain();
         socketMain();
+
     }
 
     public void rmiMain() {
@@ -49,10 +57,43 @@ public class Server  {
         (new SocketClientGatherer(this, SOCKETPORT)).start();
 
     }
-    public void addClient(VirtualClientInterface newClient){
+    TimerTask startMatchTask = new TimerTask(){
+        public void run()
+        {
+            startMatch();
+        }
+    };
+    public synchronized void addClient(VirtualClientInterface newClient){
+        if (clients.size()>3){
+            //inizia partita e blocca l'accesso a nuovi giocatori
+            System.out.println("server pieno");
+        }else{
+            clients.add(newClient);
+            System.out.println("Il client "+ newClient.getUsername() + " è connesso!");
+            if (clients.size()==2){
+                startLobby();
+            }
+            if (clients.size()==4){
+                lobbyTimer.cancel();
+                startMatch();
 
-        clients.add(newClient);
-        System.out.println("Il client "+ newClient.getUsername() + " è connesso!");
+            }
+            //notifica i client che una nuova partita inizierà tra poco
+
+        }
+
+    }
+    public void startLobby(){
+        lobbyTimer.schedule(startMatchTask, 60000);
+    }
+    public void startMatch(){
+        String[] usernames=new String[4];
+        proxyView=new VirtualView();
+        controller=new MatchHandlerController(proxyView);
+        for (VirtualClientInterface client:clients){
+            usernames[clients.indexOf(client)]=client.getUsername();
+        }
+        controller.handleStartMatch(usernames);
     }
     public Boolean checkUsername(String username){
         for(VirtualClientInterface client:clients){

@@ -66,4 +66,7 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
     public void removeFavorToken(int removedToken){
 
     }
+    public void run(){
+
+    }
 }
