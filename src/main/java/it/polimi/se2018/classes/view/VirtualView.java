@@ -35,8 +35,8 @@ public class VirtualView implements Observer, ViewInterface{
 
 
     public void visit(PublicObjCard publicObjCard){
-        //server.sendPublicObjCard(publicObjCard);
-        System.out.println("ok");
+        server.sendPublicObjCard(publicObjCard);
+
     }
     public void visit(Player player){
         server.sendPrivateObjCard(player.getPrivateObj(), player.getName());
