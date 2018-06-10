@@ -56,4 +56,7 @@ public class VirtualView implements Observer, ViewInterface{
     public void visit(int removedToken){
         server.removeFavorToken(removedToken);
     }
+    public void choseWindow(WindowSide[] windows){
+        server.sendWindowToChose(windows);
+    }
 }

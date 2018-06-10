@@ -3,6 +3,10 @@ import it.polimi.se2018.classes.events.SelectedCoordinate;
 import it.polimi.se2018.classes.model.*;
 import it.polimi.se2018.classes.view.VirtualView;
 
+import javax.swing.*;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
 public class MatchHandlerController {
 
     private MatchHandlerModel matchHandlerModel;
@@ -27,10 +31,11 @@ public class MatchHandlerController {
     }
     public ToolCard[] createToolCardDeck(){
 
-    }
-    public WindowSide[] handleWindowChoice(){
-
     }*/
+    public void handleWindowChoice(){
+        view.choseWindow((matchHandlerModel.parseWindowSide()));
+    }
+
     public void  handleStartRound(){
 
     }

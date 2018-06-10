@@ -145,11 +145,12 @@ public class Server  {
             client.sendToolCard(toolCard);
         }
     }
-    public void sendWindowToChose (WindowSide window, String player){
+    public void sendWindowToChose (WindowSide[] windows){
         for (VirtualClientInterface client:clients){
-            if (client.getUsername()==player){
-                client.sendWindow(window);
-            }
+
+            client.sendWindow(windows[clients.indexOf(client)]);
+            //DA MODIFICARE (DIVIDERE I METODI PER L'INVIO DI WINDOW DA SCEGLIERE E DA MOSTRARE)
+
         }
     }
     public void sendWindowSide (WindowSide windowSide) {
