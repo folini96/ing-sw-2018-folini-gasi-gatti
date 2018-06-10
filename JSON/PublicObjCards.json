@@ -1,0 +1,34 @@
+{
+  "publicobjcards": [
+    {
+      "name": "coloridiversicolonna"
+    },
+    {
+      "name": "coloridiversiriga"
+    },
+    {
+      "name": "diagonalicolorate"
+    },
+    {
+      "name": "sfumaturechiare"
+    },
+    {
+      "name": "sfumaturediverse"
+    },
+    {
+      "name": "sfumaturediversecolonna"
+    },
+    {
+      "name": "sfumaturediverseriga"
+    },
+    {
+      "name": "sfumaturemedie"
+    },
+    {
+      "name": "sfumaturescure"
+    },
+    {
+      "name": "varietadicolore"
+    }
+  ]
+}

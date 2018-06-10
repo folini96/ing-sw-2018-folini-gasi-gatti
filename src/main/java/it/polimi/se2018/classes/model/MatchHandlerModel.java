@@ -1,12 +1,20 @@
 package it.polimi.se2018.classes.model;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import it.polimi.se2018.classes.events.SelectedCoordinate;
 import it.polimi.se2018.classes.view.VirtualView;
 
 import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
+
 
 /**
  * @author Alessandro Gatti
@@ -31,6 +39,47 @@ public class MatchHandlerModel extends Observable {
 
     public MatchHandlerModel(){
 
+    }
+    public WindowSide[] parseWindowSide(){
+        int i;
+        int j;
+        int randomInt;
+        WindowSide[] windows = new WindowSide[24];
+        WindowSide[] chosenWindows = new WindowSide[playerNumber*4];
+        ArrayList<Integer> windowNotAvailable=new ArrayList<>();
+        JsonParser windowParser=new JsonParser();
+        try{
+            JsonArray sides=(JsonArray) windowParser.parse (new FileReader("sagrada\\JSON\\Windows.json"));
+            int currentWindow=0;
+            for (Object o: sides){
+                JsonObject side = (JsonObject) o;
+                String name = side.get("name").getAsString();
+                int difficult = side.get("difficult").getAsInt();
+                JsonArray scheme = side.get("boxScheme").getAsJsonArray();
+                Box[][] boxScheme = new Box[4][5];
+                for (Object b: scheme){
+                    JsonObject box = (JsonObject) b;
+                    String color = box.get("color").getAsString();
+                    int value = box.get("value").getAsInt();
+                    boxScheme[box.get("row").getAsInt()][box.get("column").getAsInt()]= new Box(color,value);
+                }
+                windows[currentWindow]=new WindowSide(name,difficult,boxScheme);
+            }
+        }catch(FileNotFoundException e){
+            System.out.println("File JSON non trovato");
+        }
+        for (i=0; i<playerNumber;i++){
+            for(j=0;j<2;j++){
+                do{
+                    Random random = new Random();
+                    randomInt = random.nextInt(11);
+                }while (windowNotAvailable.contains(randomInt));
+                windowNotAvailable.add(randomInt);
+                chosenWindows[(i*4)+(j*2)]=windows[randomInt*2];
+                chosenWindows[((i*4)+(j*2))+1]=windows[(randomInt*2)+1];
+            }
+        }
+        return chosenWindows;
     }
     public void addPlayer(Player player){
         players.add(player);

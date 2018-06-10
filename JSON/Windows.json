@@ -1603,8 +1603,8 @@
         {
           "row": "2",
           "column": "4",
-          "color": "null",
-          "value": "rosso"
+          "color": "rosso",
+          "value": "0"
         },
         {
           "row": "3",
@@ -1861,8 +1861,8 @@
         {
           "row": "3",
           "column": "0",
-          "color": "null",
-          "value": "6"
+          "color": "blu",
+          "value": "0"
         },
         {
           "row": "3",
@@ -2239,14 +2239,14 @@
         {
           "row": "3",
           "column": "0",
-          "color": "null",
-          "value": "blu"
+          "color": "blu",
+          "value": "0"
         },
         {
           "row": "3",
           "column": "1",
-          "color": "null",
-          "value": "giallo"
+          "color": "giallo",
+          "value": "0"
         },
         {
           "row": "3",
@@ -2659,8 +2659,8 @@
         {
           "row": "0",
           "column": "1",
-          "color": "null",
-          "value": "2"
+          "color": "blu",
+          "value": "0"
         },
         {
           "row": "0",
