@@ -33,6 +33,7 @@ public class MatchHandlerModel extends Observable {
     private Round[] roundTrack;
     private int round;
     private int firstPlayer;
+    int turnPassed;
     private ArrayList <Dice> draftPool;
 
     public MatchHandlerModel(VirtualView view){
@@ -41,10 +42,120 @@ public class MatchHandlerModel extends Observable {
         roundTrack=new Round[10];
         round=0;
         draftPool=new ArrayList<>();
+        Random random = new Random();
+        int randomInt = random.nextInt(playerNumber-1);
+        firstPlayer = randomInt;
+        publicObjDeck= parsePublicObjCard();
+        privateObjDeck=parsePrivateObjCard();
+
     }
 
     public MatchHandlerModel(){
 
+    }
+    public PublicObjCard[] parsePublicObjCard(){
+        int i;
+        int randomInt;
+        String[] publicObjCards = new String[10];
+        PublicObjCard[] chosenCards = new PublicObjCard[3];
+        ArrayList<Integer> cardNotAvailable = new ArrayList<>();
+        JsonParser publicObjParser = new JsonParser();
+        try{
+            JsonObject cardArray = (JsonObject) publicObjParser.parse(new FileReader("src/main/resources/PublicObjCards.json"));
+            JsonArray cards= cardArray.get("publicobjcards").getAsJsonArray();
+            int currentCard=0;
+            for (Object o: cards){
+                JsonObject card = (JsonObject) o;
+                publicObjCards[currentCard]=card.get("name").getAsString();
+            }
+        }catch (FileNotFoundException e){
+            System.out.println("File JSON non trovato");
+        }
+        for (i=0; i<3; i++){
+            do{
+                Random random = new Random();
+                randomInt = random.nextInt(9);
+            }while (cardNotAvailable.contains(randomInt));
+            switch(publicObjCards[randomInt]){
+                case "coloridiversicolonna":
+                    chosenCards[i]=new PublicObjCardColoriDiversiColonna();
+                    break;
+                case "coloridiversiriga":
+                    chosenCards[i]=new PublicObjCardColoriDiversiRiga();
+                    break;
+                case "diagonalicolorate":
+                    chosenCards[i]=new PublicObjCardDiagonaliColorate();
+                    break;
+                case "sfumaturechiare":
+                    chosenCards[i]=new PublicObjCardSfumatureChiare();
+                    break;
+                case "sfumaturediverse":
+                    chosenCards[i]=new PublicObjCardSfumatureDiverse();
+                    break;
+                case "sfumaturediversecolonna":
+                    chosenCards[i]=new PublicObjCardSfumatureDiverseColonna();
+                    break;
+                case "sfumaturediverseriga":
+                    chosenCards[i]=new PublicObjCardSfumatureDiverseRiga();
+                    break;
+                case "sfumaturemedie":
+                    chosenCards[i]=new PublicObjCardSfumatureMedie();
+                    break;
+                case "sfumaturescure":
+                    chosenCards[i]=new PublicObjCardSfumatureScure();
+                    break;
+                case "varietadicolore":
+                    chosenCards[i]=new PublicObjCardVarietaDiColore();
+                    break;
+
+            }
+            cardNotAvailable.add(randomInt);
+        }
+        return chosenCards;
+    }
+    public PrivateObjCard[] parsePrivateObjCard(){
+        int i;
+        int randomInt;
+        String[] privateObjCards = new String[5];
+        PrivateObjCard[] chosenCards = new PrivateObjCard[3];
+        ArrayList<Integer> cardNotAvailable = new ArrayList<>();
+        JsonParser privateObjParser = new JsonParser();
+        try{
+            JsonObject cardArray = (JsonObject) privateObjParser.parse(new FileReader("src/main/resources/PrivateObjCards.json"));
+            JsonArray cards= cardArray.get("privateobjcards").getAsJsonArray();
+            int currentCard=0;
+            for (Object o: cards){
+                JsonObject card = (JsonObject) o;
+                privateObjCards[currentCard]=card.get("color").getAsString();
+            }
+        }catch (FileNotFoundException e){
+            System.out.println("File JSON non trovato");
+        }
+        for (i=0; i<playerNumber; i++){
+            do{
+                Random random = new Random();
+                randomInt = random.nextInt(4);
+            }while (cardNotAvailable.contains(randomInt));
+            switch(privateObjCards[randomInt]){
+                case "rosso":
+                    chosenCards[i]=new PrivateObjCard(Color.ROSSO);
+                    break;
+                case "giallo":
+                    chosenCards[i]=new PrivateObjCard(Color.GIALLO);
+                    break;
+                case "verde":
+                    chosenCards[i]=new PrivateObjCard(Color.VERDE);
+                    break;
+                case "blu":
+                    chosenCards[i]=new PrivateObjCard(Color.BLU);
+                    break;
+                case "viola":
+                    chosenCards[i]=new PrivateObjCard(Color.VIOLA);
+                    break;
+            }
+            cardNotAvailable.add(randomInt);
+        }
+        return chosenCards;
     }
     public WindowSide[] parseWindowSide(){
         int i;
@@ -55,7 +166,8 @@ public class MatchHandlerModel extends Observable {
         ArrayList<Integer> windowNotAvailable=new ArrayList<>();
         JsonParser windowParser=new JsonParser();
         try{
-            JsonArray sides=(JsonArray) windowParser.parse (new FileReader("sagrada\\JSON\\Windows.json"));
+            JsonObject windowArray = (JsonObject) windowParser.parse(new FileReader("src/main/resources/Windows.json"));
+            JsonArray sides = windowArray.get("windows").getAsJsonArray();
             int currentWindow=0;
             for (Object o: sides){
                 JsonObject side = (JsonObject) o;
@@ -70,6 +182,7 @@ public class MatchHandlerModel extends Observable {
                     boxScheme[box.get("row").getAsInt()][box.get("column").getAsInt()]= new Box(color,value);
                 }
                 windows[currentWindow]=new WindowSide(name,difficult,boxScheme);
+                currentWindow++;
             }
         }catch(FileNotFoundException e){
             System.out.println("File JSON non trovato");
@@ -117,11 +230,21 @@ public class MatchHandlerModel extends Observable {
         addPlayer(new Player(choseWindowEvent.getUsername(), privateObjDeck[eventPlayer], windowSides[((choseWindowEvent.getChosenWindow()+1)*(eventPlayer+1)-1)]));
     }
     public void startRound(){
+        if(round!=0){
+            round++;
+        }
+        if (firstPlayer==(playerNumber-1)){
+            firstPlayer=0;
+        }else{
+            firstPlayer++;
+        }
+        turnPassed=0;
+        draftPool=diceBag.extractDice(playerNumber*2+1);
 
     }
 
     public void endRound(){
-
+        
 
     }
 

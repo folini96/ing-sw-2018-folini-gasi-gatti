@@ -45,7 +45,7 @@ public class DiceBag {
      * @param number the number of dices to extract form the bag
      * @return the extracted dices, each with a color and a random value
      */
-    public List<Dice> extractDice(int number){
+    public ArrayList<Dice> extractDice(int number){
 
         int i, randomInt;
         ArrayList<Dice> extractedDices = new ArrayList<Dice>();
