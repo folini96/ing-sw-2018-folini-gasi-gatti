@@ -27,7 +27,7 @@ public class TestPrivateObjCard {
         int i, j;
         for(i=0; i<=3; i++){
             for(j=0; j<=4; j++){
-                boxSchemeTestBlank[i][j]= new Box(null, 0);
+                boxSchemeTestBlank[i][j]= new Box("null", 0);
             }
         }
         privateCardTest= new PrivateObjCard(Color.ROSSO);
@@ -45,14 +45,14 @@ public class TestPrivateObjCard {
 
         for(i=0; i<=3; i++){
             for(j=0; j<=4; j++){
-                boxSchemeTest[i][j]= new Box(null, 0);
+                boxSchemeTest[i][j]= new Box("null", 0);
             }
         }
-        boxSchemeTest[0][4] = new Box(Color.ROSSO, 0);
-        boxSchemeTest[1][1] = new Box(Color.ROSSO, 0);
-        boxSchemeTest[1][2] = new Box(Color.BLU, 0);
-        boxSchemeTest[1][3] = new Box(Color.VERDE, 0);
-        boxSchemeTest[2][2] = new Box(Color.ROSSO, 0);
+        boxSchemeTest[0][4] = new Box("rosso", 0);
+        boxSchemeTest[1][1] = new Box("rosso", 0);
+        boxSchemeTest[1][2] = new Box("blu", 0);
+        boxSchemeTest[1][3] = new Box("verde", 0);
+        boxSchemeTest[2][2] = new Box("rosso", 0);
 
         privateCardTest= new PrivateObjCard(Color.ROSSO);
         windowTest = new WindowSide("test", 4, boxSchemeTest);

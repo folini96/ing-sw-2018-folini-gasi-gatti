@@ -1,7 +1,7 @@
 package it.polimi.se2018.classes.network;
 
 import it.polimi.se2018.classes.events.Message;
-import it.polimi.se2018.classes.events.SelectedCoordinate;
+import it.polimi.se2018.classes.events.PlaceDiceEvent;
 import it.polimi.se2018.classes.events.SelectedRoundTrackDice;
 import it.polimi.se2018.classes.model.*;
 
@@ -36,8 +36,8 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIR
     }
 
     @Override
-    public void placeDiceFromDraft(int draftDice, SelectedCoordinate coordinate) throws RemoteException{
-        server.placeDiceFromDraft(draftDice,coordinate);
+    public void placeDiceFromDraft(PlaceDiceEvent placeDiceEvent) throws RemoteException{
+        server.placeDiceFromDraft(placeDiceEvent);
     }
 
     @Override
@@ -50,10 +50,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIR
         server.switchDraftDiceRoundTrackDice(draftDice, roundTrackDice);
     }
 
-    @Override
-    public void moveWindowDice(SelectedCoordinate currentPosition, SelectedCoordinate newPosition) throws RemoteException{
-        server.moveWindowDice(currentPosition, newPosition);
-    }
+
 
     @Override
     public void endTurn() throws RemoteException{

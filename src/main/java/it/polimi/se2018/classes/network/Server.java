@@ -2,7 +2,7 @@ package it.polimi.se2018.classes.network;
 
 import it.polimi.se2018.classes.controller.MatchHandlerController;
 import it.polimi.se2018.classes.events.Message;
-import it.polimi.se2018.classes.events.SelectedCoordinate;
+import it.polimi.se2018.classes.events.PlaceDiceEvent;
 import it.polimi.se2018.classes.events.SelectedRoundTrackDice;
 import it.polimi.se2018.classes.model.*;
 import it.polimi.se2018.classes.view.VirtualView;
@@ -90,9 +90,11 @@ public class Server  {
         String[] usernames=new String[4];
         proxyView=new VirtualView();
         controller=new MatchHandlerController(proxyView);
+        proxyView.addObserver(controller);
         for (VirtualClientInterface client:clients){
             usernames[clients.indexOf(client)]=client.getUsername();
         }
+
         controller.handleStartMatch(usernames);
     }
     public Boolean checkUsername(String username){
@@ -104,7 +106,7 @@ public class Server  {
         }
         return  true;
     }
-    public void placeDiceFromDraft(int draftDice, SelectedCoordinate coordinate){
+    public void placeDiceFromDraft(PlaceDiceEvent placeDiceEvent){
 
     }
 
@@ -116,9 +118,7 @@ public class Server  {
 
     }
 
-    public void moveWindowDice(SelectedCoordinate currentPosition, SelectedCoordinate newPosition){
 
-    }
 
     public void endTurn() throws RemoteException{
 

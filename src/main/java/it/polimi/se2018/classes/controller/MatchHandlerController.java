@@ -1,37 +1,35 @@
 package it.polimi.se2018.classes.controller;
-import it.polimi.se2018.classes.events.SelectedCoordinate;
+import it.polimi.se2018.classes.events.*;
+import it.polimi.se2018.classes.events.PlaceDiceEvent;
 import it.polimi.se2018.classes.model.*;
 import it.polimi.se2018.classes.view.VirtualView;
 
 import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Observable;
+import java.util.Observer;
 
-public class MatchHandlerController {
-
+public class MatchHandlerController implements Observer{
+    private int playerNumber;
+    private String[] playerNames;
     private MatchHandlerModel matchHandlerModel;
     private VirtualView view;
     public MatchHandlerController(VirtualView view){
+
         this.view =view;
     }
 
     public void handleStartMatch(String[] usernames){
-        int playerNumber=0;
         for(String name:usernames){
             playerNumber++;
         }
+        playerNames=usernames;
         matchHandlerModel=new MatchHandlerModel(view);
-        //matchHandlerModel.prepareMatch(playerNumber, usernames,createPublicObjDeck(),createPrivateObjDeck(),createToolCardDeck(),handleWindowChoice());
+        matchHandlerModel.prepareMatch(playerNumber);
+        handleWindowChoice();
     }
-    /*public PublicObjCard[] createPublicObjDeck(){
 
-    }
-    public PrivateObjCard[] createPrivateObjDeck(){
-
-    }
-    public ToolCard[] createToolCardDeck(){
-
-    }*/
     public void handleWindowChoice(){
         view.choseWindow((matchHandlerModel.parseWindowSide()));
     }
@@ -48,8 +46,8 @@ public class MatchHandlerController {
 
     }
 
-    public void handlePlaceDice(Dice dice, SelectedCoordinate coordinate){
-        if(matchHandlerModel.checkCorrectMove(dice, coordinate)){
+    public void handlePlaceDice(PlaceDiceEvent placeDiceEvent){
+        if(matchHandlerModel.checkCorrectMove(placeDiceEvent)){
             //place dice;
         }
         else{
@@ -61,5 +59,22 @@ public class MatchHandlerController {
     public void handleToolCardSelection(){
 
     }
+    public void update(Observable view, Object arg) {
+        ViewControllerEvent event=(ViewControllerEvent) arg;
+        event.accept(this);
+    }
+    public void visit(ChoseWindowEvent window){
+
+    }
+    public void visit(PlaceDiceEvent placeDiceEvent){
+
+    }
+    public void visit(UseToolCardEvent toolCard){
+
+    }
+    public void visit(EndTurnEvent endTurnEvent){
+
+    }
+
 
 }

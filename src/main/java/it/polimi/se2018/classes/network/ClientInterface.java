@@ -1,7 +1,7 @@
 package it.polimi.se2018.classes.network;
 
 import it.polimi.se2018.classes.events.Message;
-import it.polimi.se2018.classes.events.SelectedCoordinate;
+import it.polimi.se2018.classes.events.PlaceDiceEvent;
 import it.polimi.se2018.classes.events.SelectedRoundTrackDice;
 
 import java.net.MalformedURLException;
@@ -13,9 +13,9 @@ import java.util.Scanner;
 
 public interface ClientInterface {
      void main(String username);
-     void placeDiceFromDraft(int draftDice, SelectedCoordinate coordinate);
+     void placeDiceFromDraft(PlaceDiceEvent placeDiceEvent);
      void useToolCard (int toolCard) throws RemoteException;
      void switchDraftDiceRoundTrackDice (int draftDice, SelectedRoundTrackDice roundTrackDice) throws RemoteException;
-     void moveWindowDice (SelectedCoordinate currentPosition, SelectedCoordinate newPosition) throws RemoteException;
+     //void moveWindowDice (SelectedCoordinate currentPosition, SelectedCoordinate newPosition) throws RemoteException;
      void endTurn() throws RemoteException;
 }

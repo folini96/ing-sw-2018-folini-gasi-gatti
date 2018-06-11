@@ -1,7 +1,7 @@
 package it.polimi.se2018.classes.network;
 
 import it.polimi.se2018.classes.events.Message;
-import it.polimi.se2018.classes.events.SelectedCoordinate;
+import it.polimi.se2018.classes.events.PlaceDiceEvent;
 import it.polimi.se2018.classes.events.SelectedRoundTrackDice;
 
 import java.net.MalformedURLException;
@@ -30,9 +30,9 @@ public class RMIClient implements ClientInterface {
       }
    }
 
-   public void placeDiceFromDraft(int draftDice, SelectedCoordinate coordinate){
+   public void placeDiceFromDraft(PlaceDiceEvent placeDiceEvent){
        try{
-           server.placeDiceFromDraft(draftDice, coordinate);
+           server.placeDiceFromDraft(placeDiceEvent);
        }catch (RemoteException e){
            System.out.println("Errore nella comunicazione con il server");
        }
@@ -56,14 +56,14 @@ public class RMIClient implements ClientInterface {
     }
 
 
-    public void moveWindowDice(SelectedCoordinate currentPosition, SelectedCoordinate newPosition) throws RemoteException{
+    /*public void moveWindowDice(SelectedCoordinate currentPosition, SelectedCoordinate newPosition) throws RemoteException{
         try{
             server.moveWindowDice(currentPosition, newPosition);
         }catch (RemoteException e){
             System.out.println("Errore nella comunicazione con il server");
         }
 
-    }
+    }*/
 
 
     public void endTurn() throws RemoteException{

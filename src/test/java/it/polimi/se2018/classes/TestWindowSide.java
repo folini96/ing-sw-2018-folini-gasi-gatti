@@ -22,7 +22,7 @@ public class TestWindowSide {
 
         for(i=0; i<=3; i++){
             for(j=0; j<=4; j++){
-                boxSchemeTest[i][j]= new Box(null,0);
+                boxSchemeTest[i][j]= new Box("null",0);
             }
         }
         for(i=0; i<=3; i++){
@@ -46,7 +46,7 @@ public class TestWindowSide {
 
         for(i=0; i<=3; i++){
             for(j=0; j<=4; j++){
-                boxSchemeTest[i][j]= new Box(null, 0);
+                boxSchemeTest[i][j]= new Box("null", 0);
             }
         }
         boxSchemeTest[1][2].setDice(dice);
@@ -69,7 +69,7 @@ public class TestWindowSide {
 
         for(i=0; i<=3; i++){
             for(j=0; j<=4; j++){
-                boxSchemeTest[i][j]= new Box(null, 0);
+                boxSchemeTest[i][j]= new Box("null", 0);
             }
         }
 
@@ -88,7 +88,7 @@ public class TestWindowSide {
 
         for(i=0; i<=3; i++){
             for(j=0; j<=4; j++){
-                boxSchemeTest[i][j]= new Box(null, 0);
+                boxSchemeTest[i][j]= new Box("null", 0);
             }
         }
 
