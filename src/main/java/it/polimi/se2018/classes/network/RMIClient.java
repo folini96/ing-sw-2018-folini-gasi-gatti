@@ -1,8 +1,6 @@
 package it.polimi.se2018.classes.network;
 
-import it.polimi.se2018.classes.events.Message;
-import it.polimi.se2018.classes.events.PlaceDiceEvent;
-import it.polimi.se2018.classes.events.SelectedRoundTrackDice;
+import it.polimi.se2018.classes.events.*;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -38,37 +36,27 @@ public class RMIClient implements ClientInterface {
        }
 
    }
-    public void useToolCard(int toolCard) throws RemoteException{
+
+    @Override
+    public void choseWindow(ChoseWindowEvent choseWindowEvent) {
         try{
-            server.useToolCard(toolCard);
+            server.choseWindow(choseWindowEvent);
         }catch (RemoteException e){
             System.out.println("Errore nella comunicazione con il server");
         }
     }
 
-
-    public void switchDraftDiceRoundTrackDice(int draftDice, SelectedRoundTrackDice roundTrackDice) throws RemoteException{
+    public void useToolCard(UseToolCardEvent useToolCardEvent){
         try{
-            server.switchDraftDiceRoundTrackDice(draftDice, roundTrackDice);
+            server.useToolCard(useToolCardEvent);
         }catch (RemoteException e){
             System.out.println("Errore nella comunicazione con il server");
         }
     }
 
-
-    /*public void moveWindowDice(SelectedCoordinate currentPosition, SelectedCoordinate newPosition) throws RemoteException{
+    public void endTurn(EndTurnEvent endTurnEvent){
         try{
-            server.moveWindowDice(currentPosition, newPosition);
-        }catch (RemoteException e){
-            System.out.println("Errore nella comunicazione con il server");
-        }
-
-    }*/
-
-
-    public void endTurn() throws RemoteException{
-        try{
-            server.endTurn();
+            server.endTurn(endTurnEvent);
         }catch (RemoteException e){
             System.out.println("Errore nella comunicazione con il server");
         }

@@ -1,7 +1,6 @@
 package it.polimi.se2018.classes.network;
 
-import it.polimi.se2018.classes.events.PlaceDiceEvent;
-import it.polimi.se2018.classes.events.SelectedRoundTrackDice;
+import it.polimi.se2018.classes.events.*;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -19,16 +18,21 @@ public class SocketClient implements ClientInterface{
     public void placeDiceFromDraft(PlaceDiceEvent placeDiceEvent) {
 
     }
-    public void useToolCard (int toolCard) throws RemoteException{
+
+    @Override
+    public void useToolCard(UseToolCardEvent useToolCardEvent) {
 
     }
-    public void switchDraftDiceRoundTrackDice (int draftDice, SelectedRoundTrackDice roundTrackDice) throws RemoteException{
+
+    @Override
+    public void endTurn(EndTurnEvent endTurnEvent) {
 
     }
-    /*public void moveWindowDice (SelectedCoordinate currentPosition, SelectedCoordinate newPosition) throws RemoteException{
 
-    }*/
-    public void endTurn() throws RemoteException{
+    @Override
+    public void choseWindow(ChoseWindowEvent choseWindowEvent) {
 
     }
+
+
 }

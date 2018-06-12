@@ -1,6 +1,6 @@
 package it.polimi.se2018.classes.network;
 
-import it.polimi.se2018.classes.events.Message;
+import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.model.*;
 
 import java.rmi.RemoteException;
@@ -23,27 +23,17 @@ public class RMIVirtualClient implements VirtualClientInterface {
             System.out.println("Errore di comunicazione con il client RMI ");
         }
     }
-    public void sendPublicObjCard(PublicObjCard publicObjCard){
-        try{
-            rmiClient.sendPublicObjCard(publicObjCard);
-        }catch(RemoteException e){
-            System.out.println("Errore di comunicazione con il client RMI ");
-        }
+    public void sendStartMatchEvent (StartMatchEvent startMatchEvent){
 
     }
-    public void sendPrivateObjCard(PrivateObjCard privateObjCard){
-        try{
-            rmiClient.sendPrivateObjCard(privateObjCard);
-        }catch(RemoteException e){
-            System.out.println("Errore di comunicazione con il client RMI ");
-        }
+    public void sendStartRoundEvent(StartRoundEvent startRoundEvent){
+
     }
-    public void sendToolCard(ToolCard toolCard){
-        try{
-            rmiClient.sendToolCard(toolCard);
-        }catch(RemoteException e){
-            System.out.println("Errore di comunicazione con il client RMI ");
-        }
+    public void sendStartTurnEvent (StartTurnEvent startTurnEvent){
+
+    }
+    public void sendEndRoundEvent (EndRoundEvent endRoundEvent){
+
     }
     public void sendWindow(WindowSide window){
         try{
@@ -52,20 +42,7 @@ public class RMIVirtualClient implements VirtualClientInterface {
             System.out.println("Errore di comunicazione con il client RMI ");
         }
     }
-    public void sendDice(Dice dice){
-        try{
-            rmiClient.sendDice(dice);
-        }catch(RemoteException e){
-            System.out.println("Errore di comunicazione con il client RMI ");
-        }
-    }
-    public void sendRound(Round round){
-        try{
-            rmiClient.sendRound(round);
-        }catch(RemoteException e){
-            System.out.println("Errore di comunicazione con il client RMI ");
-        }
-    }
+
     public void removeFavorToken(int removedToken){
         try{
             rmiClient.removeFavorToken(removedToken);

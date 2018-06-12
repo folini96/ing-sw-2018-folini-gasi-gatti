@@ -1,8 +1,6 @@
 package it.polimi.se2018.classes.network;
 
-import it.polimi.se2018.classes.events.Message;
-import it.polimi.se2018.classes.events.PlaceDiceEvent;
-import it.polimi.se2018.classes.events.SelectedRoundTrackDice;
+import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.model.*;
 
 import java.rmi.ConnectException;
@@ -36,27 +34,22 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIR
     }
 
     @Override
-    public void placeDiceFromDraft(PlaceDiceEvent placeDiceEvent) throws RemoteException{
+    public void placeDiceFromDraft(PlaceDiceEvent placeDiceEvent) {
         server.placeDiceFromDraft(placeDiceEvent);
     }
 
     @Override
-    public void useToolCard(int toolCard) throws RemoteException{
-        server.useToolCard(toolCard);
+    public void choseWindow(ChoseWindowEvent choseWindowEvent) {
+        server.choseWindow(choseWindowEvent);
     }
 
     @Override
-    public void switchDraftDiceRoundTrackDice(int draftDice, SelectedRoundTrackDice roundTrackDice) throws RemoteException{
-        server.switchDraftDiceRoundTrackDice(draftDice, roundTrackDice);
+    public void endTurn(EndTurnEvent endTurnEvent) {
+        server.endTurn(endTurnEvent);
     }
-
-
 
     @Override
-    public void endTurn() throws RemoteException{
-        server.endTurn();
+    public void useToolCard(UseToolCardEvent useToolCardEvent) {
+        server.useToolCard(useToolCardEvent);
     }
-
-
-
 }

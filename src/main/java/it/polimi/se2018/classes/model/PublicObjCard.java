@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * @author Andrea Folini
  */
-public abstract class PublicObjCard implements ModelViewEvent,Serializable {
+public abstract class PublicObjCard implements Serializable {
 
     private String name;
     private int value;
@@ -46,8 +46,6 @@ public abstract class PublicObjCard implements ModelViewEvent,Serializable {
      * @return the points calculated
      */
     public abstract int getScore(WindowSide window);
-    public void accept(VirtualView visitor){
-        visitor.visit(this);
-    }
+
 
 }

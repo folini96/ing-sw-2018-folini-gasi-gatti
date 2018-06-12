@@ -10,7 +10,7 @@ import java.util.List;
 /**
  *@author Alessandro Gatti
  */
-public class Round implements ModelViewEvent,Serializable {
+public class Round implements Serializable {
 
     private ArrayList<Dice> leftDices;
 
@@ -22,8 +22,10 @@ public class Round implements ModelViewEvent,Serializable {
         return leftDices;
 
     }
-    public void accept(VirtualView visitor){
-        visitor.visit(this);
+
+    public void setLeftDices(ArrayList<Dice> leftDices) {
+        this.leftDices = leftDices;
     }
+
 
 }

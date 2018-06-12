@@ -2,6 +2,7 @@ package it.polimi.se2018.classes.events;
 
 import it.polimi.se2018.classes.model.Dice;
 import it.polimi.se2018.classes.model.ModelViewEvent;
+import it.polimi.se2018.classes.model.Round;
 import it.polimi.se2018.classes.view.VirtualView;
 
 import java.util.ArrayList;
@@ -10,10 +11,12 @@ import java.util.Dictionary;
 public class StartRoundEvent implements ModelViewEvent {
     private int round;
     private String firstPlayer;
+    private Round[] roundTrack;
     private ArrayList<Dice> draftPool;
-    public StartRoundEvent(int round, String firstPlayer, ArrayList<Dice> draftPool){
+    public StartRoundEvent(int round, String firstPlayer,Round[] roundTrack, ArrayList<Dice> draftPool){
         this.round=round;
         this.firstPlayer=firstPlayer;
+        this.roundTrack=roundTrack;
         this.draftPool=draftPool;
     }
 
@@ -23,6 +26,10 @@ public class StartRoundEvent implements ModelViewEvent {
 
     public String getFirstPlayer() {
         return firstPlayer;
+    }
+
+    public Round[] getRoundTrack() {
+        return roundTrack;
     }
 
     public ArrayList<Dice> getDraftPool() {

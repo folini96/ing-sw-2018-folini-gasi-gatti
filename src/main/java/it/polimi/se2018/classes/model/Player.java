@@ -2,10 +2,12 @@ package it.polimi.se2018.classes.model;
 
 import it.polimi.se2018.classes.view.VirtualView;
 
+import java.io.Serializable;
+
 /**
  * @author Leonard Gasi
  */
-public class Player implements ModelViewEvent{
+public class Player implements Serializable {
 
     private String playerName;
     private PrivateObjCard privateObj;
@@ -71,9 +73,5 @@ public class Player implements ModelViewEvent{
     /**
      * @return the color to identify the player
      */
-
-    public void accept(VirtualView visitor){
-        visitor.visit(this);
-    }
 
 }

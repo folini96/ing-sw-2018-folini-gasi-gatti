@@ -221,12 +221,18 @@ public class MatchHandlerModel extends Observable {
     }
     public void startRound(int round, int firstPlayer){
        draftPool=diceBag.extractDice(playerNumber*2+1);
-       notifyObservers(new StartRoundEvent(round,players.get(firstPlayer).getName(),draftPool));
+        setChanged();
+       notifyObservers(new StartRoundEvent(round,players.get(firstPlayer).getName(),roundTrack, draftPool));
     }
     public void startTurn(int currentPlayer){
+        setChanged();
         notifyObservers(new StartTurnEvent(players.get(currentPlayer).getName()));
     }
-
+    public void endRound(int round){
+        setChanged();
+        roundTrack[round].setLeftDices(draftPool);
+        notifyObservers(new EndRoundEvent(roundTrack));
+    }
     /**
      * @param placeDiceEvent the number of the dice of the draft and the coordinate of the box the player wants to put the dice into
      * @param currentPlayer the column of the box the player wants to put the dice into

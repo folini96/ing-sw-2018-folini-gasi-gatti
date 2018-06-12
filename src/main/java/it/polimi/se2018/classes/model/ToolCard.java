@@ -5,7 +5,7 @@ import it.polimi.se2018.classes.view.VirtualView;
 
 import java.io.Serializable;
 
-public class ToolCard implements ModelViewEvent, Serializable {
+public class ToolCard implements Serializable {
 
     private String name;
     private int token;
@@ -29,10 +29,6 @@ public class ToolCard implements ModelViewEvent, Serializable {
     public Color getColor(){
         return color;
 
-    }
-
-    public void accept(VirtualView visitor){
-        visitor.visit(this);
     }
 
 }

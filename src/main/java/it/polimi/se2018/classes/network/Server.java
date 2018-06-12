@@ -1,9 +1,7 @@
 package it.polimi.se2018.classes.network;
 
 import it.polimi.se2018.classes.controller.MatchHandlerController;
-import it.polimi.se2018.classes.events.Message;
-import it.polimi.se2018.classes.events.PlaceDiceEvent;
-import it.polimi.se2018.classes.events.SelectedRoundTrackDice;
+import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.model.*;
 import it.polimi.se2018.classes.view.VirtualView;
 
@@ -107,42 +105,49 @@ public class Server  {
         return  true;
     }
     public void placeDiceFromDraft(PlaceDiceEvent placeDiceEvent){
-
+        proxyView.placeDiceFromDraft(placeDiceEvent);
+    }
+    public void choseWindow(ChoseWindowEvent choseWindowEvent){
+        proxyView.choseWindow(choseWindowEvent);
+    }
+    public void endTurn (EndTurnEvent endTurnEvent){
+        proxyView.endTurn(endTurnEvent);
     }
 
-    public void useToolCard(int toolCard){
-
+    public void useToolCard(UseToolCardEvent useToolCardEvent){
+        proxyView.useToolCard(useToolCardEvent);
     }
+
 
     public void switchDraftDiceRoundTrackDice(int draftDice, SelectedRoundTrackDice roundTrackDice){
 
     }
 
 
-
-    public void endTurn() throws RemoteException{
-
-    }
     public void notValideMoveMessage(Message message, int player) {
         clients.get(player).notValideMoveMessage(message);
     }
-    public void sendPublicObjCard (PublicObjCard publicObjCard) {
-        for (VirtualClientInterface client: clients){
-            client.sendPublicObjCard(publicObjCard);
+
+    public void sendStartMatchEvent (StartMatchEvent startMatchEvent){
+        for (VirtualClientInterface client:clients){
+            client.sendStartMatchEvent(startMatchEvent);
         }
     }
-    public void sendPrivateObjCard (PrivateObjCard privateObjCard, String player) {
-
+    public void sendStartRoundEvent(StartRoundEvent startRoundEvent){
         for (VirtualClientInterface client:clients){
-            if (client.getUsername()==player){
-                client.sendPrivateObjCard(privateObjCard);
+            client.sendStartRoundEvent(startRoundEvent);
+        }
+    }
+    public void sendStartTurnEvent (StartTurnEvent startTurnEvent){
+        for (VirtualClientInterface client:clients){
+            if (client.getUsername().equals(startTurnEvent.getPlayer())){
+                client.sendStartTurnEvent(startTurnEvent);
             }
         }
-
     }
-    public void sendToolCard (ToolCard toolCard) {
-        for (VirtualClientInterface client: clients){
-            client.sendToolCard(toolCard);
+    public void sendEndRoundEvent (EndRoundEvent endRoundEvent){
+        for (VirtualClientInterface client:clients){
+            client.sendEndRoundEvent(endRoundEvent);
         }
     }
     public void sendWindowToChose (WindowSide[] windows){
@@ -153,21 +158,9 @@ public class Server  {
 
         }
     }
-    public void sendWindowSide (WindowSide windowSide) {
-        for (VirtualClientInterface client: clients){
-            client.sendWindow(windowSide);
-        }
-    }
-    public void sendDice (Dice dice){
-        for (VirtualClientInterface client: clients){
-            client.sendDice(dice);
-        }
-    }
-    public void sendRound(Round round){
-        for (VirtualClientInterface client: clients){
-            client.sendRound(round);
-        }
-    }
+
+
+
     public void removeFavorToken(int removedFavorToken){
         for (VirtualClientInterface client: clients){
             client.removeFavorToken(removedFavorToken);

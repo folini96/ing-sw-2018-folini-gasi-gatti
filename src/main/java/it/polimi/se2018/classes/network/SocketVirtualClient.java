@@ -1,7 +1,7 @@
 package it.polimi.se2018.classes.network;
 
 import com.google.gson.JsonObject;
-import it.polimi.se2018.classes.events.Message;
+import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.model.*;
 
 import java.io.*;
@@ -45,24 +45,23 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
         }
 
     }
-    public void sendPublicObjCard(PublicObjCard publicObjCard){
+    public void sendStartMatchEvent (StartMatchEvent startMatchEvent){
 
     }
-    public void sendPrivateObjCard(PrivateObjCard privateObjCard){
+    public void sendStartRoundEvent(StartRoundEvent startRoundEvent){
 
     }
-    public void sendToolCard(ToolCard toolCard){
+    public void sendStartTurnEvent (StartTurnEvent startTurnEvent){
 
     }
+    public void sendEndRoundEvent (EndRoundEvent endRoundEvent){
+
+    }
+
     public void sendWindow(WindowSide window){
 
     }
-    public void sendDice(Dice dice){
 
-    }
-    public void sendRound(Round round){
-
-    }
     public void removeFavorToken(int removedToken){
 
     }

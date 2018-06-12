@@ -8,7 +8,7 @@ import java.util.Random;
 /**
  * @author Leonard Gasi
  */
-public class Dice implements ModelViewEvent,Serializable {
+public class Dice implements Serializable {
 
     private Color color;
     private int usedValue;
@@ -56,7 +56,5 @@ public class Dice implements ModelViewEvent,Serializable {
         return usedValue;
 
     }
-    public void accept(VirtualView visitor){
-        visitor.visit(this);
-    }
+
 }

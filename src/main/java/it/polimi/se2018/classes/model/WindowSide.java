@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author Leonard Gasi
  * @author Alessandro Gatti
  */
-public class WindowSide implements ModelViewEvent,Serializable {
+public class WindowSide implements Serializable {
 
     private String name;
     private int difficult;
@@ -87,9 +87,7 @@ public class WindowSide implements ModelViewEvent,Serializable {
         if(countDice == 0) return true;
         else return false;
     }
-    public void accept(VirtualView visitor){
-        visitor.visit(this);
-    }
+
 
 }
 

@@ -77,6 +77,7 @@ public class MatchHandlerController implements Observer{
 
     }
     public void handleEndRound(){
+        matchHandlerModel.endRound(round);
         if (round==9){
             handleEndMatch();
         }else{

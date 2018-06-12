@@ -21,6 +21,6 @@ public class PlaceDiceEvent implements ViewControllerEvent,Serializable {
         return column;
     }
     public void accept(MatchHandlerController visitor){
-        
+        visitor.visit(this);
     }
 }
