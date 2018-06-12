@@ -17,11 +17,10 @@ public class Player implements ModelViewEvent{
      * @param playerName the name of the player
      * @param privateObj the private objective card associated with the player
      */
-    public Player( String playerName, PrivateObjCard privateObj,WindowSide window){
+    public Player( String playerName, PrivateObjCard privateObj){
         this.playerName = playerName;
         this.privateObj = privateObj;
-        this.window= window;
-        this.setToken(window.getDifficult());
+
     }
 
 
@@ -33,7 +32,10 @@ public class Player implements ModelViewEvent{
         this.favorToken = favorToken;
 
     }
-
+    public void setWindow(WindowSide window){
+        this.window=window;
+        setToken(window.getDifficult());
+    }
     /**
      * @return the name of the player
      */

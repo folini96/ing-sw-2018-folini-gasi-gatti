@@ -4,8 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import it.polimi.se2018.classes.events.ChoseWindowEvent;
-import it.polimi.se2018.classes.events.PlaceDiceEvent;
+import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.view.VirtualView;
 
 import java.awt.*;
@@ -24,27 +23,19 @@ public class MatchHandlerModel extends Observable {
 
     private ArrayList <Player> players= new ArrayList<>();
     private int playerNumber;
-    private int currentPlayer=0;
     private ToolCard[] toolDeck;
     private PublicObjCard[] publicObjDeck;
     private PrivateObjCard[] privateObjDeck;
     private WindowSide[] windowSides;
     private DiceBag diceBag;
     private Round[] roundTrack;
-    private int round;
-    private int firstPlayer;
-    int turnPassed;
     private ArrayList <Dice> draftPool;
 
     public MatchHandlerModel(VirtualView view){
         addObserver(view);
         diceBag= new DiceBag();
         roundTrack=new Round[10];
-        round=0;
         draftPool=new ArrayList<>();
-        Random random = new Random();
-        int randomInt = random.nextInt(playerNumber-1);
-        firstPlayer = randomInt;
         publicObjDeck= parsePublicObjCard();
         privateObjDeck=parsePrivateObjCard();
 
@@ -204,69 +195,58 @@ public class MatchHandlerModel extends Observable {
     public void addPlayer(Player player){
         players.add(player);
     }
-    public void prepareMatch(int playerNumber){
+    public void prepareMatch(int playerNumber, String[] playerNames){
         int i;
         this.playerNumber=playerNumber;
-
-        for (PublicObjCard publicObjCard:publicObjDeck){
-            notifyObservers(publicObjCard);
+        for (i=0;i<playerNumber;i++){
+            addPlayer(new Player(playerNames[i],privateObjDeck[i]));
         }
-        for (ToolCard toolCard:toolDeck){
-            notifyObservers(toolCard);
-        }
-        for (Player player:players){
-            notifyObservers(player);
-        }
-
     }
-    public void windowSelection(ChoseWindowEvent choseWindowEvent){
-        int eventPlayer=0;
-        for (Player player:players){
-            if (player.getName()==choseWindowEvent.getUsername()){
-                eventPlayer=players.indexOf(player);
+    public void startMatch(){
+        notifyObservers(new StartMatchEvent(players, publicObjDeck, toolDeck));
+    }
+
+    public void windowSelection(ArrayList<ChoseWindowEvent> choseWindowEvent){
+        int eventPlayer;
+        int i;
+        for (i=0;i<playerNumber;i++){
+            for (Player player:players){
+                if (player.getName().equals(choseWindowEvent.get(i).getUsername())){
+                    eventPlayer=players.indexOf(player);
+                    player.setWindow(windowSides[((choseWindowEvent.get(i).getChosenWindow()+1)*(eventPlayer+1)-1)]);
+                }
             }
         }
 
-        addPlayer(new Player(choseWindowEvent.getUsername(), privateObjDeck[eventPlayer], windowSides[((choseWindowEvent.getChosenWindow()+1)*(eventPlayer+1)-1)]));
     }
-    public void startRound(){
-        if(round!=0){
-            round++;
-        }
-        if (firstPlayer==(playerNumber-1)){
-            firstPlayer=0;
-        }else{
-            firstPlayer++;
-        }
-        turnPassed=0;
-        draftPool=diceBag.extractDice(playerNumber*2+1);
-
+    public void startRound(int round, int firstPlayer){
+       draftPool=diceBag.extractDice(playerNumber*2+1);
+       notifyObservers(new StartRoundEvent(round,players.get(firstPlayer).getName(),draftPool));
     }
-
-    public void endRound(){
-        
-
+    public void startTurn(int currentPlayer){
+        notifyObservers(new StartTurnEvent(players.get(currentPlayer).getName()));
     }
 
     /**
      * @param placeDiceEvent the number of the dice of the draft and the coordinate of the box the player wants to put the dice into
+     * @param currentPlayer the column of the box the player wants to put the dice into
      * @return true if the placement is allowed, false if not
      */
-    public boolean checkCorrectMove(PlaceDiceEvent placeDiceEvent){
+    public boolean checkCorrectMove(PlaceDiceEvent placeDiceEvent, int currentPlayer){
 
         if(players.get(currentPlayer).getWindow().isEmpty()){
             if(!checkCorrectFirstMove(placeDiceEvent.getRow(),placeDiceEvent.getColumn())) return false;
-            if(!checkCorrectColorMatching(placeDiceEvent.getDraftDice(), placeDiceEvent.getRow(),placeDiceEvent.getColumn())) return false;
-            if(!checkCorrectValueMatching(placeDiceEvent.getDraftDice(), placeDiceEvent.getRow(),placeDiceEvent.getColumn())) return false;
+            if(!checkCorrectColorMatching(placeDiceEvent.getDraftDice(), placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
+            if(!checkCorrectValueMatching(placeDiceEvent.getDraftDice(), placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
             return true;
         }
         else{
-            if(!checkCorrectColorMatching(placeDiceEvent.getDraftDice(), placeDiceEvent.getRow(),placeDiceEvent.getColumn())) return false;
-            if(!checkCorrectValueMatching(placeDiceEvent.getDraftDice(), placeDiceEvent.getRow(),placeDiceEvent.getColumn())) return false;
-            if(!checkBoxNotEmpty(placeDiceEvent.getRow(),placeDiceEvent.getColumn())) return false;
-            if(!checkColorVicinity(placeDiceEvent.getDraftDice(), placeDiceEvent.getRow(),placeDiceEvent.getColumn())) return false;
-            if(!checkValueVicinity(placeDiceEvent.getDraftDice(), placeDiceEvent.getRow(),placeDiceEvent.getColumn())) return false;
-            if(!checkDiceVicinity(placeDiceEvent.getRow(),placeDiceEvent.getColumn())) return false;
+            if(!checkCorrectColorMatching(placeDiceEvent.getDraftDice(), placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
+            if(!checkCorrectValueMatching(placeDiceEvent.getDraftDice(), placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
+            if(!checkBoxNotEmpty(placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
+            if(!checkColorVicinity(placeDiceEvent.getDraftDice(), placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
+            if(!checkValueVicinity(placeDiceEvent.getDraftDice(), placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
+            if(!checkDiceVicinity(placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
             return true;
         }
     }
@@ -291,9 +271,10 @@ public class MatchHandlerModel extends Observable {
      * @param draftDice the dice that is to set
      * @param selectedRow the row of the box the player wants to put the dice into
      * @param selectedColumn the column of the box the player wants to put the dice into
+     * @param currentPlayer the column of the box the player wants to put the dice into
      * @return true if the color of the box is compatible, false if not
      */
-    private boolean checkCorrectColorMatching(int draftDice, int selectedRow, int selectedColumn){
+    private boolean checkCorrectColorMatching(int draftDice, int selectedRow, int selectedColumn, int currentPlayer){
         int row=selectedRow;
         int column=selectedColumn;
         Box[][] boxScheme;
@@ -314,9 +295,10 @@ public class MatchHandlerModel extends Observable {
      * @param draftDice the dice that is to set
      * @param selectedRow the row of the box the player wants to put the dice into
      * @param selectedColumn the column of the box the player wants to put the dice into
+     * @param currentPlayer the column of the box the player wants to put the dice into
      * @return true if the value of the box is compatible, false if not
      */
-    private boolean checkCorrectValueMatching(int draftDice, int selectedRow, int selectedColumn){
+    private boolean checkCorrectValueMatching(int draftDice, int selectedRow, int selectedColumn, int currentPlayer){
         int row=selectedRow;
         int column=selectedColumn;
         Box[][] boxScheme;
@@ -336,9 +318,10 @@ public class MatchHandlerModel extends Observable {
     /**
      * @param selectedRow the row of the box the player wants to put the dice into
      * @param selectedColumn the column of the box the player wants to put the dice into
+     * @param currentPlayer the column of the box the player wants to put the dice into
      * @return true if the box is empty, false if not
      */
-    private boolean checkBoxNotEmpty(int selectedRow, int selectedColumn){
+    private boolean checkBoxNotEmpty(int selectedRow, int selectedColumn,int currentPlayer){
         int row=selectedRow;
         int column=selectedColumn;
         Box[][] boxScheme;
@@ -356,9 +339,10 @@ public class MatchHandlerModel extends Observable {
     /**
      * @param selectedRow the row of the box the player wants to put the dice into
      * @param selectedColumn the column of the box the player wants to put the dice into
+     * @param currentPlayer the column of the box the player wants to put the dice into
      * @return true if the dice is near another dice, false if not
      */
-    private boolean checkDiceVicinity(int selectedRow, int selectedColumn){
+    private boolean checkDiceVicinity(int selectedRow, int selectedColumn, int currentPlayer){
         int i, j, vicinityCheck=0;
         int row=selectedRow;
         int column=selectedColumn;
@@ -389,9 +373,10 @@ public class MatchHandlerModel extends Observable {
      * @param draftDice the dice that is to set
      * @param selectedRow the row of the box the player wants to put the dice into
      * @param selectedColumn the column of the box the player wants to put the dice into
+     * @param currentPlayer the column of the box the player wants to put the dice into
      * @return true if the dice isn't adjacent to a dice of same color, false if not
      */
-    private boolean checkColorVicinity(int draftDice, int selectedRow, int selectedColumn){
+    private boolean checkColorVicinity(int draftDice, int selectedRow, int selectedColumn, int currentPlayer){
         int i, j;
         int row=selectedRow;
         int column=selectedColumn;
@@ -426,9 +411,10 @@ public class MatchHandlerModel extends Observable {
      * @param draftDice the dice that is to set
      * @param selectedRow the row of the box the player wants to put the dice into
      * @param selectedColumn the column of the box the player wants to put the dice into
+     * @param currentPlayer the column of the box the player wants to put the dice into
      * @return true if the dice isn't adjacent to a dice of same value, false if not
      */
-    private boolean checkValueVicinity(int draftDice, int selectedRow, int selectedColumn){
+    private boolean checkValueVicinity(int draftDice, int selectedRow, int selectedColumn, int currentPlayer){
         int i, j;
         int row= selectedRow;
         int column= selectedColumn;

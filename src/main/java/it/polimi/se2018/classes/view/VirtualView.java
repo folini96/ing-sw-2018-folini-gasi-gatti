@@ -1,8 +1,7 @@
 package it.polimi.se2018.classes.view;
 
 import it.polimi.se2018.classes.controller.MatchHandlerController;
-import it.polimi.se2018.classes.events.Message;
-import it.polimi.se2018.classes.events.PlaceDiceEvent;
+import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.model.*;
 import it.polimi.se2018.classes.network.Server;
 
@@ -38,11 +37,17 @@ public class VirtualView extends Observable implements Observer, ViewInterface{
         server.sendPublicObjCard(publicObjCard);
 
     }
+    public void visit(StartMatchEvent startMatchEvent){
+
+    }
+    public void visit (StartRoundEvent startRoundEvent){
+
+    }
+    public void visit (StartTurnEvent startTurnEvent){
+
+    }
     public void visit(Player player){
         server.sendPrivateObjCard(player.getPrivateObj(), player.getName());
-    }
-    public void visit(ToolCard toolCard){
-        server.sendToolCard(toolCard);
     }
     public void visit(WindowSide window){
         server.sendWindowSide(window);
