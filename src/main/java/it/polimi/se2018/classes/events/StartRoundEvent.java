@@ -1,12 +1,10 @@
 package it.polimi.se2018.classes.events;
 
 import it.polimi.se2018.classes.model.Dice;
-import it.polimi.se2018.classes.model.ModelViewEvent;
 import it.polimi.se2018.classes.model.Round;
 import it.polimi.se2018.classes.view.VirtualView;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
 
 public class StartRoundEvent implements ModelViewEvent {
     private int round;

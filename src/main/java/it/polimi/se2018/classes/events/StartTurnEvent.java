@@ -1,6 +1,5 @@
 package it.polimi.se2018.classes.events;
 
-import it.polimi.se2018.classes.model.ModelViewEvent;
 import it.polimi.se2018.classes.view.VirtualView;
 
 public class StartTurnEvent implements ModelViewEvent {

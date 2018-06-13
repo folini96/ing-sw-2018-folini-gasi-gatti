@@ -1,4 +1,4 @@
-package it.polimi.se2018.classes.model;
+package it.polimi.se2018.classes.events;
 
 import it.polimi.se2018.classes.view.VirtualView;
 
