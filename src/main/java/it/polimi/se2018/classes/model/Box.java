@@ -15,28 +15,8 @@ public class Box implements Serializable {
      * @param color the color of the box
      * @param value the value of the box
      */
-    public Box(String color, int value){
-        switch (color){
-            case "rosso":
-                this.color=Color.ROSSO;
-                break;
-            case "giallo":
-                this.color=Color.GIALLO;
-                break;
-            case "blu":
-                this.color=Color.BLU;
-                break;
-            case "verde":
-                this.color=Color.VERDE;
-                break;
-            case "viola":
-                this.color=Color.VIOLA;
-                break;
-            case "null":
-                this.color=null;
-                break;
-        }
-
+    public Box(Color color, int value){
+        this.color=color;
         this.value=value;
     }
 
