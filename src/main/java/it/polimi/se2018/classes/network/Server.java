@@ -13,15 +13,16 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Server  {
+public class Server {
     private static int RMIPORT = 1099; // porta di default RMI
     private static int SOCKETPORT = 9000; //porta di default SOCKET
-    private Timer lobbyTimer=new Timer();
+    private Timer lobbyTimer = new Timer();
     private RMIServerImplementation rmiHandler;
     private VirtualView proxyView;
     private MatchHandlerController controller;
     private ArrayList<VirtualClientInterface> clients = new ArrayList<VirtualClientInterface>();
-    public void main(){
+
+    public void main() {
         rmiMain();
         socketMain();
 
@@ -43,35 +44,36 @@ public class Server  {
             rmiHandler = new RMIServerImplementation(this);
             Naming.rebind("//localhost/MyServer", rmiHandler);
 
-        }catch (MalformedURLException e) {
+        } catch (MalformedURLException e) {
             System.err.println("Impossibile registrare l'oggetto indicato!");
-        }
-         catch (RemoteException e) {
+        } catch (RemoteException e) {
             System.err.println("Errore di connessione: " + e.getMessage() + "!");
         }
 
     }
-    public void socketMain(){
+
+    public void socketMain() {
         (new SocketClientGatherer(this, SOCKETPORT)).start();
 
     }
-    TimerTask startMatchTask = new TimerTask(){
-        public void run()
-        {
+
+    TimerTask startMatchTask = new TimerTask() {
+        public void run() {
             startMatch();
         }
     };
-    public synchronized void addClient(VirtualClientInterface newClient){
-        if (clients.size()>3){
+
+    public synchronized void addClient(VirtualClientInterface newClient) {
+        if (clients.size() > 3) {
             //inizia partita e blocca l'accesso a nuovi giocatori
             System.out.println("server pieno");
-        }else{
+        } else {
             clients.add(newClient);
-            System.out.println("Il client "+ newClient.getUsername() + " è connesso!");
-            if (clients.size()==2){
+            System.out.println("Il client " + newClient.getUsername() + " è connesso!");
+            if (clients.size() == 2) {
                 startLobby();
             }
-            if (clients.size()==4){
+            if (clients.size() == 4) {
                 lobbyTimer.cancel();
                 startMatch();
 
@@ -79,47 +81,53 @@ public class Server  {
             //notifica i client che una nuova partita inizierà tra poco
 
         }
-
     }
-    public void startLobby(){
+
+    public void startLobby() {
         lobbyTimer.schedule(startMatchTask, 60000);
     }
-    public void startMatch(){
-        String[] usernames=new String[4];
-        proxyView=new VirtualView();
-        controller=new MatchHandlerController(proxyView);
+
+    public void startMatch() {
+        String[] usernames = new String[4];
+        proxyView = new VirtualView();
+        controller = new MatchHandlerController(proxyView);
         proxyView.addObserver(controller);
-        for (VirtualClientInterface client:clients){
-            usernames[clients.indexOf(client)]=client.getUsername();
+        for (VirtualClientInterface client : clients) {
+            usernames[clients.indexOf(client)] = client.getUsername();
         }
 
         controller.handleStartMatch(usernames);
     }
-    public Boolean checkUsername(String username){
-        for(VirtualClientInterface client:clients){
 
-            if (client.getUsername().equals(username)){
+    public Boolean checkUsername(String username) {
+        for (VirtualClientInterface client : clients) {
+
+            if (client.getUsername().equals(username)) {
                 return false;
             }
         }
-        return  true;
+        return true;
     }
-    public void placeDiceFromDraft(PlaceDiceEvent placeDiceEvent){
-        proxyView.placeDiceFromDraft(placeDiceEvent);
+
+    public void placeDiceFromDraft(PlaceDiceEvent placeDiceEvent) {
+        System.out.println(placeDiceEvent.getDraftDice());
+        //proxyView.placeDiceFromDraft(placeDiceEvent);
     }
-    public void choseWindow(ChoseWindowEvent choseWindowEvent){
+
+    public void choseWindow(ChoseWindowEvent choseWindowEvent) {
         proxyView.choseWindow(choseWindowEvent);
     }
-    public void endTurn (EndTurnEvent endTurnEvent){
+
+    public void endTurn(EndTurnEvent endTurnEvent) {
         proxyView.endTurn(endTurnEvent);
     }
 
-    public void useToolCard(UseToolCardEvent useToolCardEvent){
+    public void useToolCard(UseToolCardEvent useToolCardEvent) {
         proxyView.useToolCard(useToolCardEvent);
     }
 
 
-    public void switchDraftDiceRoundTrackDice(int draftDice, SelectedRoundTrackDice roundTrackDice){
+    public void switchDraftDiceRoundTrackDice(int draftDice, SelectedRoundTrackDice roundTrackDice) {
 
     }
 
@@ -128,30 +136,34 @@ public class Server  {
         clients.get(player).notValideMoveMessage(message);
     }
 
-    public void sendStartMatchEvent (StartMatchEvent startMatchEvent){
-        for (VirtualClientInterface client:clients){
+    public void sendStartMatchEvent(StartMatchEvent startMatchEvent) {
+        for (VirtualClientInterface client : clients) {
             client.sendStartMatchEvent(startMatchEvent);
         }
     }
-    public void sendStartRoundEvent(StartRoundEvent startRoundEvent){
-        for (VirtualClientInterface client:clients){
+
+    public void sendStartRoundEvent(StartRoundEvent startRoundEvent) {
+        for (VirtualClientInterface client : clients) {
             client.sendStartRoundEvent(startRoundEvent);
         }
     }
-    public void sendStartTurnEvent (StartTurnEvent startTurnEvent){
-        for (VirtualClientInterface client:clients){
-            if (client.getUsername().equals(startTurnEvent.getPlayer())){
+
+    public void sendStartTurnEvent(StartTurnEvent startTurnEvent) {
+        for (VirtualClientInterface client : clients) {
+            if (client.getUsername().equals(startTurnEvent.getPlayer())) {
                 client.sendStartTurnEvent(startTurnEvent);
             }
         }
     }
-    public void sendEndRoundEvent (EndRoundEvent endRoundEvent){
-        for (VirtualClientInterface client:clients){
+
+    public void sendEndRoundEvent(EndRoundEvent endRoundEvent) {
+        for (VirtualClientInterface client : clients) {
             client.sendEndRoundEvent(endRoundEvent);
         }
     }
-    public void sendWindowToChose (WindowSide[] windows){
-        for (VirtualClientInterface client:clients){
+
+    public void sendWindowToChose(WindowSide[] windows) {
+        for (VirtualClientInterface client : clients) {
 
             client.sendWindow(windows[clients.indexOf(client)]);
             //DA MODIFICARE (DIVIDERE I METODI PER L'INVIO DI WINDOW DA SCEGLIERE E DA MOSTRARE)
@@ -160,11 +172,9 @@ public class Server  {
     }
 
 
-
-    public void removeFavorToken(int removedFavorToken){
-        for (VirtualClientInterface client: clients){
+    public void removeFavorToken(int removedFavorToken) {
+        for (VirtualClientInterface client : clients) {
             client.removeFavorToken(removedFavorToken);
         }
     }
-
 }

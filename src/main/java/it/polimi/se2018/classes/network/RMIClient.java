@@ -68,26 +68,20 @@ public class RMIClient implements ClientInterface {
     public void notValideMoveMessage (Message message){
 
     }
-    public void sendPublicObjCard(){
 
-    }
-    public void sendPrivateObjCard(){
-
-    }
-    public void sendToolCard(){
-
-    }
-    public void sendWindow(){
-
-    }
-    public void sendDraftPool(){
-
-    }
-    public void sendRoundTrack(){
-
-    }
     public void removeFavorToken(){
 
     }
+    public void sendStartMatchEvent(StartMatchEvent startMatchEvent){
 
+    }
+    public void sendStartRoundEvent(StartRoundEvent startRoundEvent){
+
+    }
+    public void sendStartTurnEvent(StartTurnEvent startTurnEvent){
+
+    }
+    public void sendEndRoundEvent(EndRoundEvent endRoundEvent){
+
+    }
 }

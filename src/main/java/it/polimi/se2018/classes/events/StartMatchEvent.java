@@ -3,9 +3,10 @@ package it.polimi.se2018.classes.events;
 import it.polimi.se2018.classes.model.*;
 import it.polimi.se2018.classes.view.VirtualView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class StartMatchEvent implements ModelViewEvent {
+public class StartMatchEvent implements ModelViewEvent, Serializable{
     private ArrayList<Player> players;
     private PublicObjCard[] publicObjCards;
     private ToolCard[] toolCards;

@@ -4,17 +4,16 @@ import it.polimi.se2018.classes.model.Dice;
 import it.polimi.se2018.classes.model.Round;
 import it.polimi.se2018.classes.view.VirtualView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class StartRoundEvent implements ModelViewEvent {
+public class StartRoundEvent implements ModelViewEvent, Serializable {
     private int round;
     private String firstPlayer;
-    private Round[] roundTrack;
     private ArrayList<Dice> draftPool;
-    public StartRoundEvent(int round, String firstPlayer,Round[] roundTrack, ArrayList<Dice> draftPool){
+    public StartRoundEvent(int round, String firstPlayer,ArrayList<Dice> draftPool){
         this.round=round;
         this.firstPlayer=firstPlayer;
-        this.roundTrack=roundTrack;
         this.draftPool=draftPool;
     }
 
@@ -26,9 +25,6 @@ public class StartRoundEvent implements ModelViewEvent {
         return firstPlayer;
     }
 
-    public Round[] getRoundTrack() {
-        return roundTrack;
-    }
 
     public ArrayList<Dice> getDraftPool() {
         return draftPool;

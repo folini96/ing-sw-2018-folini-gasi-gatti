@@ -3,7 +3,9 @@ package it.polimi.se2018.classes.events;
 import it.polimi.se2018.classes.controller.MatchHandlerController;
 import it.polimi.se2018.classes.view.VirtualView;
 
-public class ChoseWindowEvent implements ViewControllerEvent{
+import java.io.Serializable;
+
+public class ChoseWindowEvent implements ViewControllerEvent,Serializable {
     private int chosenWindow;
     private String username;
     public ChoseWindowEvent(int chosenWindow, String username){

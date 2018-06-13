@@ -24,16 +24,37 @@ public class RMIVirtualClient implements VirtualClientInterface {
         }
     }
     public void sendStartMatchEvent (StartMatchEvent startMatchEvent){
+        try{
+            rmiClient.sendStartMatchEvent(startMatchEvent);
 
+        }catch (RemoteException e){
+            e.printStackTrace();
+            System.out.println("Errore di comunicazione con il client RMI ");
+        }
     }
     public void sendStartRoundEvent(StartRoundEvent startRoundEvent){
+        try{
+            rmiClient.sendStartRoundEvent(startRoundEvent);
 
+        }catch (RemoteException e){
+            System.out.println("Errore di comunicazione con il client RMI ");
+        }
     }
     public void sendStartTurnEvent (StartTurnEvent startTurnEvent){
+        try{
+            rmiClient.sendStartTurnEvent(startTurnEvent);
 
+        }catch (RemoteException e){
+            System.out.println("Errore di comunicazione con il client RMI ");
+        }
     }
     public void sendEndRoundEvent (EndRoundEvent endRoundEvent){
+        try{
+            rmiClient.sendEndRoundEvent(endRoundEvent);
 
+        }catch (RemoteException e){
+            System.out.println("Errore di comunicazione con il client RMI ");
+        }
     }
     public void sendWindow(WindowSide window){
         try{
@@ -50,4 +71,5 @@ public class RMIVirtualClient implements VirtualClientInterface {
             System.out.println("Errore di comunicazione con il client RMI ");
         }
     }
+
 }

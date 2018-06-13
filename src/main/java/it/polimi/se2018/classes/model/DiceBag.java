@@ -15,7 +15,7 @@ public class DiceBag {
      */
     public DiceBag(){
         int i;
-
+        diceSet=new Dice[90];
         for(i=0; i<=89; i++){
 
             if(i<18){

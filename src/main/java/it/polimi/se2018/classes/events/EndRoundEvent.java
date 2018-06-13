@@ -3,7 +3,9 @@ package it.polimi.se2018.classes.events;
 import it.polimi.se2018.classes.model.Round;
 import it.polimi.se2018.classes.view.VirtualView;
 
-public class EndRoundEvent implements ModelViewEvent {
+import java.io.Serializable;
+
+public class EndRoundEvent implements ModelViewEvent, Serializable {
     private Round[] roundTrack;
     public EndRoundEvent(Round[] roundTrack){
         this.roundTrack=roundTrack;

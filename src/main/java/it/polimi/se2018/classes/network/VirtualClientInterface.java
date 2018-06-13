@@ -12,6 +12,6 @@ public interface VirtualClientInterface {
     public void sendStartTurnEvent (StartTurnEvent startTurnEvent);
     public void sendEndRoundEvent (EndRoundEvent endRoundEvent);
     public void sendWindow(WindowSide window);
-
     public void removeFavorToken(int removedToken);
+
 }
