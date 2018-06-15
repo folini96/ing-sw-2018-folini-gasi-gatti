@@ -14,23 +14,7 @@ public class SocketClient implements ClientInterface{
 
     }
 
-    @Override
-    public void placeDiceFromDraft(PlaceDiceEvent placeDiceEvent) {
-
-    }
-
-    @Override
-    public void useToolCard(UseToolCardEvent useToolCardEvent) {
-
-    }
-
-    @Override
-    public void endTurn(EndTurnEvent endTurnEvent) {
-
-    }
-
-    @Override
-    public void choseWindow(ChoseWindowEvent choseWindowEvent) {
+    public void sendToServer(ViewControllerEvent viewControllerEvent){
 
     }
 

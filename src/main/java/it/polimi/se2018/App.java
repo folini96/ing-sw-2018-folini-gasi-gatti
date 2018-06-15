@@ -21,11 +21,11 @@ public class App
 {
 
     public static void main( String[] args ) {
-        Server server=new Server();
+        RMIClient server=new RMIClient();
         //RMIClient client= new RMIClient();
         //RMIClient client1=new RMIClient();
 
-        server.main();
+        server.main("prova");
 
     }
 }
