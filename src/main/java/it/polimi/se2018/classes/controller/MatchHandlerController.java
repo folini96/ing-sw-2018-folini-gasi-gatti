@@ -7,6 +7,7 @@ import it.polimi.se2018.classes.events.PlaceDiceEvent;
 import it.polimi.se2018.classes.model.*;
 import it.polimi.se2018.classes.model.Box;
 import it.polimi.se2018.classes.view.VirtualView;
+import it.polimi.se2018.classes.visitor.ViewControllerVisitor;
 
 import javax.swing.*;
 
@@ -17,8 +18,8 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
-public class MatchHandlerController implements Observer{
-    private int playerNumber=0;
+public class MatchHandlerController implements Observer,ViewControllerVisitor {
+    private int playerNumber;
     private ArrayList<ChoseWindowEvent> chosenWindow=new ArrayList<>();
     private String[] playerNames;
     private WindowSide[] windowSides;
@@ -60,6 +61,7 @@ public class MatchHandlerController implements Observer{
             for (Object o: cards){
                 JsonObject card = (JsonObject) o;
                 publicObjCards[currentCard]=card.get("name").getAsString();
+                currentCard++;
             }
         }catch (FileNotFoundException e){
             System.out.println("File JSON non trovato");
@@ -67,7 +69,7 @@ public class MatchHandlerController implements Observer{
         for (i=0; i<3; i++){
             do{
                 Random random = new Random();
-                randomInt = random.nextInt(9);
+                randomInt = random.nextInt(10);
             }while (cardNotAvailable.contains(randomInt));
             switch(publicObjCards[randomInt]){
                 case "coloridiversicolonna":
@@ -110,7 +112,7 @@ public class MatchHandlerController implements Observer{
         int i;
         int randomInt;
         String[] privateObjCards = new String[5];
-        PrivateObjCard[] chosenCards = new PrivateObjCard[3];
+        PrivateObjCard[] chosenCards = new PrivateObjCard[playerNumber];
         ArrayList<Integer> cardNotAvailable = new ArrayList<>();
         JsonParser privateObjParser = new JsonParser();
         try{
@@ -120,6 +122,7 @@ public class MatchHandlerController implements Observer{
             for (Object o: cards){
                 JsonObject card = (JsonObject) o;
                 privateObjCards[currentCard]=card.get("color").getAsString();
+                currentCard++;
             }
         }catch (FileNotFoundException e){
             System.out.println("File JSON non trovato");
@@ -127,7 +130,9 @@ public class MatchHandlerController implements Observer{
         for (i=0; i<playerNumber; i++){
             do{
                 Random random = new Random();
-                randomInt = random.nextInt(4);
+                randomInt = random.nextInt(5);
+
+
             }while (cardNotAvailable.contains(randomInt));
             switch(privateObjCards[randomInt]){
                 case "rosso":
@@ -205,7 +210,7 @@ public class MatchHandlerController implements Observer{
             for(j=0;j<2;j++){
                 do{
                     Random random = new Random();
-                    randomInt = random.nextInt(11);
+                    randomInt = random.nextInt(12);
                 }while (windowNotAvailable.contains(randomInt));
                 windowNotAvailable.add(randomInt);
                 chosenWindows[(i*4)+(j*2)]=windows[randomInt*2];
@@ -216,7 +221,7 @@ public class MatchHandlerController implements Observer{
         return chosenWindows;
     }
     public void handleWindowCreation(){
-        view.choseWindow(parseWindowSide());
+        view.windowToChose(parseWindowSide());
     }
 
     public void  handleStartRound(){

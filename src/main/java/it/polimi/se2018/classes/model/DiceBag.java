@@ -8,34 +8,34 @@ import java.util.Random;
  * @author Alessandro Gatti
  */
 public class DiceBag {
-    private Dice[] diceSet;
+    private ArrayList<Dice> diceSet;
 
     /**
      * Constructor
      */
     public DiceBag(){
         int i;
-        diceSet=new Dice[90];
+        diceSet=new ArrayList<>();
         for(i=0; i<=89; i++){
 
             if(i<18){
-                diceSet[i] = new Dice(Color.ROSSO);
+                diceSet.add(new Dice(Color.ROSSO));
             }
 
             if(i>17 && i<36){
-                diceSet[i] = new Dice(Color.GIALLO);
+                diceSet.add(new Dice(Color.GIALLO));
             }
 
             if(i>35 && i<54){
-                diceSet[i] = new Dice(Color.VERDE);
+                diceSet.add(new Dice(Color.VERDE));
             }
 
             if(i>53 && i<72){
-                diceSet[i] = new Dice(Color.BLU);
+                diceSet.add(new Dice(Color.BLU));
             }
 
             if(i>71 && i<90){
-                diceSet[i] = new Dice(Color.VIOLA);
+                diceSet.add(new Dice(Color.VIOLA));
             }
 
         }
@@ -52,15 +52,11 @@ public class DiceBag {
 
         for(i=0; i<number; i++){
 
-            do{
-                Random random = new Random();
-                randomInt = random.nextInt(89);
-
-            } while(diceSet[randomInt] == null);
-
-            diceSet[randomInt].getRandomValue();
-            extractedDices.add(diceSet[randomInt]);
-            diceSet[randomInt] = null;
+            Random random = new Random();
+            randomInt = random.nextInt(diceSet.size());
+            diceSet.get(randomInt).getRandomValue();
+            extractedDices.add(diceSet.get(randomInt));
+            diceSet.remove(randomInt);
 
         }
         return extractedDices;

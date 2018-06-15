@@ -19,23 +19,11 @@ public class RMIClientImplementation implements RMIRemoteClientInterface {
 
     }
 
-    public void sendWindowSide (WindowSide windowSide) throws RemoteException{
 
+    public void sendWindowToChose (WindowToChoseEvent windowToChoseEvent)throws  RemoteException{
+        client.sendWindowToChose(windowToChoseEvent);
     }
-
-    public void removeFavorToken(int removedFavorToken) throws RemoteException{
-
-    }
-    public void sendStartMatchEvent(StartMatchEvent startMatchEvent){
-        client.sendStartMatchEvent(startMatchEvent);
-    }
-    public void sendStartRoundEvent(StartRoundEvent startRoundEvent){
-        client.sendStartRoundEvent(startRoundEvent);
-    }
-    public void sendStartTurnEvent(StartTurnEvent startTurnEvent){
-        client.sendStartTurnEvent(startTurnEvent);
-    }
-    public void sendEndRoundEvent(EndRoundEvent endRoundEvent){
-        client.sendEndRoundEvent(endRoundEvent);
+    public void sendToClient(ModelViewEvent modelViewEvent)throws  RemoteException{
+        client.sendToClient(modelViewEvent);
     }
 }

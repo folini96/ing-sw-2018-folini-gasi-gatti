@@ -1,5 +1,6 @@
 package it.polimi.se2018.classes.view;
 
+import it.polimi.se2018.classes.visitor.ModelViewEventVisitor;
 import it.polimi.se2018.classes.controller.MatchHandlerController;
 import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.model.*;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-public class VirtualView extends Observable implements Observer, ViewInterface{
+public class VirtualView extends Observable implements Observer, ViewInterface,ModelViewEventVisitor {
     Server server;
     MatchHandlerController controller;
     public VirtualView(Server server, MatchHandlerController controller){
@@ -32,21 +33,10 @@ public class VirtualView extends Observable implements Observer, ViewInterface{
     public void showMessage (Message message){
 
     }
-    public void choseWindow(ChoseWindowEvent choseWindowEvent){
+
+    public void sendToServer(ViewControllerEvent viewControllerEvent){
         setChanged();
-        notifyObservers(choseWindowEvent);
-    }
-    public void endTurn (EndTurnEvent endTurnEvent){
-        setChanged();
-        notifyObservers(endTurnEvent);
-    }
-    public void placeDiceFromDraft (PlaceDiceEvent placeDiceEvent){
-        setChanged();
-        notifyObservers(placeDiceEvent);
-    }
-    public void useToolCard(UseToolCardEvent useToolCardEvent){
-        setChanged();
-        notifyObservers(useToolCardEvent);
+        notifyObservers(viewControllerEvent);
     }
     public void visit(StartMatchEvent startMatchEvent){
         server.sendStartMatchEvent(startMatchEvent);
@@ -60,12 +50,10 @@ public class VirtualView extends Observable implements Observer, ViewInterface{
     public void visit (EndRoundEvent endRoundEvent){
         server.sendEndRoundEvent(endRoundEvent);
     }
-
-
-    public void visit(int removedToken){
+    /*public void visit(int removedToken){
         server.removeFavorToken(removedToken);
-    }
-    public void choseWindow(WindowSide[] windows){
+    }*/
+    public void windowToChose(WindowSide[] windows){
         server.sendWindowToChose(windows);
     }
 }

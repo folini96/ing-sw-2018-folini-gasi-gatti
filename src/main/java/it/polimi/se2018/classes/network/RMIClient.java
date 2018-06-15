@@ -1,6 +1,9 @@
 package it.polimi.se2018.classes.network;
 
+
 import it.polimi.se2018.classes.events.*;
+import it.polimi.se2018.classes.visitor.ModelViewEventVisitor;
+import it.polimi.se2018.classes.visitor.ViewControllerVisitor;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -9,7 +12,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 
-public class RMIClient implements ClientInterface {
+public class RMIClient implements ClientInterface,ModelViewEventVisitor {
    private RMIRemoteServerInterface server;
    public void main(String username){
 
@@ -27,40 +30,14 @@ public class RMIClient implements ClientInterface {
          System.err.println("Il riferimento passato non è associato a nulla!");
       }
    }
-
-   public void placeDiceFromDraft(PlaceDiceEvent placeDiceEvent){
+   public void sendToServer (ViewControllerEvent viewControllerEvent){
        try{
-           server.placeDiceFromDraft(placeDiceEvent);
+           server.sendToServer(viewControllerEvent);
        }catch (RemoteException e){
            System.out.println("Errore nella comunicazione con il server");
        }
-
    }
 
-    @Override
-    public void choseWindow(ChoseWindowEvent choseWindowEvent) {
-        try{
-            server.choseWindow(choseWindowEvent);
-        }catch (RemoteException e){
-            System.out.println("Errore nella comunicazione con il server");
-        }
-    }
-
-    public void useToolCard(UseToolCardEvent useToolCardEvent){
-        try{
-            server.useToolCard(useToolCardEvent);
-        }catch (RemoteException e){
-            System.out.println("Errore nella comunicazione con il server");
-        }
-    }
-
-    public void endTurn(EndTurnEvent endTurnEvent){
-        try{
-            server.endTurn(endTurnEvent);
-        }catch (RemoteException e){
-            System.out.println("Errore nella comunicazione con il server");
-        }
-    }
     public String askUsername(){
        return "Not implemented yet";
     }
@@ -68,20 +45,27 @@ public class RMIClient implements ClientInterface {
     public void notValideMoveMessage (Message message){
 
     }
-
-    public void removeFavorToken(){
-
-    }
-    public void sendStartMatchEvent(StartMatchEvent startMatchEvent){
+    public void sendWindowToChose(WindowToChoseEvent windowToChoseEvent){
 
     }
-    public void sendStartRoundEvent(StartRoundEvent startRoundEvent){
+    public void sendToClient(ModelViewEvent modelViewEvent){
+       modelViewEvent.accept(this);
+    }
+    public void visit(StartMatchEvent startMatchEvent){
 
     }
-    public void sendStartTurnEvent(StartTurnEvent startTurnEvent){
+    public void visit (StartRoundEvent startRoundEvent){
+
 
     }
-    public void sendEndRoundEvent(EndRoundEvent endRoundEvent){
+    public void visit (StartTurnEvent startTurnEvent){
 
     }
+    public void visit (EndRoundEvent endRoundEvent){
+
+    }
+
+
+
+
 }

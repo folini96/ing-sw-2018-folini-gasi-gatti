@@ -35,7 +35,7 @@ public class Dice implements Serializable {
      */
     public void getRandomValue(){
         Random random = new Random();
-        int randomInt = random.nextInt(5)+1;
+        int randomInt = random.nextInt(6)+1;
         this.setValue(randomInt);
 
     }

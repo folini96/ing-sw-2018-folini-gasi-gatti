@@ -1,6 +1,7 @@
 package it.polimi.se2018.classes.events;
 
 import it.polimi.se2018.classes.view.VirtualView;
+import it.polimi.se2018.classes.visitor.ModelViewEventVisitor;
 
 import java.io.Serializable;
 
@@ -12,7 +13,7 @@ public class StartTurnEvent implements ModelViewEvent, Serializable {
     public String getPlayer(){
         return player;
     }
-    public void accept(VirtualView visitor){
+    public void accept(ModelViewEventVisitor visitor){
         visitor.visit(this);
     }
 }

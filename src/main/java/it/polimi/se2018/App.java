@@ -2,10 +2,16 @@ package it.polimi.se2018;
 
 import it.polimi.se2018.classes.*;
 import it.polimi.se2018.classes.events.Message;
+import it.polimi.se2018.classes.events.StartRoundEvent;
+import it.polimi.se2018.classes.model.Dice;
 import it.polimi.se2018.classes.model.MatchHandlerModel;
+import it.polimi.se2018.classes.network.ClientInterface;
 import it.polimi.se2018.classes.network.RMIClient;
 import it.polimi.se2018.classes.network.Server;
 import it.polimi.se2018.classes.view.VirtualView;
+
+import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Hello world!
@@ -20,8 +26,6 @@ public class App
         //RMIClient client1=new RMIClient();
 
         server.main();
-
-
 
     }
 }

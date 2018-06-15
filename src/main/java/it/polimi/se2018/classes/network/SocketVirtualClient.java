@@ -45,26 +45,13 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
         }
 
     }
-    public void sendStartMatchEvent (StartMatchEvent startMatchEvent){
+    public void sendToClient(ModelViewEvent modelViewEvent){
 
     }
-    public void sendStartRoundEvent(StartRoundEvent startRoundEvent){
-
-    }
-    public void sendStartTurnEvent (StartTurnEvent startTurnEvent){
-
-    }
-    public void sendEndRoundEvent (EndRoundEvent endRoundEvent){
+    public void sendWindowToChose (WindowToChoseEvent windowToChoseEvent){
 
     }
 
-    public void sendWindow(WindowSide window){
-
-    }
-
-    public void removeFavorToken(int removedToken){
-
-    }
     public void run(){
 
     }

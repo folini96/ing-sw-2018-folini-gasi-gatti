@@ -33,23 +33,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIR
 
     }
 
-    @Override
-    public void placeDiceFromDraft(PlaceDiceEvent placeDiceEvent) {
-        server.placeDiceFromDraft(placeDiceEvent);
-    }
-
-    @Override
-    public void choseWindow(ChoseWindowEvent choseWindowEvent) {
-        server.choseWindow(choseWindowEvent);
-    }
-
-    @Override
-    public void endTurn(EndTurnEvent endTurnEvent) {
-        server.endTurn(endTurnEvent);
-    }
-
-    @Override
-    public void useToolCard(UseToolCardEvent useToolCardEvent) {
-        server.useToolCard(useToolCardEvent);
-    }
+   public void sendToServer(ViewControllerEvent viewControllerEvent){
+        server.sendToServer(viewControllerEvent);
+   }
 }

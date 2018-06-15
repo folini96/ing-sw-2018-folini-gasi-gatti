@@ -9,12 +9,8 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public interface RMIRemoteClientInterface extends Remote {
-     public String askUsername() throws RemoteException;
-     public void sendMessage(Message message) throws RemoteException;
-     public void sendWindowSide (WindowSide windowSide) throws RemoteException;
-     public void removeFavorToken(int removedFavorToken) throws RemoteException;
-     public void sendStartMatchEvent(StartMatchEvent startMatchEvent) throws RemoteException;
-     public void sendStartRoundEvent(StartRoundEvent startRoundEvent) throws RemoteException;
-     public void sendStartTurnEvent(StartTurnEvent startTurnEvent) throws RemoteException;
-     public void sendEndRoundEvent(EndRoundEvent endRoundEvent) throws RemoteException;
+     String askUsername() throws RemoteException;
+     void sendToClient(ModelViewEvent modelViewEvent) throws  RemoteException;
+     void sendWindowToChose (WindowToChoseEvent windowToChoseEvent) throws RemoteException;
+
 }

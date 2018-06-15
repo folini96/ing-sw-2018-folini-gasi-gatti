@@ -1,5 +1,6 @@
 package it.polimi.se2018.classes.events;
 
+import it.polimi.se2018.classes.visitor.ModelViewEventVisitor;
 import it.polimi.se2018.classes.model.*;
 import it.polimi.se2018.classes.view.VirtualView;
 
@@ -16,7 +17,7 @@ public class StartMatchEvent implements ModelViewEvent, Serializable{
         this.toolCards=toolCards;
     }
     @Override
-    public void accept(VirtualView visitor) {
+    public void accept(ModelViewEventVisitor visitor) {
         visitor.visit(this);
     }
 

@@ -10,6 +10,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -17,6 +18,7 @@ public class Server {
     private static int RMIPORT = 1099; // porta di default RMI
     private static int SOCKETPORT = 9000; //porta di default SOCKET
     private Timer lobbyTimer = new Timer();
+    private Timer playTimer = new Timer();
     private RMIServerImplementation rmiHandler;
     private VirtualView proxyView;
     private MatchHandlerController controller;
@@ -57,7 +59,7 @@ public class Server {
 
     }
 
-    TimerTask startMatchTask = new TimerTask() {
+    private TimerTask startMatchTask = new TimerTask() {
         public void run() {
             startMatch();
         }
@@ -109,72 +111,63 @@ public class Server {
         return true;
     }
 
-    public void placeDiceFromDraft(PlaceDiceEvent placeDiceEvent) {
-        System.out.println(placeDiceEvent.getDraftDice());
-        //proxyView.placeDiceFromDraft(placeDiceEvent);
+
+
+    public void sendToServer(ViewControllerEvent viewControllerEvent){
+        playTimer.cancel();
+        proxyView.sendToServer(viewControllerEvent);
     }
-
-    public void choseWindow(ChoseWindowEvent choseWindowEvent) {
-        proxyView.choseWindow(choseWindowEvent);
-    }
-
-    public void endTurn(EndTurnEvent endTurnEvent) {
-        proxyView.endTurn(endTurnEvent);
-    }
-
-    public void useToolCard(UseToolCardEvent useToolCardEvent) {
-        proxyView.useToolCard(useToolCardEvent);
-    }
-
-
-    public void switchDraftDiceRoundTrackDice(int draftDice, SelectedRoundTrackDice roundTrackDice) {
-
-    }
-
 
     public void notValideMoveMessage(Message message, int player) {
-        clients.get(player).notValideMoveMessage(message);
+
     }
 
     public void sendStartMatchEvent(StartMatchEvent startMatchEvent) {
         for (VirtualClientInterface client : clients) {
-            client.sendStartMatchEvent(startMatchEvent);
+            client.sendToClient(startMatchEvent);
         }
     }
 
     public void sendStartRoundEvent(StartRoundEvent startRoundEvent) {
         for (VirtualClientInterface client : clients) {
-            client.sendStartRoundEvent(startRoundEvent);
+            client.sendToClient(startRoundEvent);
         }
+
     }
 
     public void sendStartTurnEvent(StartTurnEvent startTurnEvent) {
         for (VirtualClientInterface client : clients) {
             if (client.getUsername().equals(startTurnEvent.getPlayer())) {
-                client.sendStartTurnEvent(startTurnEvent);
+                client.sendToClient(startTurnEvent);
             }
         }
+
+        TimerTask playTask = new TimerTask() {
+            public void run() {
+                sendToServer(new EndTurnEvent());
+            }
+        };
+        playTimer=new Timer();
+        playTimer.schedule(playTask,30000);
+
     }
 
     public void sendEndRoundEvent(EndRoundEvent endRoundEvent) {
         for (VirtualClientInterface client : clients) {
-            client.sendEndRoundEvent(endRoundEvent);
+            client.sendToClient(endRoundEvent);
         }
     }
 
     public void sendWindowToChose(WindowSide[] windows) {
         for (VirtualClientInterface client : clients) {
-
-            client.sendWindow(windows[clients.indexOf(client)]);
-            //DA MODIFICARE (DIVIDERE I METODI PER L'INVIO DI WINDOW DA SCEGLIERE E DA MOSTRARE)
-
+            WindowSide[] windowToSend=Arrays.copyOfRange(windows,clients.indexOf(client),clients.indexOf(client)+4);
+            client.sendWindowToChose(new WindowToChoseEvent(windowToSend));
         }
     }
 
 
-    public void removeFavorToken(int removedFavorToken) {
+    /*public void removeFavorToken(int removedFavorToken) {
         for (VirtualClientInterface client : clients) {
-            client.removeFavorToken(removedFavorToken);
-        }
-    }
+                    }
+    }*/
 }
