@@ -1,20 +1,22 @@
 package it.polimi.se2018.classes.view;
 
+import it.polimi.se2018.classes.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * class controller for the settings GUI
+ * @author Leonard Gasi
+ */
 public class settingsController implements Initializable {
 
     private static final String SOCKET_CONNESSION = "Socket";
@@ -26,56 +28,60 @@ public class settingsController implements Initializable {
 
     @FXML
     private ComboBox<String> connectionComboBox;
-
     @FXML
     private ComboBox<String> playerModeComboBox;
-
     @FXML
     private TextField serverAddressTextField;
-
-
 
     ObservableList<String> connectionList = FXCollections.observableArrayList(SOCKET_CONNESSION,RMI_CONNECTION);
     ObservableList<String> playerModeList = FXCollections.observableArrayList(MULTI_PLAYER,SINGLE_PLAYER);
 
+    /**
+     * Initialization of the two Combo Boxes
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         connectionComboBox.setItems(connectionList);
         playerModeComboBox.setItems(playerModeList);
     }
 
-    public void serverAddressTextFieldManager(ActionEvent event){
+    /**
+     * abilitate serverAddressTextField if socket connection is chosen
+     * @param event action on connectionComboBox
+     */
+    @FXML
+    private void serverAddressTextFieldManager(ActionEvent event){
         if (connectionComboBox.getValue().equals(SOCKET_CONNESSION))
             serverAddressTextField.setDisable(false);
         else
             serverAddressTextField.setDisable(true);
     }
-    public void confirmButtonClicked(ActionEvent event) throws Exception {
+
+    /**
+     * validate the settings
+     * @param event confirmButtonClicked
+     * @throws Exception
+     */
+    @FXML
+    private void confirmButtonClicked(ActionEvent event) throws Exception {
 
         final String INVALID_IP_MESSAGE = "Inserisci un formato IP valido!";
         final String NULL_CONNECTION_COMBO_BOX_MESSAGE = "Scegli una connessione!";
         final String NULL_PLAYER_MODE_COMBO_BOX_MESSAGE = "Scegli una modalità di gioco!";
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(null);
-
-
         if (connectionComboBox.getSelectionModel().isEmpty()){
-            alert.setContentText(NULL_CONNECTION_COMBO_BOX_MESSAGE);
-            alert.showAndWait();
+            ViewModel.alertMessage(NULL_CONNECTION_COMBO_BOX_MESSAGE);
             return;
         }
 
         if (playerModeComboBox.getSelectionModel().isEmpty()){
-            alert.setContentText((NULL_PLAYER_MODE_COMBO_BOX_MESSAGE));
-            alert.showAndWait();
+            ViewModel.alertMessage(NULL_PLAYER_MODE_COMBO_BOX_MESSAGE);
             return;
         }
 
         if (connectionComboBox.getValue().equals(SOCKET_CONNESSION))
             if (!(ViewModel.isIP(serverAddressTextField.getText()))){
-                alert.setContentText(INVALID_IP_MESSAGE);
-                alert.showAndWait();
+                ViewModel.alertMessage(INVALID_IP_MESSAGE);
                 serverAddressTextField.setText("");
                 return;
             }
@@ -84,11 +90,11 @@ public class settingsController implements Initializable {
 
         //SCEGLI MODALITà PARTITA
 
+
+        //Da modificare
         ((Node)(event.getSource())).getScene().getWindow().hide();
         Stage newStage = ViewModel.showNewStage("userName.fxml");
         newStage.setResizable((false));
-
-
 
     }
 }
