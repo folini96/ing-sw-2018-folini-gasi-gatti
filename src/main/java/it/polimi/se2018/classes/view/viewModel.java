@@ -8,7 +8,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
-public class viewModel {
+public class ViewModel {
 
     /**
      * verify if a given String is a correct IP format

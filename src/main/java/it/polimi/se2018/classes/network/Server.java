@@ -19,11 +19,13 @@ public class Server {
     private static int SOCKETPORT = 9000; //porta di default SOCKET
     private Timer lobbyTimer = new Timer();
     private Timer playTimer = new Timer();
+    public static int LOBBYTIME=5;
+    public int passedTime;
     private RMIServerImplementation rmiHandler;
     private VirtualView proxyView;
     private MatchHandlerController controller;
     private ArrayList<VirtualClientInterface> clients = new ArrayList<VirtualClientInterface>();
-
+    private ArrayList<VirtualClientInterface> disconnectedClients = new ArrayList<>();
     public void main() {
         rmiMain();
         socketMain();
@@ -61,7 +63,14 @@ public class Server {
 
     private TimerTask startMatchTask = new TimerTask() {
         public void run() {
-            startMatch();
+            passedTime++;
+            if (passedTime==LOBBYTIME){
+                lobbyTimer.cancel();
+                startMatch();
+            }
+            for (VirtualClientInterface client:clients){
+                //client.ping()
+            }
         }
     };
 
@@ -84,18 +93,21 @@ public class Server {
 
         }
     }
+    public synchronized void removePlayer (VirtualClientInterface player){
 
+    }
     public void startLobby() {
-        lobbyTimer.schedule(startMatchTask, 60000);
+        lobbyTimer.schedule(startMatchTask,1000, 1000);
+
     }
 
     public void startMatch() {
-        String[] usernames = new String[4];
-        proxyView = new VirtualView();
+        ArrayList<String> usernames = new ArrayList<>();
+        proxyView = new VirtualView(this);
         controller = new MatchHandlerController(proxyView);
         proxyView.addObserver(controller);
         for (VirtualClientInterface client : clients) {
-            usernames[clients.indexOf(client)] = client.getUsername();
+            usernames.add (client.getUsername());
         }
 
         controller.handleStartMatch(usernames);
@@ -114,7 +126,7 @@ public class Server {
 
 
     public void sendToServer(ViewControllerEvent viewControllerEvent){
-        playTimer.cancel();
+        //playTimer.cancel();
         proxyView.sendToServer(viewControllerEvent);
     }
 
@@ -142,13 +154,13 @@ public class Server {
             }
         }
 
-        TimerTask playTask = new TimerTask() {
+        /*TimerTask playTask = new TimerTask() {
             public void run() {
                 sendToServer(new EndTurnEvent());
             }
         };
-        playTimer=new Timer();
-        playTimer.schedule(playTask,30000);
+        //playTimer=new Timer();
+        //playTimer.schedule(playTask,30000);*/
 
     }
 
@@ -160,7 +172,8 @@ public class Server {
 
     public void sendWindowToChose(WindowSide[] windows) {
         for (VirtualClientInterface client : clients) {
-            WindowSide[] windowToSend=Arrays.copyOfRange(windows,clients.indexOf(client),clients.indexOf(client)+4);
+            int windowPosition=clients.indexOf(client)*4;
+            WindowSide[] windowToSend=Arrays.copyOfRange(windows,windowPosition,windowPosition+4);
             client.sendWindowToChose(new WindowToChoseEvent(windowToSend));
         }
     }

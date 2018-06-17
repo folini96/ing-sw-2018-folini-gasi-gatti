@@ -9,8 +9,9 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public interface RMIRemoteClientInterface extends Remote {
-     String askUsername() throws RemoteException;
+     void askUsername() throws RemoteException;
      void sendToClient(ModelViewEvent modelViewEvent) throws  RemoteException;
      void sendWindowToChose (WindowToChoseEvent windowToChoseEvent) throws RemoteException;
-
+     void okUsername(String username)throws  RemoteException;
+     void ping() throws RemoteException;
 }

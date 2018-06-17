@@ -1,20 +1,28 @@
 package it.polimi.se2018.classes.view;
 
 import it.polimi.se2018.classes.model.*;
+import it.polimi.se2018.classes.view.ViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import sun.nio.ch.WindowsAsynchronousFileChannelImpl;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class privateObjCardSelectionController implements Initializable {
+public class WindowSelectionController implements Initializable {
 
-    final private static String URL = "";
-
+    final private static String URL = "/img/";
+    private GUIHandler guiHandler;
 
     @FXML
     private ImageView window1ImageView = new ImageView();
@@ -28,7 +36,7 @@ public class privateObjCardSelectionController implements Initializable {
     // ImageView array for Windows
     private ImageView[] windowsImageViewArray;
 
-    viewModel model = new viewModel();
+    ViewModel viewModel = new ViewModel();
 
     private int selected = -1;
     private String userName;
@@ -63,9 +71,9 @@ public class privateObjCardSelectionController implements Initializable {
         selected = 3;
     }
     @FXML
-    private void setToolCardImageView( ToolCard[] toolCards){
+    public void setWindowImageView( WindowSide[] windowSides){
         for (int i=0;i<4;i++){
-            Image image = new Image(URL+toolCards[i].getName()+".jpg");
+            Image image = new Image(getClass().getResource(URL+windowSides[i].getName()+".jpg").toExternalForm());
             windowsImageViewArray[i].setImage(image);
         }
     }
@@ -74,12 +82,30 @@ public class privateObjCardSelectionController implements Initializable {
 
         if (selected==-1){
             final String SELECT_A_WINDOW_MESSAGE = "Seleziona una finestra!";
-            model.alertMessage(SELECT_A_WINDOW_MESSAGE);
+            viewModel.alertMessage(SELECT_A_WINDOW_MESSAGE);
             return;
         }
+        ((Node)event.getSource()).getScene().getWindow().hide();
+        try{
 
-        model.alertMessage(Integer.toString(selected));
-        //notifica numero finestra selezionata
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/fxml/mainScreen.fxml"));
+            Parent root = loader.load();
+            guiHandler.setMainScreenController(loader.getController());
+            Stage primaryStage = new Stage();
+            primaryStage.setTitle("Sagrada");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+            primaryStage.setResizable(false);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
+        guiHandler.sendChosenWindow(selected);
+
+
+    }
+    public void setGuiHandler(GUIHandler guiHandler){
+        this.guiHandler=guiHandler;
     }
 }

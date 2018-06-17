@@ -47,14 +47,14 @@ public class MatchHandlerModel extends Observable {
     public void addPlayer(Player player){
         players.add(player);
     }
-    public void prepareMatch(int playerNumber, String[] playerNames){
-        int i;
+    public void prepareMatch(int playerNumber, ArrayList<String> playerNames){
         this.playerNumber=playerNumber;
-        for (i=0;i<playerNumber;i++){
-            addPlayer(new Player(playerNames[i],privateObjDeck[i]));
+        for (String name:playerNames){
+            addPlayer(new Player(name,privateObjDeck[playerNames.indexOf(name)]));
         }
     }
     public void startMatch(){
+        setChanged();
         notifyObservers(new StartMatchEvent(players, publicObjDeck, toolDeck));
     }
 

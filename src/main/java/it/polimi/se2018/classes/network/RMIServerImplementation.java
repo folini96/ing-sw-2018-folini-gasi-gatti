@@ -17,23 +17,29 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIR
     }
 
     @Override
-    public void addClient(RMIRemoteClientInterface client, String firstUsername) throws RemoteException {
-        String username=firstUsername;
+    public void addClient(RMIRemoteClientInterface client, String username) throws RemoteException {
 
-        while (!server.checkUsername(username)){
-            System.out.println("The username "+username+" is already used. Waiting for another username");
+
+       if(!server.checkUsername(username)){
+
             try{
-                username=client.askUsername();
+                client.askUsername();
             }catch(RemoteException e){
                 System.out.println("Errore di comunicazione con il client RMI ");
             }
 
-        }
-        server.addClient(new RMIVirtualClient(client, username));
+       }else{
+           client.okUsername(username);
+           server.addClient(new RMIVirtualClient(client, username));
+       }
+
 
     }
 
    public void sendToServer(ViewControllerEvent viewControllerEvent){
         server.sendToServer(viewControllerEvent);
+   }
+   public void ping()throws  RemoteException{
+      //METODO VUOTO USATO SOLO PER CONTROLLARE CHE IL CLIENT SIA ANCORA CONNESSO
    }
 }

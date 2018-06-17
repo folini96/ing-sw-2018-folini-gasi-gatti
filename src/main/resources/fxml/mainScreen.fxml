@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.classes.view.mainScreenController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.classes.view.MainScreenController">
     <children>
         <GridPane fx:id="player1GridPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="150.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
             <children>
@@ -144,7 +144,7 @@
                 <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="50.0" layoutY="10.0" onMouseClicked="#selectedWindowBoxEvent" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" />
                 <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#selectedWindowBoxEvent" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
                     <image>
-                        <Image url="@img/BLU5.jpg" />
+                        <Image url="@../../java/it/polimi/se2018/classes/view/img/BLU5.jpg" />
                     </image></ImageView>
                 <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#selectedWindowBoxEvent" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
                 <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#selectedWindowBoxEvent" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -198,15 +198,15 @@
                 <ImageView fitHeight="40.0" fitWidth="40.0" onMouseClicked="#selectedReserveDiceEvent" pickOnBounds="true" preserveRatio="true" />
                 <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#selectedReserveDiceEvent" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
                     <image>
-                        <Image url="@img/GIALLO2.jpg" />
+                        <Image url="@../../java/it/polimi/se2018/classes/view/img/GIALLO2.jpg" />
                     </image></ImageView>
                 <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#selectedReserveDiceEvent" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
                     <image>
-                        <Image url="@img/ROSSO6.jpg" />
+                        <Image url="@../../java/it/polimi/se2018/classes/view/img/ROSSO6.jpg" />
                     </image></ImageView>
                 <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#selectedReserveDiceEvent" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
                     <image>
-                        <Image url="@img/VIOLA5.jpg" />
+                        <Image url="@../../java/it/polimi/se2018/classes/view/img/VIOLA5.jpg" />
                     </image></ImageView>
                 <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#selectedReserveDiceEvent" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" />
                 <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#selectedReserveDiceEvent" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" />
@@ -337,17 +337,17 @@
             <children>
                 <ImageView fx:id="toolCard1ImageView" fitHeight="150.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@img/TC13.jpg" />
+                        <Image url="@../../java/it/polimi/se2018/classes/view/img/TC13.jpg" />
                     </image>
                 </ImageView>
                 <ImageView fx:id="toolCard2ImageView" fitHeight="150.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@img/TC8.jpg" />
+                        <Image url="@../../java/it/polimi/se2018/classes/view/img/TC8.jpg" />
                     </image>
                 </ImageView>
                 <ImageView fx:id="toolCard3ImageView" fitHeight="150.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@img/TC4.jpg" />
+                        <Image url="@../../java/it/polimi/se2018/classes/view/img/TC4.jpg" />
                     </image>
                 </ImageView>
             </children>
@@ -356,17 +356,17 @@
             <children>
                 <ImageView fx:id="publicObject1ImageView" fitHeight="150.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@img/PU10.jpg" />
+                        <Image url="@../../java/it/polimi/se2018/classes/view/img/PU10.jpg" />
                     </image>
                 </ImageView>
                 <ImageView fx:id="publicObject2ImageView" fitHeight="150.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@img/PU2.jpg" />
+                        <Image url="@../../java/it/polimi/se2018/classes/view/img/PU2.jpg" />
                     </image>
                 </ImageView>
                 <ImageView fx:id="publicObject3ImageView" fitHeight="150.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@img/PU8.jpg" />
+                        <Image url="@../../java/it/polimi/se2018/classes/view/img/PU8.jpg" />
                     </image>
                 </ImageView>
             </children>
@@ -375,7 +375,7 @@
         <Label layoutX="597.0" layoutY="237.0" prefHeight="17.0" prefWidth="56.0" text="Tool cards" textAlignment="CENTER" AnchorPane.bottomAnchor="346.0" AnchorPane.rightAnchor="147.0" />
         <ImageView fx:id="privateObjectImageView" fitHeight="150.0" fitWidth="108.0" layoutX="329.0" layoutY="454.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="400.0">
             <image>
-                <Image url="@img/VIOLA.jpg" />
+                <Image url="@../../java/it/polimi/se2018/classes/view/img/VIOLA.jpg" />
             </image>
         </ImageView>
         <Label layoutX="303.0" layoutY="419.0" prefHeight="17.0" prefWidth="91.0" text="Obiettivo privato" textAlignment="CENTER" AnchorPane.bottomAnchor="164.0" AnchorPane.rightAnchor="406.0" />

@@ -17,15 +17,15 @@ import java.util.ResourceBundle;
  * class controller for the settings GUI
  * @author Leonard Gasi
  */
-public class settingsController implements Initializable {
+public class SettingsController implements Initializable {
 
     private static final String SOCKET_CONNESSION = "Socket";
     private static final String RMI_CONNECTION = "RMI";
     private static final String MULTI_PLAYER = "Multi player";
     private static final String SINGLE_PLAYER = "Single player";
 
-    private viewModel ViewModel = new viewModel();
-
+    private ViewModel viewModel = new ViewModel();
+    private GUIHandler guiHandler;
     @FXML
     private ComboBox<String> connectionComboBox;
     @FXML
@@ -70,18 +70,18 @@ public class settingsController implements Initializable {
         final String NULL_PLAYER_MODE_COMBO_BOX_MESSAGE = "Scegli una modalità di gioco!";
 
         if (connectionComboBox.getSelectionModel().isEmpty()){
-            ViewModel.alertMessage(NULL_CONNECTION_COMBO_BOX_MESSAGE);
+            viewModel.alertMessage(NULL_CONNECTION_COMBO_BOX_MESSAGE);
             return;
         }
 
         if (playerModeComboBox.getSelectionModel().isEmpty()){
-            ViewModel.alertMessage(NULL_PLAYER_MODE_COMBO_BOX_MESSAGE);
+            viewModel.alertMessage(NULL_PLAYER_MODE_COMBO_BOX_MESSAGE);
             return;
         }
 
         if (connectionComboBox.getValue().equals(SOCKET_CONNESSION))
-            if (!(ViewModel.isIP(serverAddressTextField.getText()))){
-                ViewModel.alertMessage(INVALID_IP_MESSAGE);
+            if (!(viewModel.isIP(serverAddressTextField.getText()))){
+                viewModel.alertMessage(INVALID_IP_MESSAGE);
                 serverAddressTextField.setText("");
                 return;
             }
@@ -92,9 +92,13 @@ public class settingsController implements Initializable {
 
 
         //Da modificare
+        guiHandler.setClientType(RMI_CONNECTION);
         ((Node)(event.getSource())).getScene().getWindow().hide();
-        Stage newStage = ViewModel.showNewStage("userName.fxml");
-        newStage.setResizable((false));
+        guiHandler.userNameStage();
 
     }
+    public void setGuiHandler(GUIHandler guiHandler){
+        this.guiHandler=guiHandler;
+    }
+
 }

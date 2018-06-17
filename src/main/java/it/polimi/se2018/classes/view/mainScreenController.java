@@ -23,17 +23,20 @@ import java.util.ResourceBundle;
  * @author Leonard Gasi
  */
 
-public class mainScreenController implements Initializable {
+public class MainScreenController implements Initializable {
 
 
     // URL of pictures
-    private final static String URL = "view/img/";
+    private final static String URL = "/img/";
     //name of the empty space picture
     private static final String EMPTY_SPACE_FILE_NAME = "VUOTO";
     //private object card prefix
     private static final String PRIVATE_OBJECT_CARD_PREFIX = "PO";
-    viewModel GUImodel = new viewModel();
+    //tool card prefix
+    private static final String TOOL_CARD_PREFIX = "TC";
 
+    private ViewModel guiModel = new ViewModel();
+    private GUIHandler guiHandler;
     @FXML
     private Label roundLabel = new Label();
     @FXML
@@ -191,7 +194,7 @@ public class mainScreenController implements Initializable {
      * set other players name
      * @param players array with the players
      */
-    private void setOtherPlayersName(ArrayList<Player> players){
+    public void setOtherPlayersName(ArrayList<Player> players){
         for (Player player: players ){
             if (!player.getName().equals(playersName.get(0))){
                 playersName.add(player.getName());
@@ -231,20 +234,20 @@ public class mainScreenController implements Initializable {
     }
 
     private void setPrivateObjectImageView(PrivateObjCard privateObjCard){
-        Image image = new Image(URL + PRIVATE_OBJECT_CARD_PREFIX + privateObjCard.getColor().name() + ".jpg");
+        Image image = new Image(getClass().getResource(URL + PRIVATE_OBJECT_CARD_PREFIX + privateObjCard.getColor().name() + ".jpg").toExternalForm());
         privateObjectImageView.setImage(image);
     }
 
     private void setPublicObjectImageView(PublicObjCard[] publicObjCards){
         for (int i=0;i<3;i++){
-            Image image = new Image(URL+publicObjCards[i].getName()+".jpg");
+            Image image = new Image(getClass().getResource(URL + publicObjCards[i].getName() + ".jpg").toExternalForm());
             publicObjectImageViewArray[i].setImage(image);
         }
     }
 
     private void setToolCardImageView(ToolCard[] toolCards){
         for (int i=0;i<3;i++){
-            Image image = new Image(URL+toolCards[i].getName()+".jpg");
+            Image image = new Image(getClass().getResource(URL+TOOL_CARD_PREFIX + Integer.toString(toolCards[i].getNumber())+".jpg").toExternalForm());
             publicObjectImageViewArray[i].setImage(image);
         }
     }
@@ -313,7 +316,7 @@ public class mainScreenController implements Initializable {
 
     public void configGUI(ArrayList<Player> players, PublicObjCard[] publicObjCards, ToolCard[] toolCards){
         setOtherPlayersName(players);
-        setToolCardImageView(toolCards);
+       // setToolCardImageView(toolCards);
         setPublicObjectImageView(publicObjCards);
 
         for (Player player:players){
@@ -390,7 +393,7 @@ public class mainScreenController implements Initializable {
         final String NO_TOOL_CARD_MESSAGE = "Seleziona una Tool Card!";
         // segnala che si vuole utilizzare una tool card
         if (selectedToolCard==-1){
-            GUImodel.alertMessage(NO_TOOL_CARD_MESSAGE);
+            guiModel.alertMessage(NO_TOOL_CARD_MESSAGE);
             return;
         }
         // segnala la tool card da utilizzare con selectedToolCard
@@ -408,7 +411,7 @@ public class mainScreenController implements Initializable {
         disableMainPlayerButtons();
         if (reserveSelectedDice==-1){
             final String NO_SELECTION_MESSAGE = "Seleziona un dado dalla riserva!";
-            GUImodel.alertMessage(NO_SELECTION_MESSAGE);
+            guiModel.alertMessage(NO_SELECTION_MESSAGE);
             enableMainPlayerButtons();
             return;
         }
@@ -453,5 +456,7 @@ public class mainScreenController implements Initializable {
 
 
     }
-
+    public void setGuiHandler(GUIHandler guiHandler){
+        this.guiHandler=guiHandler;
+    }
 }

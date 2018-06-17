@@ -14,14 +14,11 @@ import java.util.Observer;
 
 public class VirtualView extends Observable implements Observer, ViewInterface,ModelViewEventVisitor {
     Server server;
-    MatchHandlerController controller;
-    public VirtualView(Server server, MatchHandlerController controller){
+    public VirtualView(Server server){
         this.server=server;
-        this.controller=controller;
-    }
-    public VirtualView(){
 
     }
+
 
 
     @Override

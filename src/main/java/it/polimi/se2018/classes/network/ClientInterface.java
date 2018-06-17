@@ -1,6 +1,7 @@
 package it.polimi.se2018.classes.network;
 
 import it.polimi.se2018.classes.events.*;
+import it.polimi.se2018.classes.view.GUIHandler;
 import it.polimi.se2018.classes.visitor.ViewControllerVisitor;
 
 import java.net.MalformedURLException;
@@ -11,6 +12,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
 public interface ClientInterface {
-     void main(String username);
+     void main(String username, GUIHandler interfaceHandler);
      void sendToServer(ViewControllerEvent viewControllerVisitor);
+     void newUsername(String username);
 }

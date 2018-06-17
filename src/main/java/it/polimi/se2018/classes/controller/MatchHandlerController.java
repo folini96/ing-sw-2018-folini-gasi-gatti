@@ -19,9 +19,9 @@ import java.util.Observer;
 import java.util.Random;
 
 public class MatchHandlerController implements Observer,ViewControllerVisitor {
-    private int playerNumber;
+    private int playerNumber=0;
     private ArrayList<ChoseWindowEvent> chosenWindow=new ArrayList<>();
-    private String[] playerNames;
+    private ArrayList<String> playerNames;
     private WindowSide[] windowSides;
     private MatchHandlerModel matchHandlerModel;
     private VirtualView view;
@@ -34,10 +34,8 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         this.view =view;
     }
 
-    public void handleStartMatch(String[] usernames){
-        for(String name:usernames){
-            playerNumber++;
-        }
+    public void handleStartMatch(ArrayList<String> usernames){
+        playerNumber=usernames.size();
         round=0;
         Random random = new Random();
         int randomInt = random.nextInt(playerNumber-1);
