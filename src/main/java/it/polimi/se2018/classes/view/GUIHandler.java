@@ -1,9 +1,8 @@
 package it.polimi.se2018.classes.view;
 
 import com.sun.scenario.Settings;
-import it.polimi.se2018.classes.events.ChoseWindowEvent;
-import it.polimi.se2018.classes.events.StartMatchEvent;
-import it.polimi.se2018.classes.events.WindowToChoseEvent;
+import it.polimi.se2018.classes.events.*;
+import it.polimi.se2018.classes.model.Player;
 import it.polimi.se2018.classes.network.ClientInterface;
 import it.polimi.se2018.classes.network.RMIClient;
 import it.polimi.se2018.classes.network.SocketClient;
@@ -54,6 +53,7 @@ public class GUIHandler {
     }
     public void setMainScreenController(MainScreenController mainScreenController){
         this.mainScreenController=mainScreenController;
+        mainScreenController.setGuiHandler(this);
     }
     public void userNameStage(){
         try{
@@ -117,6 +117,11 @@ public class GUIHandler {
         virtualServer.sendToServer(new ChoseWindowEvent(chosenWindow,username));
     }
     public void startMatch(StartMatchEvent startMatchEvent){
+        for (Player player:startMatchEvent.getPlayers()){
+            System.out.println(player.getName());
+            System.out.println(player.getWindow().getName());
+            System.out.println(player.getPrivateObj().getColor());
+        }
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -124,6 +129,12 @@ public class GUIHandler {
                 mainScreenController.configGUI(startMatchEvent.getPlayers(),startMatchEvent.getPublicObjCards(),startMatchEvent.getToolCards());
             }
         });
+    }
+    public void startRound(StartRoundEvent startRoundEvent){
+        mainScreenController.updateRound(startRoundEvent.getDraftPool(),startRoundEvent.getRound());
+    }
+    public void startTurn(StartTurnEvent startTurnEvent){
+
     }
 
 }

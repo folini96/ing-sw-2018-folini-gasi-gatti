@@ -183,7 +183,7 @@ public class MainScreenController implements Initializable {
     }
 
     private int getIndex(String name){
-        for (int i=0; i<3; i++){
+        for (int i=0; i<4; i++){
             if (name.equals(playersName.get(i)))
                 return i;
         }
@@ -194,12 +194,15 @@ public class MainScreenController implements Initializable {
      * set other players name
      * @param players array with the players
      */
-    public void setOtherPlayersName(ArrayList<Player> players){
+    private void setOtherPlayersName(ArrayList<Player> players){
+
         for (Player player: players ){
             if (!player.getName().equals(playersName.get(0))){
                 playersName.add(player.getName());
             }
+
         }
+
     }
 
     /** set main player name
@@ -207,13 +210,14 @@ public class MainScreenController implements Initializable {
      */
     public void setMainPlayerName(String name){
         playersName.add(name);
+
     }
 
     /**
      *
      * @param round number that will be shown in round_label
      */
-    public void setRoundLabel( int round){
+    private void setRoundLabel( int round){
         roundLabel.setText( Integer.toString(round));
     }
 
@@ -264,6 +268,7 @@ public class MainScreenController implements Initializable {
     public void updateScheme(String name, WindowSide windowSide ){
         int p = getIndex(name);
         String resourceName;
+        System.out.println(p);
         for (int i=0;i<4;i++){
             for (int j=0;j<5;j++){
                 if (windowSide.getBoxScheme()[i][j].getDice()!=null){
@@ -283,9 +288,10 @@ public class MainScreenController implements Initializable {
         }
     }
 
-    public void updateRound(Round round){
-        List<Dice> dices = round.getLeftDices();
+    public void updateRound(ArrayList<Dice> draftPool, int round){
+        List<Dice> dices = draftPool;
         String url;
+        setRoundLabel(round);
         for (int i=0; i<9; i++){
             if (dices.isEmpty()){
                 url = EMPTY_SPACE_FILE_NAME;
@@ -318,7 +324,7 @@ public class MainScreenController implements Initializable {
         setOtherPlayersName(players);
        // setToolCardImageView(toolCards);
         setPublicObjectImageView(publicObjCards);
-
+        setCurrentPlayerLabel(playersName.get(0));
         for (Player player:players){
             setPlayerSFLabel(player.getName(),player.getToken());
             updateScheme(player.getName(),player.getWindow());

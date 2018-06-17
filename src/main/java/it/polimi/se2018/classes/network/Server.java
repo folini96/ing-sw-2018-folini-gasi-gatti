@@ -19,7 +19,7 @@ public class Server {
     private static int SOCKETPORT = 9000; //porta di default SOCKET
     private Timer lobbyTimer = new Timer();
     private Timer playTimer = new Timer();
-    public static int LOBBYTIME=5;
+    public static int LOBBYTIME=10;
     public int passedTime;
     private RMIServerImplementation rmiHandler;
     private VirtualView proxyView;

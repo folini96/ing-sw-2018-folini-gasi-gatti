@@ -70,10 +70,11 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
         interfaceHandler.startMatch(startMatchEvent);
     }
     public void visit (StartRoundEvent startRoundEvent){
-
+        interfaceHandler.startRound(startRoundEvent);
 
     }
     public void visit (StartTurnEvent startTurnEvent){
+       interfaceHandler.startTurn(startTurnEvent);
 
     }
     public void visit (EndRoundEvent endRoundEvent){

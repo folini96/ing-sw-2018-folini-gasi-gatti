@@ -72,6 +72,9 @@ public class WindowSelectionController implements Initializable {
     }
     @FXML
     public void setWindowImageView( WindowSide[] windowSides){
+        for (int j=0;j<4;j++){
+            System.out.println(windowSides[j].getName());
+        }
         for (int i=0;i<4;i++){
             Image image = new Image(getClass().getResource(URL+windowSides[i].getName()+".jpg").toExternalForm());
             windowsImageViewArray[i].setImage(image);
