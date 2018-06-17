@@ -320,7 +320,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         }catch (FileNotFoundException e){
             System.out.println("File JSON non trovato");
         }
-        for (i=0; i<2; i++){
+        for (i=0; i<3; i++){
             do{
                 Random random = new Random();
                 randomInt = random.nextInt(12);
