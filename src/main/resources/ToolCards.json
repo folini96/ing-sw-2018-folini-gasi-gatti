@@ -18,8 +18,7 @@
       "colorBound": "1",
       "valueBound": "1",
       "vicinityBound": "1",
-      "setValue": "0",
-      "typeofmodify" : "upordownvalue"
+      "typeofeffect": "upordownvalue"
     },
     {
       "name": "Pennello per Eglomise",
@@ -39,8 +38,7 @@
       "colorBound": "0",
       "valueBound": "1",
       "vicinityBound": "1",
-      "setValue": "0",
-      "typeofmodify" : "null"
+      "typeofeffect": "null"
     },
     {
       "name": "Alesatore per lamina di rame",
@@ -60,8 +58,7 @@
       "colorBound": "1",
       "valueBound": "0",
       "vicinityBound": "1",
-      "setValue": "0",
-      "typeofmodify" : "null"
+      "typeofeffect": "null"
     },
     {
       "name": "Lathekin",
@@ -81,8 +78,7 @@
       "colorBound": "1",
       "valueBound": "1",
       "vicinityBound": "1",
-      "setValue": "0",
-      "typeofmodify" : "null"
+      "typeofeffect": "null"
     },
     {
       "name": "Taglierina circolare",
@@ -102,8 +98,7 @@
       "colorBound": "1",
       "valueBound": "1",
       "vicinityBound": "1",
-      "setValue": "0",
-      "typeofmodify" : "null"
+      "typeofeffect": "draftpoolroundtrackexchange"
     },
     {
       "name": "Pennello per Pasta Salda",
@@ -123,8 +118,7 @@
       "colorBound": "1",
       "valueBound": "1",
       "vicinityBound": "1",
-      "setValue": "0",
-      "typeofmodify" : "newrandomvalue"
+      "typeofeffect": "newrandomvalue"
     },
     {
       "name": "Martelletto",
@@ -144,8 +138,7 @@
       "colorBound": "1",
       "valueBound": "1",
       "vicinityBound": "1",
-      "setValue": "0",
-      "typeofmodify" : "null"
+      "typeofeffect": "null"
     },
     {
       "name": "Tenaglia a Rotelle",
@@ -164,8 +157,7 @@
       "blockedFirstTurn": "0",
       "colorBound": "1",
       "valueBound": "1",
-      "setValue": "0",
-      "typeofmodify" : "null"
+      "typeofeffect": "null"
     },
     {
       "name": "Riga in Sughero",
@@ -185,8 +177,7 @@
       "colorBound": "1",
       "valueBound": "1",
       "vicinityBound": "0",
-      "setValue": "0",
-      "typeofmodify" : "null"
+      "typeofeffect": "null"
     },
     {
       "name": "Tampone Diamantato",
@@ -206,8 +197,7 @@
       "colorBound": "1",
       "valueBound": "1",
       "vicinityBound": "1",
-      "setValue": "0",
-      "typeofmodify" : "rotatedice"
+      "typeofeffect": "rotatedice"
     },
     {
       "name": "Diluente per Pasta Salda",
@@ -227,8 +217,7 @@
       "colorBound": "1",
       "valueBound": "1",
       "vicinityBound": "1",
-      "setValue": "1",
-      "typeofmodify" : "null"
+      "typeofeffect": "draftpoolbagexchange"
     },
     {
       "name": "Taglierina Manuale",
@@ -248,8 +237,7 @@
       "colorBound": "1",
       "valueBound": "1",
       "vicinityBound": "1",
-      "setValue": "0",
-      "typeofmodify" : "null"
+      "typeofeffect": "null"
     }
   ]
 }

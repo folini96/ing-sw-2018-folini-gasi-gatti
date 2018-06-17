@@ -2,6 +2,8 @@ package it.polimi.se2018.classes.controller;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import it.polimi.se2018.classes.effects.Effect;
+import it.polimi.se2018.classes.effects.EffectType;
 import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.events.PlaceDiceEvent;
 import it.polimi.se2018.classes.model.*;
@@ -219,6 +221,117 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         windowSides=chosenWindows;
         return chosenWindows;
     }
+
+    public ToolCard[] parseToolCard(){
+
+        int i, randomInt;
+        ToolCard[] toolCards = new ToolCard[12];
+        ToolCard[] chosenToolCards = new ToolCard[3];
+        ArrayList<Integer> NotAvailable = new ArrayList<>();
+        JsonParser toolCardParser = new JsonParser();
+        try{
+            JsonObject toolCardArray = (JsonObject) toolCardParser.parse(new FileReader("src/main/resources/ToolCards.json"));
+            JsonArray cards= toolCardArray.get("toolcards").getAsJsonArray();
+            int currentCard=0;
+            for (Object o: cards){
+                JsonObject card = (JsonObject) o;
+                String name=card.get("name").getAsString();
+                int number=card.get("number").getAsInt();
+                int token=card.get("tokrn").getAsInt();
+                String colorCard=card.get("color").getAsString();
+                Color color=null;
+                switch (colorCard){
+                    case "rosso":
+                        color=Color.ROSSO;
+                        break;
+                    case "giallo":
+                        color=Color.GIALLO;
+                        break;
+                    case "blu":
+                        color=Color.BLU;
+                        break;
+                    case "verde":
+                        color=Color.VERDE;
+                        break;
+                    case "viola":
+                        color=Color.VIOLA;
+                        break;
+                }
+                String effectCard=card.get("effect").getAsString();
+                Effect effect=null;
+                switch (effectCard){
+                    case "modify":
+                        effect=Effect.MODIFY;
+                        break;
+                    case "move":
+                        effect=Effect.MOVE;
+                        break;
+                    case "exchange":
+                        effect=Effect.EXCHANGE;
+                        break;
+                    case "rerolldraftpooldices":
+                        effect=Effect.REROLLDRAFTPOOL;
+                        break;
+                    case "secondplacement":
+                        effect=Effect.SECONDPLACEMENT;
+                        break;
+                    case "placementwithoutvicinity":
+                        effect=Effect.PLACEMENTWITHOUTVICINITY;
+                        break;
+                }
+                boolean doubleDice=card.get("doubleDice").getAsBoolean();
+                boolean allDices=card.get("allDices").getAsBoolean();
+                boolean twoTurnsInOne=card.get("twoTurnsInOne").getAsBoolean();
+                boolean takeFromDraftPool=card.get("takeFromDraftPool").getAsBoolean();
+                boolean selectFromWindow=card.get("selectFromWindow").getAsBoolean();
+                boolean takeFromRoundTrack=card.get("takeFromRoundTrack").getAsBoolean();
+                boolean takeFromDiceBag=card.get("takeFromDiceBag").getAsBoolean();
+                boolean blockedAfterPlacement=card.get("blockedAfterPlacement").getAsBoolean();
+                boolean blockedFirstTurn=card.get("blockedFirstTurn").getAsBoolean();
+                boolean colorBound=card.get("colorBound").getAsBoolean();
+                boolean valueBound=card.get("valueBound").getAsBoolean();
+                boolean vicinityBound=card.get("vicinityBound").getAsBoolean();
+                String typeOfEffectCard=card.get("typeofeffect").getAsString();
+                EffectType typeOfEffect=null;
+                switch (typeOfEffectCard){
+                    case "upordownvalue":
+                        typeOfEffect=EffectType.UPORDOWNVALUEMODIFY;
+                        break;
+                    case "draftpoolroundtrackexchange":
+                        typeOfEffect=EffectType.DRAFTPOOLROUNDTRACKEXCHANGE;
+                        break;
+                    case "newrandomvalue":
+                        typeOfEffect=EffectType.NEWRANDOMVALUEMODIFY;
+                        break;
+                    case "rotatedice":
+                        typeOfEffect=EffectType.ROTATEDICEMODIFY;
+                        break;
+                    case "draftpoolbagexchange":
+                        typeOfEffect=EffectType.DRAFTPOOLBAGEXCHANGE;
+                        break;
+                }
+
+                new ToolCard(name, number, token, color, effect, doubleDice, allDices, twoTurnsInOne,
+                        takeFromDraftPool, selectFromWindow, takeFromRoundTrack, takeFromDiceBag,
+                        blockedAfterPlacement, blockedFirstTurn, colorBound, valueBound,
+                        vicinityBound, typeOfEffect);
+                currentCard++;
+            }
+        }catch (FileNotFoundException e){
+            System.out.println("File JSON non trovato");
+        }
+        for (i=0; i<3; i++){
+            do{
+                Random random = new Random();
+                randomInt = random.nextInt(12);
+            }while (NotAvailable.contains(randomInt));
+            chosenToolCards[i]=toolCards[randomInt];
+            NotAvailable.add(randomInt);
+        }
+
+        return chosenToolCards;
+    }
+
     public void handleWindowCreation(){
         view.windowToChose(parseWindowSide());
     }

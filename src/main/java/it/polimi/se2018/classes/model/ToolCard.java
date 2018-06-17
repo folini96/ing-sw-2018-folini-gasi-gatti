@@ -1,7 +1,8 @@
 package it.polimi.se2018.classes.model;
 
 //import it.polimi.se2018.classes.events.SelectedDraftPoolDice;
-import it.polimi.se2018.classes.effects.ModificationType;
+import it.polimi.se2018.classes.effects.Effect;
+import it.polimi.se2018.classes.effects.EffectType;
 import it.polimi.se2018.classes.model.Color;
 import it.polimi.se2018.classes.effects.ToolCardsEffectsInterface;
 import it.polimi.se2018.classes.view.VirtualView;
@@ -14,7 +15,7 @@ public class ToolCard implements Serializable {
     private int number;
     private int token;
     private Color color;
-    private ToolCardsEffectsInterface effect;
+    private Effect effect;
     private boolean doubleDice;
     private boolean allDices;
     private boolean twoTurnsInOne;
@@ -27,12 +28,32 @@ public class ToolCard implements Serializable {
     private boolean colorBound;
     private boolean valueBound;
     private boolean vicinityBound;
-    private boolean setValue;
-    private ModificationType modification;
-    private boolean newRandomValue;
-    private boolean rotateDice;
+    private EffectType type;
 
-
+    public ToolCard(String name, int number, int token, Color color, Effect effect,
+                    boolean doubleDice, boolean allDices, boolean twoTurnsInOne, boolean takeFromDraftPool,
+                    boolean selectFromWindow, boolean takeFromRoundTrack, boolean takeFromDiceBag,
+                    boolean blockedAfterPlacement, boolean blockedFirstTurn, boolean colorBound,
+                    boolean valueBound, boolean vicinityBound, EffectType type){
+        this.name=name;
+        this.number=number;
+        this.token=token;
+        this.color=color;
+        this.effect=effect;
+        this.doubleDice=doubleDice;
+        this.allDices=allDices;
+        this.twoTurnsInOne=twoTurnsInOne;
+        this.takeFromDraftPool=takeFromDraftPool;
+        this.selectFromWindow=selectFromWindow;
+        this.takeFromRoundTrack=takeFromRoundTrack;
+        this.takeFromDiceBag=takeFromDiceBag;
+        this.blockedAfterPlacement=blockedAfterPlacement;
+        this.blockedFirstTurn=blockedFirstTurn;
+        this.colorBound=colorBound;
+        this.valueBound=valueBound;
+        this.vicinityBound=vicinityBound;
+        this.type=type;
+    }
 
     public void setToken(int token){
         this.token=token;
