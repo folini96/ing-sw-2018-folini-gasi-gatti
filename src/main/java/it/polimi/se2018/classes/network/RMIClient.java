@@ -66,6 +66,9 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
     public void sendToClient(ModelViewEvent modelViewEvent){
        modelViewEvent.accept(this);
     }
+    public void visit (Message message){
+       interfaceHandler.showMessage(message);
+    }
     public void visit(StartMatchEvent startMatchEvent){
         interfaceHandler.startMatch(startMatchEvent);
     }

@@ -29,6 +29,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     private int firstPlayer;
     private int currentPlayer;
     private int turnPassed;
+    private static final String NOT_VALIDE_MOVE_MESSAGE = "Mossa non valida. Fare un'altra mossa o finire il turno";
     public MatchHandlerController(VirtualView view){
 
         this.view =view;
@@ -275,10 +276,11 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
 
     public void handlePlaceDice(PlaceDiceEvent placeDiceEvent){
         if(matchHandlerModel.checkCorrectMove(placeDiceEvent, currentPlayer)){
-            //place dice;
+            matchHandlerModel.placeDice(placeDiceEvent,currentPlayer);
         }
         else{
-           //messaggio errore
+           Message message = new Message(NOT_VALIDE_MOVE_MESSAGE);
+           message.accept(view);
         }
 
     }

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-public class VirtualView extends Observable implements Observer, ViewInterface,ModelViewEventVisitor {
+public class VirtualView extends Observable implements Observer,ModelViewEventVisitor {
     Server server;
     public VirtualView(Server server){
         this.server=server;
@@ -27,8 +27,8 @@ public class VirtualView extends Observable implements Observer, ViewInterface,M
         event.accept(this);
     }
 
-    public void showMessage (Message message){
-
+    public void visit (Message message){
+        server.notValideMoveMessage(message);
     }
 
     public void sendToServer(ViewControllerEvent viewControllerEvent){

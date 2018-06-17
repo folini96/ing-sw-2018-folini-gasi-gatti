@@ -1,12 +1,9 @@
 package it.polimi.se2018.classes.visitor;
 
-import it.polimi.se2018.classes.events.EndRoundEvent;
-import it.polimi.se2018.classes.events.StartMatchEvent;
-import it.polimi.se2018.classes.events.StartRoundEvent;
-import it.polimi.se2018.classes.events.StartTurnEvent;
+import it.polimi.se2018.classes.events.*;
 
 public interface ModelViewEventVisitor {
-
+        void visit (Message message);
         void visit(StartMatchEvent startMatchEvent);
         void visit (StartRoundEvent startRoundEvent);
         void visit (StartTurnEvent startTurnEvent);

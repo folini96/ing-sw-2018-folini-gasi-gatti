@@ -134,7 +134,15 @@ public class GUIHandler {
         mainScreenController.updateRound(startRoundEvent.getDraftPool(),startRoundEvent.getRound());
     }
     public void startTurn(StartTurnEvent startTurnEvent){
-
+        mainScreenController.checkStartTurn(startTurnEvent.getPlayer());
     }
-
+    public void placeDice(int draftDice,int row,int column){
+        virtualServer.sendToServer(new PlaceDiceEvent(draftDice,row,column));
+    }
+    public void showMessage(Message message){
+        mainScreenController.notValideMoveMessagge(message.getMessage());
+    }
+    public void endTurn(){
+        virtualServer.sendToServer(new EndTurnEvent());
+    }
 }

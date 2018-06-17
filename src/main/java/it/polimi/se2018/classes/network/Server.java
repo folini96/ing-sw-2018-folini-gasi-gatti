@@ -130,8 +130,12 @@ public class Server {
         proxyView.sendToServer(viewControllerEvent);
     }
 
-    public void notValideMoveMessage(Message message, int player) {
-
+    public void notValideMoveMessage(Message message) {
+        for (VirtualClientInterface client : clients) {
+            if (client.getUsername().equals(message.getPlayer())) {
+                client.sendToClient(message);
+            }
+        }
     }
 
     public void sendStartMatchEvent(StartMatchEvent startMatchEvent) {

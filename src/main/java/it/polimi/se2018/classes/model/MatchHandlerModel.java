@@ -193,7 +193,9 @@ public class MatchHandlerModel extends Observable {
 
         return true;
     }
-
+    public void placeDice(PlaceDiceEvent placeDiceEvent, int currentPlayer){
+        
+    }
     /**
      * @param selectedRow the row of the box the player wants to put the dice into
      * @param selectedColumn the column of the box the player wants to put the dice into
