@@ -416,13 +416,13 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         handleWindowSelection(window);
     }
     public void visit(PlaceDiceEvent placeDiceEvent){
-
+        handlePlaceDice(placeDiceEvent);
     }
     public void visit(UseToolCardEvent toolCard){
 
     }
     public void visit(EndTurnEvent endTurnEvent){
-        handleEndRound();
+        handleEndTurn();
     }
 
 

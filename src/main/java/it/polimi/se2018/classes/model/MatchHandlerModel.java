@@ -73,7 +73,7 @@ public class MatchHandlerModel extends Observable {
     }
     public void startRound(int round, int firstPlayer){
        draftPool=diceBag.extractDice(playerNumber*2+1);
-        setChanged();
+       setChanged();
        notifyObservers(new StartRoundEvent(round,players.get(firstPlayer).getName(), draftPool));
     }
     public void startTurn(int currentPlayer){
