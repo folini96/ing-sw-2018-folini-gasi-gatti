@@ -131,6 +131,7 @@ public class Server {
     }
 
     public void notValideMoveMessage(Message message) {
+
         for (VirtualClientInterface client : clients) {
             if (client.getUsername().equals(message.getPlayer())) {
                 client.sendToClient(message);

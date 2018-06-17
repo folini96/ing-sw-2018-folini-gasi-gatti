@@ -41,7 +41,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         playerNumber=usernames.size();
         round=0;
         Random random = new Random();
-        int randomInt = random.nextInt(playerNumber-1);
+        int randomInt = random.nextInt(playerNumber);
         firstPlayer = randomInt;
         playerNames=usernames;
         matchHandlerModel=new MatchHandlerModel(view, parsePublicObjCard(), parsePrivateObjCard());
@@ -392,8 +392,8 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
             matchHandlerModel.placeDice(placeDiceEvent,currentPlayer);
         }
         else{
-           Message message = new Message(NOT_VALIDE_MOVE_MESSAGE);
-           message.accept(view);
+            Message message = new Message(NOT_VALIDE_MOVE_MESSAGE, playerNames.get(currentPlayer));
+            message.accept(view);
         }
 
     }

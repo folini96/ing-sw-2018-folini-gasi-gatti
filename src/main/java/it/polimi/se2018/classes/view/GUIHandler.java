@@ -41,7 +41,7 @@ public class GUIHandler {
             e.printStackTrace();
         }
 
-        
+
 
     }
     public void setClientType(String clientType){

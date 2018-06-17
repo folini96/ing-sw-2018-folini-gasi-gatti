@@ -7,8 +7,9 @@ import java.io.Serializable;
 public class Message implements Serializable,ModelViewEvent{
     private String message;
     private String player;
-    public Message (String message){
+    public Message (String message,String player){
         this.message=message;
+        this.player=player;
     }
     public String getMessage(){
         return message;
