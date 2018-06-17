@@ -35,6 +35,9 @@ public class VirtualView extends Observable implements Observer,ModelViewEventVi
         setChanged();
         notifyObservers(viewControllerEvent);
     }
+    public void visit (ModifiedWindowEvent modifiedWindowEvent){
+        server.sendModifiedWindow(modifiedWindowEvent);
+    }
     public void visit(StartMatchEvent startMatchEvent){
         server.sendStartMatchEvent(startMatchEvent);
     }

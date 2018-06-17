@@ -8,7 +8,5 @@ public interface ModelViewEventVisitor {
         void visit (StartRoundEvent startRoundEvent);
         void visit (StartTurnEvent startTurnEvent);
         void visit (EndRoundEvent endRoundEvent);
-
-
-
+        void visit (ModifiedWindowEvent modifiedWindowEvent);
 }

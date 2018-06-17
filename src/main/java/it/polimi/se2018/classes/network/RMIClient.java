@@ -83,7 +83,9 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
     public void visit (EndRoundEvent endRoundEvent){
 
     }
-
+    public void visit (ModifiedWindowEvent modifiedWindowEvent){
+        interfaceHandler.modifiedWindow(modifiedWindowEvent);
+    }
 
 
 

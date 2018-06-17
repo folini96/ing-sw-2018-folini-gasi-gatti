@@ -65,7 +65,7 @@ public class MatchHandlerModel extends Observable {
             for (Player player:players){
                 if (player.getName().equals(choseWindowEvent.get(i).getUsername())){
                     eventPlayer=players.indexOf(player);
-                    player.setWindow(windowSides[((choseWindowEvent.get(i).getChosenWindow()+1)*(eventPlayer+1)-1)]);
+                    player.setWindow(windowSides[(eventPlayer*4)+choseWindowEvent.get(i).getChosenWindow()]);
                 }
             }
         }
@@ -194,7 +194,12 @@ public class MatchHandlerModel extends Observable {
         return true;
     }
     public void placeDice(PlaceDiceEvent placeDiceEvent, int currentPlayer){
-        
+        int row=placeDiceEvent.getRow();
+        int column=placeDiceEvent.getColumn();
+        int draftDice=placeDiceEvent.getDraftDice();
+        players.get(currentPlayer).getWindow().getBoxScheme()[row][column].setDice(draftPool.get(draftDice));
+        setChanged();
+        notifyObservers(new ModifiedWindowEvent(players.get(currentPlayer).getName(),players.get(currentPlayer).getWindow()));
     }
     /**
      * @param selectedRow the row of the box the player wants to put the dice into

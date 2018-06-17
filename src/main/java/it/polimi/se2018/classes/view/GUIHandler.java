@@ -117,11 +117,7 @@ public class GUIHandler {
         virtualServer.sendToServer(new ChoseWindowEvent(chosenWindow,username));
     }
     public void startMatch(StartMatchEvent startMatchEvent){
-        for (Player player:startMatchEvent.getPlayers()){
-            System.out.println(player.getName());
-            System.out.println(player.getWindow().getName());
-            System.out.println(player.getPrivateObj().getColor());
-        }
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -131,18 +127,46 @@ public class GUIHandler {
         });
     }
     public void startRound(StartRoundEvent startRoundEvent){
-        mainScreenController.updateRound(startRoundEvent.getDraftPool(),startRoundEvent.getRound());
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mainScreenController.updateRound(startRoundEvent.getDraftPool(),startRoundEvent.getRound());
+            }
+        });
+
     }
     public void startTurn(StartTurnEvent startTurnEvent){
-        mainScreenController.checkStartTurn(startTurnEvent.getPlayer());
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mainScreenController.checkStartTurn(startTurnEvent.getPlayer());
+            }
+        });
     }
     public void placeDice(int draftDice,int row,int column){
         virtualServer.sendToServer(new PlaceDiceEvent(draftDice,row,column));
+
     }
     public void showMessage(Message message){
-        mainScreenController.notValideMoveMessagge(message.getMessage());
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mainScreenController.notValideMoveMessagge(message.getMessage());
+            }
+        });
+
     }
     public void endTurn(){
         virtualServer.sendToServer(new EndTurnEvent());
+    }
+    public void modifiedWindow(ModifiedWindowEvent modifiedWindowEvent){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mainScreenController.modifiedWindow(modifiedWindowEvent.getWindow(),modifiedWindowEvent.getPlayer());
+            }
+        });
+
     }
 }

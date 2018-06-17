@@ -153,9 +153,9 @@ public class Server {
 
     public void sendStartTurnEvent(StartTurnEvent startTurnEvent) {
         for (VirtualClientInterface client : clients) {
-            if (client.getUsername().equals(startTurnEvent.getPlayer())) {
-                client.sendToClient(startTurnEvent);
-            }
+
+            client.sendToClient(startTurnEvent);
+
         }
 
         /*TimerTask playTask = new TimerTask() {
@@ -181,7 +181,11 @@ public class Server {
             client.sendWindowToChose(new WindowToChoseEvent(windowToSend));
         }
     }
-
+    public void sendModifiedWindow(ModifiedWindowEvent modifiedWindowEvent){
+        for (VirtualClientInterface client : clients) {
+            client.sendToClient(modifiedWindowEvent);
+        }
+    }
 
     /*public void removeFavorToken(int removedFavorToken) {
         for (VirtualClientInterface client : clients) {

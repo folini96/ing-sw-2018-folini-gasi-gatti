@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import sun.plugin2.os.windows.Windows;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -268,7 +269,6 @@ public class MainScreenController implements Initializable {
     public void updateScheme(String name, WindowSide windowSide ){
         int p = getIndex(name);
         String resourceName;
-        System.out.println(p);
         for (int i=0;i<4;i++){
             for (int j=0;j<5;j++){
                 if (windowSide.getBoxScheme()[i][j].getDice()!=null){
@@ -291,7 +291,7 @@ public class MainScreenController implements Initializable {
     public void updateRound(ArrayList<Dice> draftPool, int round){
         List<Dice> dices = draftPool;
         String url;
-        setRoundLabel(round);
+        setRoundLabel(round+1);
         for (int i=0; i<9; i++){
             if (dices.isEmpty()){
                 url = EMPTY_SPACE_FILE_NAME;
@@ -324,7 +324,7 @@ public class MainScreenController implements Initializable {
         setOtherPlayersName(players);
        // setToolCardImageView(toolCards);
         setPublicObjectImageView(publicObjCards);
-        setCurrentPlayerLabel(playersName.get(0));
+
         for (Player player:players){
             setPlayerSFLabel(player.getName(),player.getToken());
             updateScheme(player.getName(),player.getWindow());
@@ -358,37 +358,37 @@ public class MainScreenController implements Initializable {
 
     }
 
-    public void enableEndTurnButton(){
+    private void enableEndTurnButton(){
         endTurnButton.setDisable(false);
     }
-    public void disableEndTurnButton(){
+    private void disableEndTurnButton(){
         endTurnButton.setDisable(true);
     }
-    public void enableToolCardButton(){
+    private void enableToolCardButton(){
         toolCardButton.setDisable(false);
     }
-    public void disableToolCardButton(){
+    private void disableToolCardButton(){
         toolCardButton.setDisable(true);
     }
-    public void enablePlaceDiceButton(){
+    private void enablePlaceDiceButton(){
         placeDiceButton.setDisable(false);
     }
-    public void disablePlaceDiceButton(){
+    private void disablePlaceDiceButton(){
         placeDiceButton.setDisable(true);
     }
-    public void enableMainPlayerButtons(){enablePlaceDiceButton();enableEndTurnButton();enableToolCardButton();}
-    public void disableMainPlayerButtons(){disablePlaceDiceButton();;disableEndTurnButton();disableToolCardButton();}
-    public void enablePlusMinusButtons(){ diceMinusButton.setDisable(false); dicePlusButton.setDisable(false);}
-    public void disablePlusMinusButtons(){ diceMinusButton.setDisable(true); dicePlusButton.setDisable(true);}
-    public void setVisiblePlusMinusButtons(){ diceMinusButton.setVisible(true);dicePlusButton.setVisible(true);}
-    public void setNotVisiblePlusMinusButtons(){ diceMinusButton.setVisible(false);dicePlusButton.setVisible(false);}
+    private void enableMainPlayerButtons(){enablePlaceDiceButton();enableEndTurnButton();enableToolCardButton();}
+    private void disableMainPlayerButtons(){disablePlaceDiceButton();;disableEndTurnButton();disableToolCardButton();}
+    private void enablePlusMinusButtons(){ diceMinusButton.setDisable(false); dicePlusButton.setDisable(false);}
+    private void disablePlusMinusButtons(){ diceMinusButton.setDisable(true); dicePlusButton.setDisable(true);}
+    private void setVisiblePlusMinusButtons(){ diceMinusButton.setVisible(true);dicePlusButton.setVisible(true);}
+    private void setNotVisiblePlusMinusButtons(){ diceMinusButton.setVisible(false);dicePlusButton.setVisible(false);}
     /**
      * notice the end of the round
      * @param event clicked on endTurnButton
      */
     @FXML
     private void endTurnButtonClicked(ActionEvent event){
-        // segnala che è finito il turno del giocatore
+       guiHandler.endTurn();
     }
     /**
      * notice the intention to use a Tool Card
@@ -457,12 +457,27 @@ public class MainScreenController implements Initializable {
         catch (NullPointerException e){
             windowSelectedDice[1]=0;
         }
-        //GUImodel.alertMessage(Integer.toString(windowSelectedDice[0])+"   "+Integer.toString(windowSelectedDice[1]));
-        //manda coordinate al controller
+
+        guiHandler.placeDice(reserveSelectedDice,windowSelectedDice[0],windowSelectedDice[1]);
+        resetValuesforPlaceDice();
 
 
     }
     public void setGuiHandler(GUIHandler guiHandler){
         this.guiHandler=guiHandler;
+    }
+    public void checkStartTurn(String playerName){
+        setCurrentPlayerLabel(playerName);
+      if (getIndex(playerName)==0){
+          enableMainPlayerButtons();
+      }
+
+    }
+    public void notValideMoveMessagge(String message){
+        guiModel.alertMessage(message);
+        resetValuesforPlaceDice();
+    }
+    public void modifiedWindow(WindowSide window,String player){
+        updateScheme(player,window);
     }
 }
