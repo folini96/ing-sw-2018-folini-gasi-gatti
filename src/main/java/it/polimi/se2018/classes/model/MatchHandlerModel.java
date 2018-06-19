@@ -10,6 +10,7 @@ import it.polimi.se2018.classes.view.VirtualView;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -82,8 +83,19 @@ public class MatchHandlerModel extends Observable {
     }
     public void endRound(int round){
         setChanged();
+        roundTrack[round]=new Round();
         roundTrack[round].setLeftDices(draftPool);
         notifyObservers(new EndRoundEvent(roundTrack));
+    }
+    public void endMatch(){
+        ArrayList<String> names=new ArrayList<>();
+        ArrayList<Integer> points=new ArrayList<>();
+        for (Player player:players){
+            names.add(player.getName());
+            points.add(calculateScore(player));
+        }
+        setChanged();
+        notifyObservers(new EndMatchEvent(names,points));
     }
     /**
      * @param placeDiceEvent the number of the dice of the draft and the coordinate of the box the player wants to put the dice into

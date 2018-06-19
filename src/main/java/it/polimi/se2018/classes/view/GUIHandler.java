@@ -173,7 +173,23 @@ public class GUIHandler {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                //mainScreenController.modifiedDraft(modifiedDraftEvent.getDraftPool());
+                mainScreenController.modifiedDraft(modifiedDraftEvent.getDraftPool());
+            }
+        });
+    }
+    public void endRound(EndRoundEvent endRoundEvent){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mainScreenController.endRound(endRoundEvent.getRoundTrack());
+            }
+        });
+    }
+    public void endMatch(EndMatchEvent endMatchEvent){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mainScreenController.endMatch(endMatchEvent.getPlayers(),endMatchEvent.getPoints());
             }
         });
     }

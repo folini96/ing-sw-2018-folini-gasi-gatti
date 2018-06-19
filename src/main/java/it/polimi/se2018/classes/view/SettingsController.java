@@ -79,20 +79,21 @@ public class SettingsController implements Initializable {
             return;
         }
 
-        if (connectionComboBox.getValue().equals(SOCKET_CONNESSION))
+        /*if (connectionComboBox.getValue().equals(SOCKET_CONNESSION))
             if (!(viewModel.isIP(serverAddressTextField.getText()))){
                 viewModel.alertMessage(INVALID_IP_MESSAGE);
                 serverAddressTextField.setText("");
                 return;
-            }
+            }*/
 
-        //ESEGUI CONNESSIONE
-
-        //SCEGLI MODALITà PARTITA
-
+        if (connectionComboBox.getValue().equals(RMI_CONNECTION)){
+            guiHandler.setClientType(RMI_CONNECTION);
+        }else{
+            guiHandler.setClientType(SOCKET_CONNESSION);
+        }
 
         //Da modificare
-        guiHandler.setClientType(RMI_CONNECTION);
+
         ((Node)(event.getSource())).getScene().getWindow().hide();
         guiHandler.userNameStage();
 

@@ -10,4 +10,5 @@ public interface ModelViewEventVisitor {
         void visit (EndRoundEvent endRoundEvent);
         void visit (ModifiedWindowEvent modifiedWindowEvent);
         void visit (ModifiedDraftEvent modifiedDraftEvent);
+        void visit (EndMatchEvent endMatchEvent);
 }

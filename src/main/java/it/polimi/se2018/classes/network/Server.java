@@ -192,6 +192,11 @@ public class Server {
             client.sendToClient(modifiedDraftEvent);
         }
     }
+    public void sendEndMatchEvent(EndMatchEvent endMatchEvent){
+        for (VirtualClientInterface client : clients) {
+            client.sendToClient(endMatchEvent);
+        }
+    }
     /*public void removeFavorToken(int removedFavorToken) {
         for (VirtualClientInterface client : clients) {
                     }

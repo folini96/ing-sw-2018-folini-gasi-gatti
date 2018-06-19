@@ -349,7 +349,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     public void handleEndTurn(){
         turnPassed++;
         if (turnPassed==(playerNumber*2)) {
-            handleEndMatch();
+            handleEndRound();
         }else {
             if (turnPassed<playerNumber){
                 if (currentPlayer==(playerNumber-1)){
@@ -384,7 +384,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     }
 
     public void handleEndMatch(){
-
+        matchHandlerModel.endMatch();
     }
 
     public void handlePlaceDice(PlaceDiceEvent placeDiceEvent){

@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -289,34 +290,36 @@ public class MainScreenController implements Initializable {
     }
 
     public void updateRound(ArrayList<Dice> draftPool, int round){
-        List<Dice> dices = draftPool;
         String url;
         setRoundLabel(round+1);
+        updateDraft(draftPool);
+    }
+    public void updateDraft(ArrayList<Dice> draftPool){
         for (int i=0; i<9; i++){
-            if (dices.isEmpty()){
+            String url;
+            if (draftPool.isEmpty()){
                 url = EMPTY_SPACE_FILE_NAME;
 
             }
             else{
-                url = dices.get(0).getColor().name() + Integer.toString(dices.get(0).getValue());
-                dices.remove(0);
+                url = draftPool.get(0).getColor().name() + Integer.toString(draftPool.get(0).getValue());
+                draftPool.remove(0);
             }
             setImageInGridPane(reserveGridPane, url, i,0,true);
         }
     }
 
     public void updateRoundTrack(Round round, int roundNumber){
+
         List<Dice> dices = round.getLeftDices();
         String url;
         for (int i=0; i<9; i++){
-            if (dices.isEmpty()){
-                url = null;
-            }
-            else{
+            if (!dices.isEmpty()){
                 url = dices.get(0).getColor().name() + Integer.toString(dices.get(0).getValue());
                 dices.remove(0);
+                setImageInGridPane(roundTrackGridPane, url, i,roundNumber,true);
             }
-            setImageInGridPane(reserveGridPane, url, i,roundNumber,true);
+
         }
     }
 
@@ -388,6 +391,7 @@ public class MainScreenController implements Initializable {
      */
     @FXML
     private void endTurnButtonClicked(ActionEvent event){
+        selectedDiceImageView.setImage(null);
        guiHandler.endTurn();
     }
     /**
@@ -437,6 +441,8 @@ public class MainScreenController implements Initializable {
         ImageView imageView = (ImageView) list.get(reserveSelectedDice);
         Image image = imageView.getImage();
         selectedDiceImageView.setImage(image);
+        placeDiceButtonClicked=false;
+        enablePlaceDiceButton();
     }
     @FXML
     private void selectedWindowBoxEvent(MouseEvent event){
@@ -460,7 +466,7 @@ public class MainScreenController implements Initializable {
 
         guiHandler.placeDice(reserveSelectedDice,windowSelectedDice[0],windowSelectedDice[1]);
         resetValuesforPlaceDice();
-
+        selectedDiceImageView.setImage(null);
 
     }
     public void setGuiHandler(GUIHandler guiHandler){
@@ -469,7 +475,13 @@ public class MainScreenController implements Initializable {
     public void checkStartTurn(String playerName){
         setCurrentPlayerLabel(playerName);
       if (getIndex(playerName)==0){
+          reserveGridPane.setDisable(false);
+          mainPlayerGridPane.setDisable(false);
           enableMainPlayerButtons();
+      }else{
+          disableMainPlayerButtons();
+          reserveGridPane.setDisable(true);
+          mainPlayerGridPane.setDisable(true);
       }
 
     }
@@ -481,5 +493,40 @@ public class MainScreenController implements Initializable {
     public void modifiedWindow(WindowSide window,String player){
         enableMainPlayerButtons();
         updateScheme(player,window);
+    }
+    public void modifiedDraft(ArrayList<Dice> draftPool){
+        updateDraft(draftPool);
+    }
+    public void endRound(Round[] roundTrack){
+        for (int i=0;i<10;i++){
+            if(roundTrack[i]!=null){
+                updateRoundTrack(roundTrack[i],i);
+            }
+
+        }
+
+    }
+    public void endMatch(ArrayList<String> players, ArrayList<Integer> points){
+        String message= "";
+        Integer maxPoints=0;
+        int winnerPosition=0;
+        String winner;
+
+        for (Integer point:points){
+            if (point>maxPoints){
+                maxPoints=point;
+                winnerPosition=points.indexOf(point);
+
+            }
+        }
+        winner=players.get(winnerPosition);
+        for (String name:players){
+            message=message + name + "punteggio: " + points.get(players.indexOf(name)).toString() + ", ";
+        }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText("Il vincitore è "+winner);
+        alert.setContentText(message);
+        alert.showAndWait();
+
     }
 }

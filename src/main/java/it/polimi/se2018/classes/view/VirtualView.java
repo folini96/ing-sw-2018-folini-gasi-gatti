@@ -51,6 +51,9 @@ public class VirtualView extends Observable implements Observer,ModelViewEventVi
         server.sendEndRoundEvent(endRoundEvent);
     }
     public void visit (ModifiedDraftEvent modifiedDraftEvent){server.sendModifiedDraft(modifiedDraftEvent);}
+    public void visit (EndMatchEvent endMatchEvent){
+        server.sendEndMatchEvent(endMatchEvent);
+    }
     /*public void visit(int removedToken){
         server.removeFavorToken(removedToken);
     }*/

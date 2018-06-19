@@ -81,7 +81,7 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
 
     }
     public void visit (EndRoundEvent endRoundEvent){
-
+        interfaceHandler.endRound(endRoundEvent);
     }
     public void visit (ModifiedWindowEvent modifiedWindowEvent){
         interfaceHandler.modifiedWindow(modifiedWindowEvent);
@@ -89,6 +89,8 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
     public void visit (ModifiedDraftEvent modifiedDraftEvent){
        interfaceHandler.modifiedDraft(modifiedDraftEvent);
     }
-
+    public void visit (EndMatchEvent endMatchEvent){
+       interfaceHandler.endMatch(endMatchEvent);
+    }
 
 }
