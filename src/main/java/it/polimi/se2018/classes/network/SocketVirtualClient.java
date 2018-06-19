@@ -43,8 +43,9 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
     }
     public void sendToClient(ModelViewEvent modelViewEvent){
         try{
-            writer.writeObject(MODEL_VIEW);
-            writer.writeObject(modelViewEvent);
+            writer.reset();
+            writer.writeUnshared(MODEL_VIEW);
+            writer.writeUnshared(modelViewEvent);
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -54,8 +55,8 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
     public void sendWindowToChose (WindowToChoseEvent windowToChoseEvent){
         try{
             writer.reset();
-            writer.writeObject(WINDOW_TO_CHOSE);
-            writer.writeObject(windowToChoseEvent);
+            writer.writeUnshared(WINDOW_TO_CHOSE);
+            writer.writeUnshared(windowToChoseEvent);
         }catch(IOException e){
             e.printStackTrace();
         }
@@ -68,10 +69,10 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
         while ( loop && !this.socket.isClosed() ) {
 
             try {
-                action=(String)reader.readObject();
+                action=(String)reader.readUnshared();
                 switch (action){
                     case VIEW_CONTROLLER:
-                        server.sendToServer((ViewControllerEvent)reader.readObject());
+                        server.sendToServer((ViewControllerEvent)reader.readUnshared());
                         break;
 
 

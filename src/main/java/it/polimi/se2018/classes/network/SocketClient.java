@@ -62,4 +62,7 @@ public class SocketClient implements ClientInterface,ModelViewEventVisitor {
     public void visit (ModifiedWindowEvent modifiedWindowEvent){
         interfaceHandler.modifiedWindow(modifiedWindowEvent);
     }
+    public void visit (ModifiedDraftEvent modifiedDraftEvent){
+        interfaceHandler.modifiedDraft(modifiedDraftEvent);
+    }
 }

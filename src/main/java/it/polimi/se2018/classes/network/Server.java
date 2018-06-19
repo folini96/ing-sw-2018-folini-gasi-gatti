@@ -187,7 +187,11 @@ public class Server {
             client.sendToClient(modifiedWindowEvent);
         }
     }
-
+    public void sendModifiedDraft(ModifiedDraftEvent modifiedDraftEvent){
+        for (VirtualClientInterface client : clients) {
+            client.sendToClient(modifiedDraftEvent);
+        }
+    }
     /*public void removeFavorToken(int removedFavorToken) {
         for (VirtualClientInterface client : clients) {
                     }

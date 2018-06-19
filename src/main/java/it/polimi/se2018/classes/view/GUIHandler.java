@@ -118,7 +118,6 @@ public class GUIHandler {
         virtualServer.sendToServer(new ChoseWindowEvent(chosenWindow,username));
     }
     public void startMatch(StartMatchEvent startMatchEvent){
-
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -169,5 +168,13 @@ public class GUIHandler {
             }
         });
 
+    }
+    public void modifiedDraft(ModifiedDraftEvent modifiedDraftEvent){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                //mainScreenController.modifiedDraft(modifiedDraftEvent.getDraftPool());
+            }
+        });
     }
 }

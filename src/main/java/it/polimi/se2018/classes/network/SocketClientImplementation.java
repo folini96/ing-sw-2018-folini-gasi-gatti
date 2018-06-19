@@ -36,7 +36,7 @@ public class SocketClientImplementation extends Thread{
     }
     public void sendUsername(String username){
         try{
-             writer.flush();
+             writer.reset();
              writer.writeObject(username);
         }catch (IOException e){
             e.printStackTrace();
@@ -44,9 +44,9 @@ public class SocketClientImplementation extends Thread{
     }
     public void sendToServer(ViewControllerEvent viewControllerEvent){
         try{
-            writer.flush();
-            writer.writeObject(VIEW_CONTROLLER);
-            writer.writeObject(viewControllerEvent);
+            writer.reset();
+            writer.writeUnshared(VIEW_CONTROLLER);
+            writer.writeUnshared(viewControllerEvent);
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -64,7 +64,7 @@ public class SocketClientImplementation extends Thread{
         while ( loop && !this.socket.isClosed() ) {
 
             try {
-                action=(String)reader.readObject();
+                 action=(String)reader.readUnshared();
                  switch (action){
                     case ASK_USERNAME:
                         socket.close();
@@ -74,10 +74,10 @@ public class SocketClientImplementation extends Thread{
                         client.okUsername();
                         break;
                     case WINDOW_TO_CHOSE:
-                        client.sendWindowToChose((WindowToChoseEvent) reader.readObject());
+                        client.sendWindowToChose((WindowToChoseEvent) reader.readUnshared());
                         break;
                     case MODEL_VIEW:
-                        client.sendToClient((ModelViewEvent)reader.readObject());
+                        client.sendToClient((ModelViewEvent)reader.readUnshared());
                         break;
                 }
 

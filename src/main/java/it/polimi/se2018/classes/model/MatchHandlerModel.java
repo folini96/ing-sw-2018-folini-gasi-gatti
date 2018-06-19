@@ -198,6 +198,9 @@ public class MatchHandlerModel extends Observable {
         int column=placeDiceEvent.getColumn();
         int draftDice=placeDiceEvent.getDraftDice();
         players.get(currentPlayer).getWindow().getBoxScheme()[row][column].setDice(draftPool.get(draftDice));
+        draftPool.remove(draftDice);
+        setChanged();
+        notifyObservers(new ModifiedDraftEvent(draftPool));
         setChanged();
         notifyObservers(new ModifiedWindowEvent(players.get(currentPlayer).getName(),players.get(currentPlayer).getWindow()));
     }
