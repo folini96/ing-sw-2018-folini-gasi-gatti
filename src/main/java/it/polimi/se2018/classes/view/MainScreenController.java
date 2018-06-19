@@ -13,7 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import sun.plugin2.os.windows.Windows;
+
 
 import java.net.URL;
 import java.util.ArrayList;
