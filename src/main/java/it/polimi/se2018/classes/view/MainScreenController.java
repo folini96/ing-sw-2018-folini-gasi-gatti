@@ -41,6 +41,7 @@ public class MainScreenController implements Initializable {
     private GUIHandler guiHandler;
     private Boolean alredyPlaced;
     private Boolean placingDice;
+    private Boolean isMyTurn;
     @FXML
     private Label roundLabel = new Label();
     @FXML
@@ -479,10 +480,12 @@ public class MainScreenController implements Initializable {
     public void checkStartTurn(String playerName){
         setCurrentPlayerLabel(playerName);
       if (getIndex(playerName)==0){
+          isMyTurn=true;
           reserveGridPane.setDisable(false);
           mainPlayerGridPane.setDisable(false);
           enableMainPlayerButtons();
       }else{
+          isMyTurn=false;
           disableMainPlayerButtons();
           reserveGridPane.setDisable(true);
           mainPlayerGridPane.setDisable(true);
@@ -500,7 +503,7 @@ public class MainScreenController implements Initializable {
 
     }
     public void modifiedWindow(WindowSide window,String player){
-        if (placingDice){
+        if ((isMyTurn)&&(placingDice)){
             reserveGridPane.setDisable(true);
             mainPlayerGridPane.setDisable(true);
             enableMainPlayerButtons();
