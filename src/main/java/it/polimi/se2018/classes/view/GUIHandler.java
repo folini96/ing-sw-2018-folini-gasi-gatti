@@ -138,6 +138,7 @@ public class GUIHandler {
 
     }
     public void sendChosenWindow(int chosenWindow){
+        windowSelectionTimer.cancel();
         virtualServer.sendToServer(new ChoseWindowEvent(chosenWindow,username));
     }
     public void startMatch(StartMatchEvent startMatchEvent){
