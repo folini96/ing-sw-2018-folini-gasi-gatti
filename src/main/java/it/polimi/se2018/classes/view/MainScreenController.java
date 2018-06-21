@@ -39,6 +39,8 @@ public class MainScreenController implements Initializable {
 
     private ViewModel guiModel = new ViewModel();
     private GUIHandler guiHandler;
+    private Boolean alredyPlaced;
+    private Boolean placingDice;
     @FXML
     private Label roundLabel = new Label();
     @FXML
@@ -463,7 +465,9 @@ public class MainScreenController implements Initializable {
         catch (NullPointerException e){
             windowSelectedDice[1]=0;
         }
-
+        placingDice=true;
+        alredyPlaced=true;
+        disablePlaceDiceButton();
         guiHandler.placeDice(reserveSelectedDice,windowSelectedDice[0],windowSelectedDice[1]);
         resetValuesforPlaceDice();
         selectedDiceImageView.setImage(null);
@@ -486,12 +490,23 @@ public class MainScreenController implements Initializable {
 
     }
     public void notValideMoveMessagge(String message){
+        if (placingDice){
+            placingDice=false;
+            alredyPlaced=false;
+            resetValuesforPlaceDice();
+            enableMainPlayerButtons();
+        }
         guiModel.alertMessage(message);
-        resetValuesforPlaceDice();
-        enableMainPlayerButtons();
+
     }
     public void modifiedWindow(WindowSide window,String player){
-        enableMainPlayerButtons();
+        if (placingDice){
+            reserveGridPane.setDisable(true);
+            mainPlayerGridPane.setDisable(true);
+            enableMainPlayerButtons();
+            disablePlaceDiceButton();
+        }
+
         updateScheme(player,window);
     }
     public void modifiedDraft(ArrayList<Dice> draftPool){

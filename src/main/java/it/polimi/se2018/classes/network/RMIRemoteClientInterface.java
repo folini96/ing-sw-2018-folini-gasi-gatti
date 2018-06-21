@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public interface RMIRemoteClientInterface extends Remote {
+     void setLobbyNumber(int number) throws RemoteException;
      void askUsername() throws RemoteException;
      void sendToClient(ModelViewEvent modelViewEvent) throws  RemoteException;
      void sendWindowToChose (WindowToChoseEvent windowToChoseEvent) throws RemoteException;

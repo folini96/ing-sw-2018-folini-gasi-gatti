@@ -19,14 +19,17 @@ public class Server {
     private static int SOCKETPORT = 9000; //porta di default SOCKET
     private Timer lobbyTimer = new Timer();
     private Timer playTimer = new Timer();
-    public static int LOBBYTIME=10;
-    public int passedTime;
+    private static int LOBBYTIME=10;
+    private int passedTime;
+    private int lobbyNumber=0;
     private RMIServerImplementation rmiHandler;
-    private VirtualView proxyView;
-    private MatchHandlerController controller;
+    private ArrayList<VirtualView> proxyViews;
+    private ArrayList<MatchHandlerController> controllers;
     private ArrayList<VirtualClientInterface> clients = new ArrayList<VirtualClientInterface>();
     private ArrayList<VirtualClientInterface> disconnectedClients = new ArrayList<>();
     public void main() {
+        proxyViews=new ArrayList<>();
+        controllers =new ArrayList<>();
         rmiMain();
         socketMain();
 
@@ -61,56 +64,66 @@ public class Server {
 
     }
 
-    private TimerTask startMatchTask = new TimerTask() {
-        public void run() {
-            passedTime++;
-            if (passedTime==LOBBYTIME){
-                lobbyTimer.cancel();
-                startMatch();
-            }
-            for (VirtualClientInterface client:clients){
-                //client.ping()
-            }
-        }
-    };
+
 
     public synchronized void addClient(VirtualClientInterface newClient) {
-        if (clients.size() > 3) {
-            //inizia partita e blocca l'accesso a nuovi giocatori
-            System.out.println("server pieno");
-        } else {
-            clients.add(newClient);
-            System.out.println("Il client " + newClient.getUsername() + " è connesso!");
-            if (clients.size() == 2) {
-                startLobby();
-            }
-            if (clients.size() == 4) {
-                lobbyTimer.cancel();
-                startMatch();
-
-            }
+      int clientsInCurrentLobby;
+      newClient.setLobbyNumber(lobbyNumber);
+      clients.add(newClient);
+      System.out.println("Il client " + newClient.getUsername() + " è connesso nella lobby numero "+lobbyNumber);
+      clientsInCurrentLobby=0;
+      for(VirtualClientInterface client:clients){
+          if (client.getLobbyNumber()==lobbyNumber){
+              clientsInCurrentLobby++;
+          }
+      }
+      if (clientsInCurrentLobby == 2) {
+          startLobby();
+      }
+      if (clientsInCurrentLobby == 4) {
+          lobbyTimer.cancel();
+          startMatch();
+      }
             //notifica i client che una nuova partita inizierà tra poco
 
-        }
     }
+
     public synchronized void removePlayer (VirtualClientInterface player){
 
     }
     public void startLobby() {
+        passedTime=0;
+        TimerTask startMatchTask = new TimerTask() {
+            public void run() {
+                passedTime++;
+                if (passedTime==LOBBYTIME){
+                    lobbyTimer.cancel();
+                    startMatch();
+                }
+                for (VirtualClientInterface client:clients){
+                    //client.ping()
+                }
+            }
+        };
+        lobbyTimer=new Timer();
         lobbyTimer.schedule(startMatchTask,1000, 1000);
 
     }
 
     public void startMatch() {
         ArrayList<String> usernames = new ArrayList<>();
-        proxyView = new VirtualView(this);
-        controller = new MatchHandlerController(proxyView);
-        proxyView.addObserver(controller);
+        proxyViews.add(new VirtualView(this,lobbyNumber));
+        controllers.add(new MatchHandlerController(proxyViews.get(lobbyNumber)));
+        proxyViews.get(lobbyNumber).addObserver(controllers.get(lobbyNumber));
         for (VirtualClientInterface client : clients) {
-            usernames.add (client.getUsername());
+            if (client.getLobbyNumber() == lobbyNumber){
+                usernames.add(client.getUsername());
+            }
         }
 
-        controller.handleStartMatch(usernames);
+        controllers.get(lobbyNumber).handleStartMatch(usernames);
+
+        lobbyNumber++;
     }
 
     public Boolean checkUsername(String username) {
@@ -125,37 +138,45 @@ public class Server {
 
 
 
-    public void sendToServer(ViewControllerEvent viewControllerEvent){
+    public synchronized void sendToServer(ViewControllerEvent viewControllerEvent,int clientLobbyNumber){
         //playTimer.cancel();
-        proxyView.sendToServer(viewControllerEvent);
+        proxyViews.get(clientLobbyNumber).sendToServer(viewControllerEvent);
     }
 
-    public void notValideMoveMessage(Message message) {
+    public void notValideMoveMessage(Message message, int matchNumber) {
 
         for (VirtualClientInterface client : clients) {
-            if (client.getUsername().equals(message.getPlayer())) {
+            if ((client.getUsername().equals(message.getPlayer()))&&(client.getLobbyNumber()==matchNumber)) {
                 client.sendToClient(message);
             }
         }
     }
 
-    public void sendStartMatchEvent(StartMatchEvent startMatchEvent) {
+    public void sendStartMatchEvent(StartMatchEvent startMatchEvent, int matchNumber) {
+        System.out.println(matchNumber);
         for (VirtualClientInterface client : clients) {
-            client.sendToClient(startMatchEvent);
+            if (client.getLobbyNumber()==matchNumber){
+                client.sendToClient(startMatchEvent);
+            }
+
         }
     }
 
-    public void sendStartRoundEvent(StartRoundEvent startRoundEvent) {
+    public void sendStartRoundEvent(StartRoundEvent startRoundEvent, int matchNumber) {
         for (VirtualClientInterface client : clients) {
-            client.sendToClient(startRoundEvent);
+            if (client.getLobbyNumber()==matchNumber){
+                client.sendToClient(startRoundEvent);
+            }
         }
 
     }
 
-    public void sendStartTurnEvent(StartTurnEvent startTurnEvent) {
+    public void sendStartTurnEvent(StartTurnEvent startTurnEvent, int matchNumber) {
         for (VirtualClientInterface client : clients) {
 
-            client.sendToClient(startTurnEvent);
+            if (client.getLobbyNumber()==matchNumber){
+                client.sendToClient(startTurnEvent);
+            }
 
         }
 
@@ -169,32 +190,46 @@ public class Server {
 
     }
 
-    public void sendEndRoundEvent(EndRoundEvent endRoundEvent) {
+    public void sendEndRoundEvent(EndRoundEvent endRoundEvent, int matchNumber) {
         for (VirtualClientInterface client : clients) {
-            client.sendToClient(endRoundEvent);
+            if (client.getLobbyNumber()==matchNumber){
+                client.sendToClient(endRoundEvent);
+            }
         }
     }
 
-    public void sendWindowToChose(WindowSide[] windows) {
+    public void sendWindowToChose(WindowSide[] windows, int matchNumber) {
+        int firstPlayerInLobby=-1;
         for (VirtualClientInterface client : clients) {
-            int windowPosition=clients.indexOf(client)*4;
-            WindowSide[] windowToSend=Arrays.copyOfRange(windows,windowPosition,windowPosition+4);
-            client.sendWindowToChose(new WindowToChoseEvent(windowToSend));
+            if (client.getLobbyNumber()==matchNumber){
+                if (firstPlayerInLobby<0){
+                    firstPlayerInLobby=clients.indexOf(client);
+                }
+                int windowPosition=(clients.indexOf(client)-firstPlayerInLobby)*4;
+                WindowSide[] windowToSend=Arrays.copyOfRange(windows,windowPosition,windowPosition+4);
+                client.sendWindowToChose(new WindowToChoseEvent(windowToSend));
+            }
         }
     }
-    public void sendModifiedWindow(ModifiedWindowEvent modifiedWindowEvent){
+    public void sendModifiedWindow(ModifiedWindowEvent modifiedWindowEvent, int matchNumber){
         for (VirtualClientInterface client : clients) {
-            client.sendToClient(modifiedWindowEvent);
+            if (client.getLobbyNumber()==matchNumber){
+                client.sendToClient(modifiedWindowEvent);
+            }
         }
     }
-    public void sendModifiedDraft(ModifiedDraftEvent modifiedDraftEvent){
+    public void sendModifiedDraft(ModifiedDraftEvent modifiedDraftEvent, int matchNumber){
         for (VirtualClientInterface client : clients) {
-            client.sendToClient(modifiedDraftEvent);
+            if (client.getLobbyNumber()==matchNumber){
+                client.sendToClient(modifiedDraftEvent);
+            }
         }
     }
-    public void sendEndMatchEvent(EndMatchEvent endMatchEvent){
+    public void sendEndMatchEvent(EndMatchEvent endMatchEvent, int matchNumber){
         for (VirtualClientInterface client : clients) {
-            client.sendToClient(endMatchEvent);
+            if (client.getLobbyNumber()==matchNumber){
+                client.sendToClient(endMatchEvent);
+            }
         }
     }
     /*public void removeFavorToken(int removedFavorToken) {

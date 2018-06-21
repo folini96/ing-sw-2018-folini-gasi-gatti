@@ -22,6 +22,7 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
     private Server server;
     private String username;
     private Socket socket;
+    private int lobbyNumber;
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
     public SocketVirtualClient(Socket clientConnection, String username,Server server,ObjectOutputStream writer,ObjectInputStream reader){
@@ -62,7 +63,12 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
         }
 
     }
-
+    public int getLobbyNumber(){
+        return lobbyNumber;
+    }
+    public void setLobbyNumber(int number){
+        this.lobbyNumber=number;
+    }
     public void run(){
         String action;
         boolean loop = true;
@@ -72,7 +78,7 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
                 action=(String)reader.readUnshared();
                 switch (action){
                     case VIEW_CONTROLLER:
-                        server.sendToServer((ViewControllerEvent)reader.readUnshared());
+                        server.sendToServer((ViewControllerEvent)reader.readUnshared(), lobbyNumber);
                         break;
 
 

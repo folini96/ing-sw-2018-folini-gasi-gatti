@@ -18,7 +18,9 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
     RMIRemoteClientInterface remoteRef;
     RMIClientImplementation client;
     private RMIRemoteServerInterface server;
-   public void main(String username, GUIHandler interfaceHandler){
+    private int lobbyNumber;
+
+    public void main(String username, GUIHandler interfaceHandler){
        this.interfaceHandler=interfaceHandler;
       try {
          server = (RMIRemoteServerInterface)Naming.lookup("//localhost/MyServer");
@@ -34,6 +36,9 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
          System.err.println("Il riferimento passato non è associato a nulla!");
       }
    }
+    public void setLobbyNumber(int number){
+        lobbyNumber=number;
+    }
    public void newUsername(String username){
        try {
 
@@ -45,7 +50,7 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
    }
    public void sendToServer (ViewControllerEvent viewControllerEvent){
        try{
-           server.sendToServer(viewControllerEvent);
+           server.sendToServer(viewControllerEvent,lobbyNumber);
        }catch (RemoteException e){
            System.out.println("Errore nella comunicazione con il server");
        }

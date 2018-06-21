@@ -13,10 +13,11 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class VirtualView extends Observable implements Observer,ModelViewEventVisitor {
-    Server server;
-    public VirtualView(Server server){
+    private Server server;
+    private int matchNumber;
+    public VirtualView(Server server, int matchNumber){
         this.server=server;
-
+        this.matchNumber=matchNumber;
     }
 
 
@@ -28,7 +29,7 @@ public class VirtualView extends Observable implements Observer,ModelViewEventVi
     }
 
     public void visit (Message message){
-        server.notValideMoveMessage(message);
+        server.notValideMoveMessage(message, matchNumber);
     }
 
     public void sendToServer(ViewControllerEvent viewControllerEvent){
@@ -36,28 +37,28 @@ public class VirtualView extends Observable implements Observer,ModelViewEventVi
         notifyObservers(viewControllerEvent);
     }
     public void visit (ModifiedWindowEvent modifiedWindowEvent){
-        server.sendModifiedWindow(modifiedWindowEvent);
+        server.sendModifiedWindow(modifiedWindowEvent, matchNumber);
     }
     public void visit(StartMatchEvent startMatchEvent){
-        server.sendStartMatchEvent(startMatchEvent);
+        server.sendStartMatchEvent(startMatchEvent, matchNumber);
     }
     public void visit (StartRoundEvent startRoundEvent){
-        server.sendStartRoundEvent(startRoundEvent);
+        server.sendStartRoundEvent(startRoundEvent, matchNumber);
     }
     public void visit (StartTurnEvent startTurnEvent){
-        server.sendStartTurnEvent(startTurnEvent);
+        server.sendStartTurnEvent(startTurnEvent, matchNumber);
     }
     public void visit (EndRoundEvent endRoundEvent){
-        server.sendEndRoundEvent(endRoundEvent);
+        server.sendEndRoundEvent(endRoundEvent, matchNumber);
     }
-    public void visit (ModifiedDraftEvent modifiedDraftEvent){server.sendModifiedDraft(modifiedDraftEvent);}
+    public void visit (ModifiedDraftEvent modifiedDraftEvent){server.sendModifiedDraft(modifiedDraftEvent, matchNumber);}
     public void visit (EndMatchEvent endMatchEvent){
-        server.sendEndMatchEvent(endMatchEvent);
+        server.sendEndMatchEvent(endMatchEvent, matchNumber);
     }
     /*public void visit(int removedToken){
         server.removeFavorToken(removedToken);
     }*/
     public void windowToChose(WindowSide[] windows){
-        server.sendWindowToChose(windows);
+        server.sendWindowToChose(windows, matchNumber);
     }
 }

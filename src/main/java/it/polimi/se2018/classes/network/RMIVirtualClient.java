@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class RMIVirtualClient implements VirtualClientInterface {
     private RMIRemoteClientInterface rmiClient;
     private String username;
+    private int lobbyNumber;
     public RMIVirtualClient(RMIRemoteClientInterface client, String username){
         rmiClient=client;
         this.username=username;
@@ -20,8 +21,18 @@ public class RMIVirtualClient implements VirtualClientInterface {
 
 
 
+    public void setLobbyNumber(int number){
+        this.lobbyNumber=number;
+        try{
+            rmiClient.setLobbyNumber(number);
+        }catch(RemoteException e){
+            e.printStackTrace();
+        }
 
-
+    }
+    public int getLobbyNumber(){
+        return lobbyNumber;
+    }
     public void sendWindowToChose(WindowToChoseEvent windowToChoseEvent){
         try{
             rmiClient.sendWindowToChose(windowToChoseEvent);

@@ -18,6 +18,10 @@ public class RMIClientImplementation implements RMIRemoteClientInterface {
     public void sendMessage(Message message) throws RemoteException {
 
     }
+
+    public void setLobbyNumber(int number){
+        client.setLobbyNumber(number);
+    }
     public void okUsername(String username)throws RemoteException{
         client.okUsername(username);
     }
