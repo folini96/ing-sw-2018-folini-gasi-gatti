@@ -19,6 +19,7 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
     private static final String SENDWINDOW = "window";
     private static final String SENDDRAFT = "draft";
     private static final String SENDTOKEN = "favor token";
+    private static final String END_BY_TIME = "end by time";
     private Server server;
     private String username;
     private Socket socket;
@@ -89,6 +90,14 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
                 e.printStackTrace();
             }
 
+        }
+    }
+    public void endByTime(){
+        try{
+            writer.reset();
+            writer.writeUnshared(END_BY_TIME);
+        }catch(IOException e){
+            e.printStackTrace();
         }
     }
 }

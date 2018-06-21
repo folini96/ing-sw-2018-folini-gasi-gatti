@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 
 public class SocketClient implements ClientInterface,ModelViewEventVisitor {
-    private static final int PORT = 9000;
+    private static final int PORT = 5463;
     private static final String HOST = "localhost";
     private SocketClientImplementation clientImplementation;
     private GUIHandler interfaceHandler;
@@ -67,5 +67,8 @@ public class SocketClient implements ClientInterface,ModelViewEventVisitor {
     }
     public void visit (EndMatchEvent endMatchEvent){
         interfaceHandler.endMatch(endMatchEvent);
+    }
+    public void endByTime(){
+        interfaceHandler.endByTime();
     }
 }

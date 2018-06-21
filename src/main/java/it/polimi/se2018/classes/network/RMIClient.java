@@ -97,5 +97,7 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
     public void visit (EndMatchEvent endMatchEvent){
        interfaceHandler.endMatch(endMatchEvent);
     }
-
+    public void endByTime(){
+        interfaceHandler.endByTime();
+    }
 }

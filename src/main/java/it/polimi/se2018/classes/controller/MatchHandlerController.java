@@ -48,7 +48,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         matchHandlerModel.prepareMatch(playerNumber,playerNames);
         handleWindowCreation();
     }
-    public PublicObjCard[] parsePublicObjCard(){
+    private PublicObjCard[] parsePublicObjCard(){
         int i;
         int randomInt;
         String[] publicObjCards = new String[10];
@@ -109,7 +109,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         }
         return chosenCards;
     }
-    public PrivateObjCard[] parsePrivateObjCard(){
+    private PrivateObjCard[] parsePrivateObjCard(){
         int i;
         int randomInt;
         String[] privateObjCards = new String[5];
@@ -156,7 +156,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         }
         return chosenCards;
     }
-    public WindowSide[] parseWindowSide(){
+    private WindowSide[] parseWindowSide(){
         int i;
         int j;
         int randomInt;
@@ -222,7 +222,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         return chosenWindows;
     }
 
-    public ToolCard[] parseToolCard(){
+    private ToolCard[] parseToolCard(){
 
         int i, randomInt;
         ToolCard[] toolCards = new ToolCard[12];
@@ -347,6 +347,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         matchHandlerModel.startTurn(currentPlayer);
     }
     public void handleEndTurn(){
+        view.cancelTimer();
         turnPassed++;
         if (turnPassed==(playerNumber*2)) {
             handleEndRound();

@@ -10,5 +10,5 @@ public interface VirtualClientInterface {
     String getUsername();
     void sendWindowToChose(WindowToChoseEvent windowToChoseEvent);
     void sendToClient(ModelViewEvent modelViewEvent);
-
+    void endByTime();
 }

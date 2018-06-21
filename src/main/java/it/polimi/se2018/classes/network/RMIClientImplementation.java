@@ -32,6 +32,9 @@ public class RMIClientImplementation implements RMIRemoteClientInterface {
     public void sendToClient(ModelViewEvent modelViewEvent)throws  RemoteException{
         client.sendToClient(modelViewEvent);
     }
+    public void endByTime()throws RemoteException{
+        client.endByTime();
+    }
     public void ping()throws  RemoteException{
         //METODO VUOTO USATO SOLO PER CONTROLLARE CHE IL CLIENT SIA ANCORA CONNESSO
     }

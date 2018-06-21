@@ -547,4 +547,9 @@ public class MainScreenController implements Initializable {
         alert.showAndWait();
 
     }
+    public void endByTime(){
+        disableMainPlayerButtons();
+        selectedDiceImageView.setImage(null);
+
+    }
 }

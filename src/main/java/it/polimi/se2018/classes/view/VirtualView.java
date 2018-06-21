@@ -61,4 +61,8 @@ public class VirtualView extends Observable implements Observer,ModelViewEventVi
     public void windowToChose(WindowSide[] windows){
         server.sendWindowToChose(windows, matchNumber);
     }
+    public void cancelTimer(){
+        server.cancelTimer(matchNumber);
+    }
+
 }

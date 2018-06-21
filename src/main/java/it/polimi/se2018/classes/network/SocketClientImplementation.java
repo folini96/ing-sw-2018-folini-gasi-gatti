@@ -16,6 +16,7 @@ public class SocketClientImplementation extends Thread{
     private static final String WINDOW_TO_CHOSE="window to chose";
     private static final String VIEW_CONTROLLER="view controller event";
     private static final String MODEL_VIEW="model view event";
+    private static final String END_BY_TIME = "end by time";
     private Socket socket;
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
@@ -79,6 +80,9 @@ public class SocketClientImplementation extends Thread{
                     case MODEL_VIEW:
                         client.sendToClient((ModelViewEvent)reader.readUnshared());
                         break;
+                     case END_BY_TIME:
+                         client.endByTime();
+                         break;
                 }
 
 

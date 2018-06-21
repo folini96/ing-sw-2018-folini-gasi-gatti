@@ -14,5 +14,6 @@ public interface RMIRemoteClientInterface extends Remote {
      void sendToClient(ModelViewEvent modelViewEvent) throws  RemoteException;
      void sendWindowToChose (WindowToChoseEvent windowToChoseEvent) throws RemoteException;
      void okUsername(String username)throws  RemoteException;
+     void endByTime() throws RemoteException;
      void ping() throws RemoteException;
 }

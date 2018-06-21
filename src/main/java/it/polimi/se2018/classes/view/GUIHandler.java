@@ -13,6 +13,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GUIHandler {
     private static final String SOCKET_CONNESSION = "Socket";
@@ -26,6 +29,8 @@ public class GUIHandler {
     private ClientInterface virtualServer;
     private String clientType;
     private String username;
+    private Timer windowSelectionTimer;
+    private int selectionTime=10000;
     public void main(Stage primaryStage){
         try{
             FXMLLoader loader = new FXMLLoader();
@@ -103,8 +108,26 @@ public class GUIHandler {
             virtualServer.main(username,this);
         }
     }
-    public void windowToChose(WindowToChoseEvent windowToChoseEvent){
 
+    public void windowToChose(WindowToChoseEvent windowToChoseEvent){
+        TimerTask windowSelectionTask = new TimerTask() {
+            @Override
+            public void run() {
+                Random random = new Random();
+                int randomInt = random.nextInt(4);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        windowSelectionController.showMainScreen();
+
+                    }
+                });
+                virtualServer.sendToServer(new ChoseWindowEvent(randomInt,username));
+
+            }
+        };
+        windowSelectionTimer=new Timer();
+        windowSelectionTimer.schedule(windowSelectionTask, selectionTime);
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -193,4 +216,13 @@ public class GUIHandler {
             }
         });
     }
+    public void endByTime(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mainScreenController.endByTime();
+            }
+        });
+    }
+
 }

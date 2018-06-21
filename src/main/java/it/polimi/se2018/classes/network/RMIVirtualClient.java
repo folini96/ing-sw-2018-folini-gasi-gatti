@@ -48,5 +48,11 @@ public class RMIVirtualClient implements VirtualClientInterface {
         }
 
     }
-
+    public void endByTime(){
+        try{
+            rmiClient.endByTime();
+        }catch (RemoteException e){
+            e.printStackTrace();
+        }
+    }
 }

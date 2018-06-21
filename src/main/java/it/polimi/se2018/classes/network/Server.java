@@ -9,16 +9,14 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class Server {
     private static int RMIPORT = 1099; // porta di default RMI
-    private static int SOCKETPORT = 9000; //porta di default SOCKET
+    private static int SOCKETPORT = 5463; //porta di default SOCKET
     private Timer lobbyTimer = new Timer();
-    private Timer playTimer = new Timer();
+    HashMap<Integer,Timer> playTimer = new HashMap<>();
+    HashMap<Integer,Timer> windowTimer = new HashMap<>();
     private static int LOBBYTIME=10;
     private int passedTime;
     private int lobbyNumber=0;
@@ -129,7 +127,7 @@ public class Server {
     public Boolean checkUsername(String username) {
         for (VirtualClientInterface client : clients) {
 
-            if (client.getUsername().equals(username)) {
+            if ((lobbyNumber==client.getLobbyNumber())&&(client.getUsername().equals(username))) {
                 return false;
             }
         }
@@ -139,8 +137,7 @@ public class Server {
 
 
     public synchronized void sendToServer(ViewControllerEvent viewControllerEvent,int clientLobbyNumber){
-        //playTimer.cancel();
-        proxyViews.get(clientLobbyNumber).sendToServer(viewControllerEvent);
+       proxyViews.get(clientLobbyNumber).sendToServer(viewControllerEvent);
     }
 
     public void notValideMoveMessage(Message message, int matchNumber) {
@@ -180,13 +177,19 @@ public class Server {
 
         }
 
-        /*TimerTask playTask = new TimerTask() {
+        class PlayTask extends TimerTask{
+            int lobbyNumber;
+            public PlayTask(int lobbyNumber){
+                this.lobbyNumber=lobbyNumber;
+            };
             public void run() {
-                sendToServer(new EndTurnEvent());
+                endByTime(lobbyNumber);
+                playTimer.remove(lobbyNumber);
+                sendToServer(new EndTurnEvent(),lobbyNumber);
             }
-        };
-        //playTimer=new Timer();
-        //playTimer.schedule(playTask,30000);*/
+        }
+        playTimer.put(matchNumber,new Timer());
+        playTimer.get(matchNumber).schedule(new PlayTask(matchNumber),5000);
 
     }
 
@@ -199,6 +202,7 @@ public class Server {
     }
 
     public void sendWindowToChose(WindowSide[] windows, int matchNumber) {
+
         int firstPlayerInLobby=-1;
         for (VirtualClientInterface client : clients) {
             if (client.getLobbyNumber()==matchNumber){
@@ -210,6 +214,19 @@ public class Server {
                 client.sendWindowToChose(new WindowToChoseEvent(windowToSend));
             }
         }
+        //startWindowTimer(matchNumber);
+    }
+    public void startWindowTimer(int lobbyNumber){
+        TimerTask windowTask=new TimerTask(){
+            public void run() {
+                for (VirtualClientInterface client:clients){
+                    //client.ping()
+                }
+            }
+        };
+        windowTimer.put(lobbyNumber,new Timer());
+        windowTimer.get(lobbyNumber).schedule(windowTask,1000,1000);
+
     }
     public void sendModifiedWindow(ModifiedWindowEvent modifiedWindowEvent, int matchNumber){
         for (VirtualClientInterface client : clients) {
@@ -230,6 +247,19 @@ public class Server {
             if (client.getLobbyNumber()==matchNumber){
                 client.sendToClient(endMatchEvent);
             }
+        }
+    }
+    public void endByTime(int lobbyNumber){
+        for (VirtualClientInterface client : clients) {
+            if (client.getLobbyNumber()==lobbyNumber){
+                client.endByTime();
+            }
+        }
+    }
+    public void cancelTimer(int matcNumber){
+        if (playTimer.containsKey(matcNumber)){
+            playTimer.get(matcNumber).cancel();
+            playTimer.remove(matcNumber);
         }
     }
     /*public void removeFavorToken(int removedFavorToken) {

@@ -85,7 +85,13 @@ public class WindowSelectionController implements Initializable {
             viewModel.alertMessage(SELECT_A_WINDOW_MESSAGE);
             return;
         }
-        ((Node)event.getSource()).getScene().getWindow().hide();
+        showMainScreen();
+        guiHandler.sendChosenWindow(selected);
+
+
+    }
+    public void showMainScreen(){
+        window1ImageView.getScene().getWindow().hide();
         try{
 
             FXMLLoader loader = new FXMLLoader();
@@ -100,9 +106,6 @@ public class WindowSelectionController implements Initializable {
         }catch (IOException e){
             e.printStackTrace();
         }
-
-        guiHandler.sendChosenWindow(selected);
-
 
     }
     public void setGuiHandler(GUIHandler guiHandler){
