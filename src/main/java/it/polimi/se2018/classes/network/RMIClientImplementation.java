@@ -36,6 +36,6 @@ public class RMIClientImplementation implements RMIRemoteClientInterface {
         client.endByTime();
     }
     public void ping()throws  RemoteException{
-        //METODO VUOTO USATO SOLO PER CONTROLLARE CHE IL CLIENT SIA ANCORA CONNESSO
+        //EMPTY METHOD USED TO CATCH DISCONNECTION DURING THE LOBBY SETUP
     }
 }

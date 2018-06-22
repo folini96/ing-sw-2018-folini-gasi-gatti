@@ -4,6 +4,7 @@ import it.polimi.se2018.classes.controller.MatchHandlerController;
 import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.model.*;
 import it.polimi.se2018.classes.view.VirtualView;
+import sun.reflect.annotation.ExceptionProxy;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -17,12 +18,13 @@ public class Server {
     private Timer lobbyTimer = new Timer();
     HashMap<Integer,Timer> playTimer = new HashMap<>();
     HashMap<Integer,Timer> windowTimer = new HashMap<>();
-    private static int LOBBYTIME=10;
+    private static int LOBBYTIME=20;
     private int passedTime;
     private int lobbyNumber=0;
     private RMIServerImplementation rmiHandler;
     private ArrayList<VirtualView> proxyViews;
     private ArrayList<MatchHandlerController> controllers;
+    private ArrayList<VirtualClientInterface> removedClients = new ArrayList<>();
     private ArrayList<VirtualClientInterface> clients = new ArrayList<VirtualClientInterface>();
     private ArrayList<VirtualClientInterface> disconnectedClients = new ArrayList<>();
     public void main() {
@@ -82,11 +84,11 @@ public class Server {
           lobbyTimer.cancel();
           startMatch();
       }
-            //notifica i client che una nuova partita inizierà tra poco
+
 
     }
 
-    public synchronized void removePlayer (VirtualClientInterface player){
+    public synchronized void disconnectPlayer(VirtualClientInterface player){
 
     }
     public void startLobby() {
@@ -97,10 +99,33 @@ public class Server {
                 if (passedTime==LOBBYTIME){
                     lobbyTimer.cancel();
                     startMatch();
+                }else{
+                    int playersInLobby=0;
+                    for (VirtualClientInterface client:clients){
+                        try{
+                            client.ping();
+                        }catch (Exception e){
+                            removedClients.add(client);
+
+                            System.out.println("il client " + client.getUsername() + " si è disconnesso dalla lobby " + client.getLobbyNumber());                    }
+                    }
+                    for (VirtualClientInterface removedClient: removedClients){
+                        if (clients.contains(removedClient)){
+                            clients.remove(removedClient);
+                        }
+                    }
+                    for (VirtualClientInterface clients:clients){
+                        if (clients.getLobbyNumber()==lobbyNumber){
+                            playersInLobby++;
+
+                        }
+                    }
+                    if (playersInLobby<2){
+                        lobbyTimer.cancel();
+                    }
+                    removedClients.clear();
                 }
-                for (VirtualClientInterface client:clients){
-                    //client.ping()
-                }
+
             }
         };
         lobbyTimer=new Timer();
@@ -143,8 +168,13 @@ public class Server {
     public void notValideMoveMessage(Message message, int matchNumber) {
 
         for (VirtualClientInterface client : clients) {
-            if ((client.getUsername().equals(message.getPlayer()))&&(client.getLobbyNumber()==matchNumber)) {
-                client.sendToClient(message);
+            if ((client.getUsername().equals(message.getPlayer()))&&(client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))) {
+
+                try{
+                    client.sendToClient(message);
+                }catch (Exception e){
+                    disconnectedClients.add(client);
+                }
             }
         }
     }
@@ -152,18 +182,28 @@ public class Server {
     public void sendStartMatchEvent(StartMatchEvent startMatchEvent, int matchNumber) {
         System.out.println(matchNumber);
         for (VirtualClientInterface client : clients) {
-            if (client.getLobbyNumber()==matchNumber){
-                client.sendToClient(startMatchEvent);
+            if (client.getLobbyNumber()==matchNumber && (!disconnectedClients.contains(client))){
+                try{
+                    client.sendToClient(startMatchEvent);
+                }catch (Exception e){
+                    disconnectedClients.add(client);
+                }
             }
-
         }
+
     }
+
 
     public void sendStartRoundEvent(StartRoundEvent startRoundEvent, int matchNumber) {
         for (VirtualClientInterface client : clients) {
-            if (client.getLobbyNumber()==matchNumber){
-                client.sendToClient(startRoundEvent);
+            if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))){
+                try{
+                    client.sendToClient(startRoundEvent);
+                }catch (Exception e){
+                    disconnectedClients.add(client);
+                }
             }
+
         }
 
     }
@@ -171,12 +211,15 @@ public class Server {
     public void sendStartTurnEvent(StartTurnEvent startTurnEvent, int matchNumber) {
         for (VirtualClientInterface client : clients) {
 
-            if (client.getLobbyNumber()==matchNumber){
-                client.sendToClient(startTurnEvent);
+            if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))){
+                try{
+                    client.sendToClient(startTurnEvent);
+                    }catch (Exception e){
+                        disconnectedClients.add(client);
+                    }
             }
 
         }
-
         class PlayTask extends TimerTask{
             int lobbyNumber;
             public PlayTask(int lobbyNumber){
@@ -195,8 +238,13 @@ public class Server {
 
     public void sendEndRoundEvent(EndRoundEvent endRoundEvent, int matchNumber) {
         for (VirtualClientInterface client : clients) {
-            if (client.getLobbyNumber()==matchNumber){
-                client.sendToClient(endRoundEvent);
+            if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))){
+                try{
+                    client.sendToClient(endRoundEvent);
+                }catch (Exception e){
+                    disconnectedClients.add(client);
+                }
+
             }
         }
     }
@@ -230,29 +278,46 @@ public class Server {
     }
     public void sendModifiedWindow(ModifiedWindowEvent modifiedWindowEvent, int matchNumber){
         for (VirtualClientInterface client : clients) {
-            if (client.getLobbyNumber()==matchNumber){
-                client.sendToClient(modifiedWindowEvent);
+            if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))){
+                try{
+                    client.sendToClient(modifiedWindowEvent);
+                }catch (Exception e){
+                    disconnectedClients.add(client);
+                }
             }
         }
     }
     public void sendModifiedDraft(ModifiedDraftEvent modifiedDraftEvent, int matchNumber){
         for (VirtualClientInterface client : clients) {
-            if (client.getLobbyNumber()==matchNumber){
-                client.sendToClient(modifiedDraftEvent);
+            if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))){
+                try{
+                    client.sendToClient(modifiedDraftEvent);
+                }catch (Exception e){
+                    disconnectedClients.add(client);
+                }
             }
         }
     }
     public void sendEndMatchEvent(EndMatchEvent endMatchEvent, int matchNumber){
         for (VirtualClientInterface client : clients) {
-            if (client.getLobbyNumber()==matchNumber){
-                client.sendToClient(endMatchEvent);
+            if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))){
+                try{
+                    client.sendToClient(endMatchEvent);
+                }catch (Exception e){
+                    disconnectedClients.add(client);
+                }
             }
         }
     }
     public void endByTime(int lobbyNumber){
         for (VirtualClientInterface client : clients) {
             if (client.getLobbyNumber()==lobbyNumber){
-                client.endByTime();
+                try{
+                    client.endByTime();
+                    disconnectedClients.add(client);
+                }catch (Exception e){
+                    disconnectedClients.add(client);
+                }
             }
         }
     }
@@ -261,6 +326,12 @@ public class Server {
             playTimer.get(matcNumber).cancel();
             playTimer.remove(matcNumber);
         }
+    }
+    public void reconnectRMIClient(String username, int lobbyNumber){
+        
+    }
+    public void reconnectClient(VirtualClientInterface reconnectingClient){
+
     }
     /*public void removeFavorToken(int removedFavorToken) {
         for (VirtualClientInterface client : clients) {

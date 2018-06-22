@@ -9,6 +9,7 @@ public interface VirtualClientInterface {
     void setLobbyNumber(int number);
     String getUsername();
     void sendWindowToChose(WindowToChoseEvent windowToChoseEvent);
-    void sendToClient(ModelViewEvent modelViewEvent);
-    void endByTime();
+    void sendToClient(ModelViewEvent modelViewEvent) throws Exception;
+    void endByTime() throws Exception;
+    void ping() throws Exception;
 }
