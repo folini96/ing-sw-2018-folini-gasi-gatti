@@ -87,8 +87,7 @@ public class SocketClientImplementation extends Thread{
 
 
             } catch (Exception e) {
-                e.printStackTrace();
-
+                loop=false;
             }
 
         }

@@ -40,6 +40,6 @@ public class RMIServerImplementation extends UnicastRemoteObject implements RMIR
         server.sendToServer(viewControllerEvent, lobbyNumber);
    }
    public void ping()throws  RemoteException{
-      //METODO VUOTO USATO SOLO PER CONTROLLARE CHE IL CLIENT SIA ANCORA CONNESSO
+      //EMPTY METHOD USED TO CATCH DISCONNECTION CLIENT SIDE;
    }
 }

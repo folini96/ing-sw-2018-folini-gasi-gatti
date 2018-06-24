@@ -40,19 +40,15 @@ public class RMIVirtualClient implements VirtualClientInterface {
             System.out.println("Errore di comunicazione con il client RMI ");
         }
     }
-    public void sendToClient(ModelViewEvent modelViewEvent){
-        try{
-            rmiClient.sendToClient(modelViewEvent);
-        }catch (RemoteException e){
-            e.printStackTrace();
-        }
+    public void sendToClient(ModelViewEvent modelViewEvent) throws RemoteException{
+       rmiClient.sendToClient(modelViewEvent);
 
     }
-    public void endByTime(){
-        try{
-            rmiClient.endByTime();
-        }catch (RemoteException e){
-            e.printStackTrace();
-        }
+    public void endByTime() throws RemoteException{
+        rmiClient.endByTime();
+
+    }
+    public void ping() throws RemoteException{
+        rmiClient.ping();
     }
 }

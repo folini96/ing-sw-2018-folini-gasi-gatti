@@ -6,6 +6,7 @@ import it.polimi.se2018.classes.model.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class SocketVirtualClient extends Thread implements VirtualClientInterface{
@@ -20,6 +21,7 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
     private static final String SENDDRAFT = "draft";
     private static final String SENDTOKEN = "favor token";
     private static final String END_BY_TIME = "end by time";
+    private static final String PING = "ping";
     private Server server;
     private String username;
     private Socket socket;
@@ -43,17 +45,12 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
 
 
     }
-    public void sendToClient(ModelViewEvent modelViewEvent){
-        try{
+    public void sendToClient(ModelViewEvent modelViewEvent) throws IOException {
+
             writer.reset();
             writer.writeUnshared(MODEL_VIEW);
             writer.writeUnshared(modelViewEvent);
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-
-
-    }
+       }
     public void sendWindowToChose (WindowToChoseEvent windowToChoseEvent){
         try{
             writer.reset();
@@ -87,17 +84,18 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
 
 
             } catch (Exception e) {
-                e.printStackTrace();
+                loop=false;
+
             }
 
         }
     }
-    public void endByTime(){
-        try{
-            writer.reset();
-            writer.writeUnshared(END_BY_TIME);
-        }catch(IOException e){
-            e.printStackTrace();
-        }
+    public void endByTime() throws IOException{
+       writer.reset();
+       writer.writeUnshared(END_BY_TIME);
+
+    }
+    public void ping() throws IOException{
+        writer.writeUnshared(PING);
     }
 }
