@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.classes.view.ZoomController">
+   <children>
+      <HBox layoutX="50.0" layoutY="118.0" prefHeight="405.0" prefWidth="870.0" AnchorPane.bottomAnchor="118.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="118.0">
+         <children>
+            <ImageView fx:id="zoom1ImageView" fitHeight="426.0" fitWidth="290.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="zoom2ImageView" fitHeight="426.0" fitWidth="290.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="zoom3ImageView" fitHeight="426.0" fitWidth="290.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

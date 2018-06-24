@@ -1,23 +1,24 @@
 package it.polimi.se2018.classes.view;
 
+import it.polimi.se2018.classes.events.EndMatchEvent;
 import it.polimi.se2018.classes.model.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 
+import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -42,6 +43,7 @@ public class MainScreenController implements Initializable {
     private Boolean alredyPlaced;
     private Boolean placingDice;
     private Boolean isMyTurn;
+
     @FXML
     private Label roundLabel = new Label();
     @FXML
@@ -104,7 +106,18 @@ public class MainScreenController implements Initializable {
     private Button dicePlusButton = new Button();
     @FXML
     private ImageView selectedDiceImageView = new ImageView();
-
+    @FXML
+    private Label firstPlayerLabel = new Label();
+    @FXML
+    private Label toolCardSF1Label = new Label();
+    @FXML
+    private Label toolCardSF2Label = new Label();
+    @FXML
+    private Label toolCardSF3Label = new Label();
+    @FXML
+    private ImageView selectedDiceBisImageView = new ImageView();
+    @FXML
+    private Button throwDiceButton = new Button();
 
     // position of the selected tool card (0,1,2)(-1 if not selected)
     private int selectedToolCard = -1;
@@ -117,6 +130,11 @@ public class MainScreenController implements Initializable {
 
     //position of the selected box on the window (row,column)
     private int[] windowSelectedDice = new int[] {-1,-1};
+
+    private int[] roundTrackSelectedDice = new int[] {-1,-1};
+
+    private boolean plusMinus = true;
+    private boolean plusMinusClicked = false;
 
     // array with name of players
     private ArrayList<String> playersName = new ArrayList<>();
@@ -138,6 +156,8 @@ public class MainScreenController implements Initializable {
 
     // ImageView array for Public Objects
     private ImageView[] publicObjectImageViewArray;
+
+    private Label[] toolCardSFLabelArray;
 
     /**
      * initialization and matching with the FXML file
@@ -184,6 +204,10 @@ public class MainScreenController implements Initializable {
         publicObjectImageViewArray[1] = publicObject2ImageView;
         publicObjectImageViewArray[2] = publicObject3ImageView;
 
+        toolCardSFLabelArray = new Label[3];
+        toolCardSFLabelArray[0] = toolCardSF1Label;
+        toolCardSFLabelArray[1] = toolCardSF2Label;
+        toolCardSFLabelArray[2] = toolCardSF3Label;
         enablePlaceDiceButton();
     }
 
@@ -242,6 +266,10 @@ public class MainScreenController implements Initializable {
         currentPlayerLabel.setText(player);
     }
 
+    public void setFirstPlayerLabel (String player){
+        firstPlayerLabel.setText(player);
+    }
+
     private void setPrivateObjectImageView(PrivateObjCard privateObjCard){
         Image image = new Image(getClass().getResource(URL + PRIVATE_OBJECT_CARD_PREFIX + privateObjCard.getColor().name() + ".jpg").toExternalForm());
         privateObjectImageView.setImage(image);
@@ -268,6 +296,10 @@ public class MainScreenController implements Initializable {
 
     public void setPlayerSFLabel(String name, int SF){
         playersSFLabelArray[getIndex(name)].setText(Integer.toString(SF));
+    }
+
+    public void setToolCardSFLabel(int position, int SF){
+        toolCardSFLabelArray[position].setText(Integer.toString(SF));
     }
 
     public void updateScheme(String name, WindowSide windowSide ){
@@ -310,6 +342,37 @@ public class MainScreenController implements Initializable {
             }
             setImageInGridPane(reserveGridPane, url, i,0,true);
         }
+    }
+
+    public void setDisconnectedPlayer(String name){
+        playersGridPaneArray[getIndex(name)].setOpacity(0.45);
+        playersNameLabelArray[getIndex(name)].setDisable(true);
+        playersSFLabelArray[getIndex(name)].setDisable(true);
+        playersUselessLabelArray[getIndex(name)].setDisable(true);
+    }
+
+    public void setReconnectedPlayer(String name){
+        playersGridPaneArray[getIndex(name)].setOpacity(1);
+        playersNameLabelArray[getIndex(name)].setDisable(false);
+        playersSFLabelArray[getIndex(name)].setDisable(false);
+        playersUselessLabelArray[getIndex(name)].setDisable(false);
+    }
+
+    public void alertPlayerDisconnected(String name){
+        final String PLAYER_DISCONNECTED_MESSAGE = " è stato disconnesso!";
+        guiModel.alertMessage(name+PLAYER_DISCONNECTED_MESSAGE);
+    }
+    public void alertPlayerReconnected(String name){
+        final String PLAYER_RICONNECTED_MESSAGE = " si è riconnesso!";
+        guiModel.alertMessage(name+PLAYER_RICONNECTED_MESSAGE);
+    }
+    public void alertMainPlayerDisconnected(String name){
+        final String MAIN_PLAYER_DISCONNECTED_MESSAGE = "Sei stato disconnesso!";
+        guiModel.alertMessage(name+MAIN_PLAYER_DISCONNECTED_MESSAGE);
+    }
+    public void alertPlayerRiconnected(String name){
+        final String MAIN_PLAYER_RICONNECTED_MESSAGE = "Sei stato riconesso!";
+        guiModel.alertMessage(name+MAIN_PLAYER_RICONNECTED_MESSAGE);
     }
 
     public void updateRoundTrack(Round round, int roundNumber){
@@ -382,6 +445,18 @@ public class MainScreenController implements Initializable {
     private void disablePlaceDiceButton(){
         placeDiceButton.setDisable(true);
     }
+    private void enableThrowDiceButton(){
+        throwDiceButton.setDisable(false);
+    }
+    private void disableThrowDiceButton(){
+        throwDiceButton.setDisable(true);
+    }
+    private void setVisibleThrowDiceButton(){
+        throwDiceButton.setVisible(true);
+    }
+    private void setNotVisibleThrowDiceButton(){
+        throwDiceButton.setVisible(false);
+    }
     private void enableMainPlayerButtons(){enablePlaceDiceButton();enableEndTurnButton();enableToolCardButton();}
     private void disableMainPlayerButtons(){disablePlaceDiceButton();;disableEndTurnButton();disableToolCardButton();}
     private void enablePlusMinusButtons(){ diceMinusButton.setDisable(false); dicePlusButton.setDisable(false);}
@@ -405,8 +480,10 @@ public class MainScreenController implements Initializable {
     private void toolCardButtonClicked(ActionEvent event){
         final String NO_TOOL_CARD_MESSAGE = "Seleziona una Tool Card!";
         // segnala che si vuole utilizzare una tool card
+        disableMainPlayerButtons();
         if (selectedToolCard==-1){
             guiModel.alertMessage(NO_TOOL_CARD_MESSAGE);
+            enableMainPlayerButtons();
             return;
         }
         // segnala la tool card da utilizzare con selectedToolCard
@@ -474,6 +551,123 @@ public class MainScreenController implements Initializable {
         selectedDiceImageView.setImage(null);
 
     }
+
+    @FXML
+    private void selectedRoundTrackDiceEvent (MouseEvent event){
+
+        Node node = (Node) event.getSource();
+        try {
+            roundTrackSelectedDice[0] = GridPane.getRowIndex(node);
+        }
+        catch (NullPointerException e){
+            roundTrackSelectedDice[0]=0;
+        }
+        try {
+            roundTrackSelectedDice[1] = GridPane.getColumnIndex(node);
+        }
+        catch (NullPointerException e){
+            roundTrackSelectedDice[1]=0;
+        }
+        ObservableList<Node> list = roundTrackGridPane.getChildren();
+        ImageView imageView = (ImageView) list.get(roundTrackSelectedDice[0]*10+roundTrackSelectedDice[1]);
+        Image image = imageView.getImage();
+        selectedDiceBisImageView.setImage(image);
+
+
+    }
+
+    @FXML
+    private void toolCard1Clicked(MouseEvent event){
+        selectedToolCard = 0;
+    }
+    @FXML
+    private void toolCard2Clicked(MouseEvent event){
+        selectedToolCard = 1;
+    }
+    @FXML
+    private void toolCard3Clicked(MouseEvent event){
+        selectedToolCard = 2;
+    }
+    @FXML
+    private void minusButtonClicked(ActionEvent event){
+        plusMinusClicked = true;
+        plusMinus = true;
+    }
+    @FXML
+    private void plusButtonClicked(ActionEvent event){
+        plusMinusClicked = true;
+        plusMinus = false;
+    }
+    @FXML
+    private void throwDiceButtonClicked(ActionEvent event){
+        //rilancia i dadi
+    }
+    @FXML
+    private void toolCardZoomButtonClicked(ActionEvent event){
+        // zoom tool card
+    }
+    @FXML
+    private void privateCardZoomButtonClicked(ActionEvent event){
+        // zoom OBIETTIVO PRIVATO
+    }
+    @FXML
+    private void publicCardZoomButtonClicked(ActionEvent event){
+        // ZOOM OBIETTIVI PUBBLICI
+    }
+    public void resetPlusMinus(){
+        plusMinusClicked = false;
+    }
+
+    public int getSelectedToolCard(){
+        return selectedToolCard;
+    }
+
+    public int choseNewValue(){
+        final String CHOSE_DICE_NUMBER_MESSAGE = "Quale valore vuoi assegnare al dado?";
+        List<String> choices = new ArrayList<>();
+        choices.add("1");
+        choices.add("2");
+        choices.add("3");
+        choices.add("4");
+        choices.add("5");
+        choices.add("6");
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("1", choices);
+        dialog.setTitle("Sagrada");
+        dialog.setHeaderText(null);
+        dialog.setContentText(CHOSE_DICE_NUMBER_MESSAGE);
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()){
+            return Integer.parseInt(result.get());
+        }
+        else{
+            return -1;
+        }
+
+    }
+
+    public void SetOpacityOthers(int row, int column){
+        ObservableList<Node> lista = playersGridPaneArray[0].getChildren();
+        ImageView selected = (ImageView) lista.get(row*5 + (column));
+        for (Node node: lista){
+         ImageView current = (ImageView) node;
+         if (current!=selected){
+             current.setOpacity(0.4);
+         }
+        }
+    }
+
+    public void ResetOpacityOthers(){
+        ObservableList<Node> lista = playersGridPaneArray[0].getChildren();
+        for (Node node: lista){
+            ImageView current = (ImageView) node;
+            node.setOpacity(1);
+            }
+    }
+
+
+
     public void setGuiHandler(GUIHandler guiHandler){
         this.guiHandler=guiHandler;
     }
@@ -552,4 +746,49 @@ public class MainScreenController implements Initializable {
         selectedDiceImageView.setImage(null);
 
     }
+
+    public void matchEnd(EndMatchEvent endMatch){
+        final String POINTS_FIRST_PART_MESSAGE = "Punteggi finali:\n\n";
+        final String MAIN_PLAYER_WINNER_MESSAGE = "Hai vinto!";
+        final String OTHER_PLAYER_WINNER_MESSAGE = "Hai perso! Il vincitore è ";
+        final String NEW_GAME_MESSAGE = "\nVuoi iniziare una nuova partita?";
+        String pointsMessage;
+
+        int maxPoints=-1;
+        int winnerPosition=-1;
+        String winner;
+        for (int i=0; i< endMatch.getPoints().size();i++){
+            if (endMatch.getPoints().get(i)>maxPoints){
+                maxPoints=endMatch.getPoints().get(i);
+                winnerPosition=endMatch.getPoints().indexOf(endMatch.getPoints().get(i));
+            }
+        }
+        winner=endMatch.getPlayers().get(winnerPosition);
+        pointsMessage = POINTS_FIRST_PART_MESSAGE;
+        for (int i=0; i<endMatch.getPlayers().size();i++){
+            pointsMessage = pointsMessage + endMatch.getPlayers().get(i) + ":\t\t\n" + endMatch.getPoints().get(i).toString() + "\n";
+        }
+        if (winner.equals(playersName.get(0))){
+            pointsMessage = pointsMessage + MAIN_PLAYER_WINNER_MESSAGE;
+        }
+        else {
+            pointsMessage = pointsMessage + OTHER_PLAYER_WINNER_MESSAGE + winner;
+        }
+        pointsMessage=pointsMessage+NEW_GAME_MESSAGE;
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("End Match");
+        alert.setHeaderText(null);
+        alert.setContentText(pointsMessage);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+
+            // Azione da eseguire se si vuole fare nuova patita
+        } else {
+            // azione da eseguire se non si vuole fare nuova partita o si chiude finestra dialogo
+        }
+    }
+
+
 }
