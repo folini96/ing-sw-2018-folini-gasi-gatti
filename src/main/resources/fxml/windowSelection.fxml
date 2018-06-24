@@ -19,33 +19,20 @@
     <children>
         <HBox layoutX="57.0" layoutY="90.0" prefHeight="160.0" prefWidth="341.0" AnchorPane.leftAnchor="57.0" AnchorPane.topAnchor="75.0">
             <children>
-                <ImageView fx:id="window1ImageView" fitHeight="160.0" fitWidth="183.0" onMouseClicked="#selected1" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../java/it/polimi/se2018/classes/view/img/AURORA SAGRADIS.jpg" />
-                    </image></ImageView>
+                <ImageView fx:id="window1ImageView" fitHeight="160.0" fitWidth="183.0" onMouseClicked="#selected1" pickOnBounds="true" preserveRatio="true" />
                 <ImageView fx:id="window2ImageView" fitHeight="160.0" fitWidth="183.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#selected2" pickOnBounds="true" preserveRatio="true">
                     <HBox.margin>
                         <Insets left="20.0" />
-                    </HBox.margin>
-                    <image>
-                        <Image url="@../../java/it/polimi/se2018/classes/view/img/AURORAE MAGNIFICUS.jpg" />
-                    </image></ImageView>
+                    </HBox.margin></ImageView>
             </children>
         </HBox>
         <HBox layoutX="57.0" layoutY="250.0" prefHeight="150.0" prefWidth="272.0" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="57.0" AnchorPane.rightAnchor="57.0">
             <children>
-                <ImageView fx:id="window3ImageView" fitHeight="160.0" fitWidth="183.0" onMouseClicked="#selected3" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../../java/it/polimi/se2018/classes/view/img/SUNS GLORY.jpg" />
-                    </image>
-                </ImageView>
+                <ImageView fx:id="window3ImageView" fitHeight="160.0" fitWidth="183.0" onMouseClicked="#selected3" pickOnBounds="true" preserveRatio="true" />
                 <ImageView fx:id="window4ImageView" fitHeight="160.0" fitWidth="183.0" layoutX="10.0" layoutY="10.0" onMouseClicked="#selected4" pickOnBounds="true" preserveRatio="true">
                     <HBox.margin>
                         <Insets left="20.0" />
                     </HBox.margin>
-                    <image>
-                        <Image url="@../../java/it/polimi/se2018/classes/view/img/SYMPHONY OF LIGHT.jpg" />
-                    </image>
                 </ImageView>
             </children>
         </HBox>
