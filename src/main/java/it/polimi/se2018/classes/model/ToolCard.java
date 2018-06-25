@@ -1,11 +1,8 @@
 package it.polimi.se2018.classes.model;
 
 //import it.polimi.se2018.classes.events.SelectedDraftPoolDice;
-import it.polimi.se2018.classes.effects.Effect;
-import it.polimi.se2018.classes.effects.EffectType;
-import it.polimi.se2018.classes.model.Color;
-import it.polimi.se2018.classes.effects.ToolCardsEffectsInterface;
-import it.polimi.se2018.classes.view.VirtualView;
+import it.polimi.se2018.classes.model.effects.EffectType;
+import it.polimi.se2018.classes.model.effects.ToolCardsEffectsInterface;
 
 import java.io.Serializable;
 
@@ -15,8 +12,6 @@ public class ToolCard implements Serializable {
     private int number;
     private int token;
     private Color color;
-    private Effect effect;
-    private boolean doubleDice;
     private boolean allDices;
     private boolean twoTurnsInOne;
     private boolean takeFromDraftPool;
@@ -25,22 +20,19 @@ public class ToolCard implements Serializable {
     private boolean takeFromDiceBag;
     private boolean blockedAfterPlacement;
     private boolean blockedFirstTurn;
-    private boolean colorBound;
-    private boolean valueBound;
     private boolean vicinityBound;
     private EffectType type;
+    private ToolCardsEffectsInterface effect;
 
-    public ToolCard(String name, int number, int token, Color color, Effect effect,
-                    boolean doubleDice, boolean allDices, boolean twoTurnsInOne, boolean takeFromDraftPool,
+    public ToolCard(String name, int number, int token, Color color, ToolCardsEffectsInterface effect,
+                    boolean allDices, boolean twoTurnsInOne, boolean takeFromDraftPool,
                     boolean selectFromWindow, boolean takeFromRoundTrack, boolean takeFromDiceBag,
-                    boolean blockedAfterPlacement, boolean blockedFirstTurn, boolean colorBound,
-                    boolean valueBound, boolean vicinityBound, EffectType type){
+                    boolean blockedAfterPlacement, boolean blockedFirstTurn, boolean vicinityBound, EffectType type){
         this.name=name;
         this.number=number;
         this.token=token;
         this.color=color;
         this.effect=effect;
-        this.doubleDice=doubleDice;
         this.allDices=allDices;
         this.twoTurnsInOne=twoTurnsInOne;
         this.takeFromDraftPool=takeFromDraftPool;
@@ -49,8 +41,6 @@ public class ToolCard implements Serializable {
         this.takeFromDiceBag=takeFromDiceBag;
         this.blockedAfterPlacement=blockedAfterPlacement;
         this.blockedFirstTurn=blockedFirstTurn;
-        this.colorBound=colorBound;
-        this.valueBound=valueBound;
         this.vicinityBound=vicinityBound;
         this.type=type;
     }
@@ -79,16 +69,15 @@ public class ToolCard implements Serializable {
 
     }
 
-    /*public void usePinzaSgrossatrice(SelectedDraftPoolDice selectedDraftPoolDice){
-        int value;
-        Dice dice;
+    public ToolCardsEffectsInterface getEffect(){
+        return effect;
+    }
 
-        dice = selectedDraftPoolDice.getDice();
-        value = dice.getValue();
+    public EffectType getType() {
+        return type;
+    }
 
-
-        dice.setValue(value);
-
-    }*/
-
+    public boolean isTakeFromRoundTrack(){
+        return takeFromRoundTrack;
+    }
 }

@@ -2,8 +2,7 @@ package it.polimi.se2018.classes.controller;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import it.polimi.se2018.classes.effects.Effect;
-import it.polimi.se2018.classes.effects.EffectType;
+import it.polimi.se2018.classes.model.effects.*;
 import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.events.PlaceDiceEvent;
 import it.polimi.se2018.classes.model.*;
@@ -257,29 +256,6 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
                         color=Color.VIOLA;
                         break;
                 }
-                String effectCard=card.get("effect").getAsString();
-                Effect effect=null;
-                switch (effectCard){
-                    case "modify":
-                        effect=Effect.MODIFY;
-                        break;
-                    case "move":
-                        effect=Effect.MOVE;
-                        break;
-                    case "exchange":
-                        effect=Effect.EXCHANGE;
-                        break;
-                    case "rerolldraftpooldices":
-                        effect=Effect.REROLLDRAFTPOOL;
-                        break;
-                    case "secondplacement":
-                        effect=Effect.SECONDPLACEMENT;
-                        break;
-                    case "placementwithoutvicinity":
-                        effect=Effect.PLACEMENTWITHOUTVICINITY;
-                        break;
-                }
-                boolean doubleDice=card.get("doubleDice").getAsBoolean();
                 boolean allDices=card.get("allDices").getAsBoolean();
                 boolean twoTurnsInOne=card.get("twoTurnsInOne").getAsBoolean();
                 boolean takeFromDraftPool=card.get("takeFromDraftPool").getAsBoolean();
@@ -288,8 +264,6 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
                 boolean takeFromDiceBag=card.get("takeFromDiceBag").getAsBoolean();
                 boolean blockedAfterPlacement=card.get("blockedAfterPlacement").getAsBoolean();
                 boolean blockedFirstTurn=card.get("blockedFirstTurn").getAsBoolean();
-                boolean colorBound=card.get("colorBound").getAsBoolean();
-                boolean valueBound=card.get("valueBound").getAsBoolean();
                 boolean vicinityBound=card.get("vicinityBound").getAsBoolean();
                 String typeOfEffectCard=card.get("typeofeffect").getAsString();
                 EffectType typeOfEffect=null;
@@ -309,12 +283,42 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
                     case "draftpoolbagexchange":
                         typeOfEffect=EffectType.DRAFTPOOLBAGEXCHANGE;
                         break;
+                    case "nocolorbound":
+                        typeOfEffect=EffectType.NOCOLORBOUND;
+                        break;
+                    case "novaluebound":
+                        typeOfEffect=EffectType.NOVALUEBOUND;
+                        break;
+                }
+                String effectCard=card.get("effect").getAsString();
+                ToolCardsEffectsInterface effect=null;
+                switch (effectCard){
+                    case "modify":
+                        effect=new Modify();
+                        break;
+                    case "move":
+                        effect=new Move();
+                        break;
+                    case "movedoubledice":
+                        effect=new MoveDoubleDice();
+                        break;
+                    case "exchange":
+                        effect=new Exchange();
+                        break;
+                    case "rerolldraftpooldices":
+                        effect=new RerollDraftPool();
+                        break;
+                    case "secondplacement":
+                        effect=new SecondPlacement();
+                        break;
+                    case "placementwithoutvicinity":
+                        effect=new PlacementWithoutVicinity();
+                        break;
                 }
 
-                new ToolCard(name, number, token, color, effect, doubleDice, allDices, twoTurnsInOne,
+                new ToolCard(name, number, token, color, effect, allDices, twoTurnsInOne,
                         takeFromDraftPool, selectFromWindow, takeFromRoundTrack, takeFromDiceBag,
-                        blockedAfterPlacement, blockedFirstTurn, colorBound, valueBound,
-                        vicinityBound, typeOfEffect);
+                        blockedAfterPlacement, blockedFirstTurn, vicinityBound, typeOfEffect);
                 currentCard++;
             }
         }catch (FileNotFoundException e){
@@ -389,7 +393,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     }
 
     public void handlePlaceDice(PlaceDiceEvent placeDiceEvent){
-        if(matchHandlerModel.checkCorrectMove(placeDiceEvent, currentPlayer)){
+        if(matchHandlerModel.checkCorrectPlacement(placeDiceEvent, currentPlayer)){
             matchHandlerModel.placeDice(placeDiceEvent,currentPlayer);
         }
         else{
@@ -406,9 +410,13 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
             handleStartRound();
         }
     }
-    public void handleToolCardSelection(){
+
+    public void handleUseEffect(UseToolCardEvent toolCardEvent){
+
+        matchHandlerModel.useToolCard(toolCardEvent, currentPlayer);
 
     }
+
     public void update(Observable view, Object arg) {
         ViewControllerEvent event=(ViewControllerEvent) arg;
         event.accept(this);
@@ -424,6 +432,10 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     }
     public void visit(EndTurnEvent endTurnEvent){
         handleEndTurn();
+    }
+
+    public void visit(MoveDiceEvent moveDiceEvent) {
+
     }
 
 

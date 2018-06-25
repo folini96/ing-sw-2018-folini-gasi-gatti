@@ -62,4 +62,8 @@ public class DiceBag {
         return extractedDices;
     }
 
+    public List<Dice> getDiceSet(){
+        return diceSet;
+    }
+
 }

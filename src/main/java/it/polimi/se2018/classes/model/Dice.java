@@ -30,6 +30,10 @@ public class Dice implements Serializable {
 
     }
 
+    public void setColor(Color color){
+        this.color=color;
+    }
+
     /**
      * to set a random value for the dice
      */

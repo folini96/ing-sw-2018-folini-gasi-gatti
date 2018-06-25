@@ -17,7 +17,7 @@ public class Round implements Serializable {
     /**
      * @return the dices that were not used and were placed on the Round Track
      */
-    public List<Dice> getLeftDices(){
+    public ArrayList<Dice> getLeftDices(){
 
         return leftDices;
 
