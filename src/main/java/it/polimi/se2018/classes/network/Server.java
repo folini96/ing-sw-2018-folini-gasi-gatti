@@ -232,7 +232,7 @@ public class Server {
             }
         }
         playTimer.put(matchNumber,new Timer());
-        playTimer.get(matchNumber).schedule(new PlayTask(matchNumber),5000);
+        playTimer.get(matchNumber).schedule(new PlayTask(matchNumber),20000);
 
     }
 

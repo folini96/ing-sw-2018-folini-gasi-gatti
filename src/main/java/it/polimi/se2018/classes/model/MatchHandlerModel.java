@@ -19,6 +19,7 @@ import java.util.Random;
 
 /**
  * @author Alessandro Gatti
+ * @author Andrea Folini
  */
 public class MatchHandlerModel extends Observable {
 
@@ -32,6 +33,12 @@ public class MatchHandlerModel extends Observable {
     private Round[] roundTrack;
     private ArrayList <Dice> draftPool;
 
+    /**
+     * Constructor
+     * @param view the view connected to the model of the game
+     * @param publicObjDeck the public objective cards used in the game
+     * @param privateObjDeck the private objective cards used in the game
+     */
     public MatchHandlerModel(VirtualView view, PublicObjCard[] publicObjDeck, PrivateObjCard[] privateObjDeck){
         addObserver(view);
         diceBag= new DiceBag();
@@ -42,43 +49,73 @@ public class MatchHandlerModel extends Observable {
 
     }
 
+    /**
+     * @return the tool cards in the game
+     */
     public ToolCard[] getToolDeck(){
         return toolDeck;
     }
 
+    /**
+     * @return the number of the tool card currently in use
+     */
     public int getActiveToolCard(){
         return activeToolCard;
     }
 
+    /**
+     * @param activeToolCard the number of the tool card currently in use
+     */
     public void setActiveToolCard(int activeToolCard){
         this.activeToolCard=activeToolCard;
     }
 
+    /**
+     * @param toolCardEvent the event representing the use of a particular tool card
+     * @param currentPlayer the player who is currently in control
+     */
     public void useToolCard(UseToolCardEvent toolCardEvent, int currentPlayer){
         setActiveToolCard(toolCardEvent.getToolCard());
         toolDeck[activeToolCard].getEffect().useEffect();
     }
 
+    /**
+     * @return the list of the players
+     */
     public ArrayList<Player> getPlayers(){
         return players;
     }
 
-
-
+    /**
+     * @param player the player that is to be added
+     */
     public void addPlayer(Player player){
         players.add(player);
     }
+
+    /**
+     * @param playerNumber the number of the connected players
+     * @param playerNames the list of the names of the players
+     */
     public void prepareMatch(int playerNumber, ArrayList<String> playerNames){
         this.playerNumber=playerNumber;
         for (String name:playerNames){
             addPlayer(new Player(name,privateObjDeck[playerNames.indexOf(name)]));
         }
     }
+
+    /**
+     * the method that notifies the start of a new match
+     */
     public void startMatch(){
         setChanged();
         notifyObservers(new StartMatchEvent(players, publicObjDeck, toolDeck));
     }
 
+    /**
+     * @param choseWindowEvent the event that represents the choice of a window card
+     * @param windowSides the list of the window cards that are available
+     */
     public void windowSelection(ArrayList<ChoseWindowEvent> choseWindowEvent, WindowSide[] windowSides){
         int eventPlayer;
         int i;
@@ -90,23 +127,39 @@ public class MatchHandlerModel extends Observable {
                 }
             }
         }
-
     }
+
+    /**
+     * @param round the number of the round that is going to start
+     * @param firstPlayer the number that represents the first player
+     */
     public void startRound(int round, int firstPlayer){
         draftPool=diceBag.extractDice(playerNumber*2+1);
         setChanged();
         notifyObservers(new StartRoundEvent(round,players.get(firstPlayer).getName(), draftPool));
     }
+
+    /**
+     * @param currentPlayer the number of the player currently in control
+     */
     public void startTurn(int currentPlayer){
         setChanged();
         notifyObservers(new StartTurnEvent(players.get(currentPlayer).getName()));
     }
+
+    /**
+     * @param round the number of the ending round
+     */
     public void endRound(int round){
         setChanged();
         roundTrack[round]=new Round();
         roundTrack[round].setLeftDices(draftPool);
         notifyObservers(new EndRoundEvent(roundTrack));
     }
+
+    /**
+     * the method that notifies the end of the game
+     */
     public void endMatch(){
         ArrayList<String> names=new ArrayList<>();
         ArrayList<Integer> points=new ArrayList<>();
@@ -118,6 +171,10 @@ public class MatchHandlerModel extends Observable {
         notifyObservers(new EndMatchEvent(names,points));
     }
 
+    /**
+     * @param placeDiceEvent the event that represents the placement of a dice
+     * @param currentPlayer the number of the player currently in control
+     */
     public void placeDice(PlaceDiceEvent placeDiceEvent, int currentPlayer){
         int row=placeDiceEvent.getRow();
         int column=placeDiceEvent.getColumn();
@@ -132,11 +189,10 @@ public class MatchHandlerModel extends Observable {
 
     /**
      * @param placeDiceEvent the number of the dice of the draft and the coordinate of the box the player wants to put the dice into
-     * @param currentPlayer the column of the box the player wants to put the dice into
+     * @param currentPlayer the number of the player currently in control
      * @return true if the placement is allowed, false if not
      */
     public boolean checkCorrectPlacement(PlaceDiceEvent placeDiceEvent, int currentPlayer){
-
         Dice dice=draftPool.get(placeDiceEvent.getDraftDice());
 
         if(players.get(currentPlayer).getWindow().isEmpty()){
@@ -173,10 +229,10 @@ public class MatchHandlerModel extends Observable {
     }
 
     /**
-     * @param dice the dice that is to set
+     * @param dice the dice that is to be set
      * @param selectedRow the row of the box the player wants to put the dice into
      * @param selectedColumn the column of the box the player wants to put the dice into
-     * @param currentPlayer the column of the box the player wants to put the dice into
+     * @param currentPlayer the number of the player currently in control
      * @return true if the color of the box is compatible, false if not
      */
     private boolean checkCorrectColorMatching(Dice dice, int selectedRow, int selectedColumn, int currentPlayer){
@@ -200,7 +256,7 @@ public class MatchHandlerModel extends Observable {
      * @param dice the dice that is to set
      * @param selectedRow the row of the box the player wants to put the dice into
      * @param selectedColumn the column of the box the player wants to put the dice into
-     * @param currentPlayer the column of the box the player wants to put the dice into
+     * @param currentPlayer the number of the player currently in control
      * @return true if the value of the box is compatible, false if not
      */
     private boolean checkCorrectValueMatching(Dice dice, int selectedRow, int selectedColumn, int currentPlayer){
@@ -223,7 +279,7 @@ public class MatchHandlerModel extends Observable {
     /**
      * @param selectedRow the row of the box the player wants to put the dice into
      * @param selectedColumn the column of the box the player wants to put the dice into
-     * @param currentPlayer the column of the box the player wants to put the dice into
+     * @param currentPlayer the number of the player currently in control
      * @return true if the box is empty, false if not
      */
     private boolean checkBoxNotEmpty(int selectedRow, int selectedColumn,int currentPlayer){
@@ -244,7 +300,7 @@ public class MatchHandlerModel extends Observable {
     /**
      * @param selectedRow the row of the box the player wants to put the dice into
      * @param selectedColumn the column of the box the player wants to put the dice into
-     * @param currentPlayer the column of the box the player wants to put the dice into
+     * @param currentPlayer the number of the player currently in control
      * @return true if the dice is near another dice, false if not
      */
     private boolean checkDiceVicinity(int selectedRow, int selectedColumn, int currentPlayer){
@@ -278,7 +334,7 @@ public class MatchHandlerModel extends Observable {
      * @param dice the dice that is to set
      * @param selectedRow the row of the box the player wants to put the dice into
      * @param selectedColumn the column of the box the player wants to put the dice into
-     * @param currentPlayer the column of the box the player wants to put the dice into
+     * @param currentPlayer the number of the player currently in control
      * @return true if the dice isn't adjacent to a dice of same color, false if not
      */
     private boolean checkColorVicinity(Dice dice, int selectedRow, int selectedColumn, int currentPlayer){
@@ -316,7 +372,7 @@ public class MatchHandlerModel extends Observable {
      * @param dice the dice that is to set
      * @param selectedRow the row of the box the player wants to put the dice into
      * @param selectedColumn the column of the box the player wants to put the dice into
-     * @param currentPlayer the column of the box the player wants to put the dice into
+     * @param currentPlayer the number of the player currently in control
      * @return true if the dice isn't adjacent to a dice of same value, false if not
      */
     private boolean checkValueVicinity(Dice dice, int selectedRow, int selectedColumn, int currentPlayer){
@@ -350,6 +406,11 @@ public class MatchHandlerModel extends Observable {
         return true;
     }
 
+    /**
+     * @param moveDiceEvent the event that represents the move of a dice according to a tool card
+     * @param currentPlayer the number of the player currently in control
+     * @return true if the move is allowed by the second tool card rules, false if not
+     */
     public boolean checkCorrectSecondToolCardMove(MoveDiceEvent moveDiceEvent, int currentPlayer){
         Dice dice=players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].getDice();
         if(dice==null) return false;
@@ -361,6 +422,11 @@ public class MatchHandlerModel extends Observable {
         return true;
     }
 
+    /**
+     * @param moveDiceEvent the event that represents the move of a dice according to a tool card
+     * @param currentPlayer the number of the player currently in control
+     * @return true if the move is allowed by the third tool card rules, false if not
+     */
     public boolean checkCorrectThirdToolCardMove(MoveDiceEvent moveDiceEvent, int currentPlayer){
         Dice dice=players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].getDice();
         if(dice==null) return false;
@@ -372,6 +438,11 @@ public class MatchHandlerModel extends Observable {
         return true;
     }
 
+    /**
+     * @param moveDiceEvent the event that represents the move of a dice according to a tool card
+     * @param currentPlayer the number of the player currently in control
+     * @return true if the move is allowed, false if not
+     */
     public boolean checkCorrectMove(MoveDiceEvent moveDiceEvent, int currentPlayer){
         Dice dice=players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].getDice();
         if(dice==null) return false;
@@ -556,7 +627,6 @@ public class MatchHandlerModel extends Observable {
      * @return the score
      */
     public int calculateScore(Player player){
-
         int i, publicObjCardPoints=0;
         int privateObjCardPoints, lostPoints, playerScore;
 
