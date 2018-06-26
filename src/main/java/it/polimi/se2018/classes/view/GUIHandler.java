@@ -213,7 +213,7 @@ public class GUIHandler {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                mainScreenController.endMatch(endMatchEvent.getPlayers(),endMatchEvent.getPoints());
+                mainScreenController.matchEnd(endMatchEvent);
             }
         });
     }
@@ -224,6 +224,9 @@ public class GUIHandler {
                 mainScreenController.endByTime();
             }
         });
+    }
+    public void useToolCard(int toolCard){
+        virtualServer.sendToServer(new UseToolCardEvent(toolCard));
     }
 
 }

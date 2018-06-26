@@ -5,16 +5,21 @@ import it.polimi.se2018.classes.model.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 
 import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +45,7 @@ public class MainScreenController implements Initializable {
 
     private ViewModel guiModel = new ViewModel();
     private GUIHandler guiHandler;
-    private Boolean alredyPlaced;
+    private Boolean usingTool;
     private Boolean placingDice;
     private Boolean isMyTurn;
 
@@ -285,8 +290,10 @@ public class MainScreenController implements Initializable {
     private void setToolCardImageView(ToolCard[] toolCards){
         for (int i=0;i<3;i++){
             Image image = new Image(getClass().getResource(URL+TOOL_CARD_PREFIX + Integer.toString(toolCards[i].getNumber())+".jpg").toExternalForm());
-            publicObjectImageViewArray[i].setImage(image);
+            toolCardsImageViewArray[i].setImage(image);
+            setToolCardSFLabel(i,toolCards[i].getToken());
         }
+
     }
 
     private void setPlayerLabel (String name){
@@ -391,7 +398,7 @@ public class MainScreenController implements Initializable {
 
     public void configGUI(ArrayList<Player> players, PublicObjCard[] publicObjCards, ToolCard[] toolCards){
         setOtherPlayersName(players);
-       // setToolCardImageView(toolCards);
+        setToolCardImageView(toolCards);
         setPublicObjectImageView(publicObjCards);
 
         for (Player player:players){
@@ -485,6 +492,9 @@ public class MainScreenController implements Initializable {
             guiModel.alertMessage(NO_TOOL_CARD_MESSAGE);
             enableMainPlayerButtons();
             return;
+        }else{
+            usingTool=true;
+            guiHandler.useToolCard(selectedToolCard);
         }
         // segnala la tool card da utilizzare con selectedToolCard
     }
@@ -544,7 +554,6 @@ public class MainScreenController implements Initializable {
             windowSelectedDice[1]=0;
         }
         placingDice=true;
-        alredyPlaced=true;
         disablePlaceDiceButton();
         guiHandler.placeDice(reserveSelectedDice,windowSelectedDice[0],windowSelectedDice[1]);
         resetValuesforPlaceDice();
@@ -604,15 +613,68 @@ public class MainScreenController implements Initializable {
     }
     @FXML
     private void toolCardZoomButtonClicked(ActionEvent event){
-        // zoom tool card
+        try{
+            ArrayList<ImageView> toolImage=new ArrayList<>();
+            ZoomController zoomController;
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/fxml/zoom.fxml"));
+            Parent root = loader.load();
+            zoomController=loader.getController();
+            Stage primaryStage = new Stage();
+            primaryStage.setTitle("Sagrada");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+            primaryStage.setResizable(false);
+            for (int i=0;i<3;i++){
+                toolImage.add(toolCardsImageViewArray[i]);
+            }
+            zoomController.setImages(toolImage);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
     }
     @FXML
     private void privateCardZoomButtonClicked(ActionEvent event){
-        // zoom OBIETTIVO PRIVATO
+        try{
+            ArrayList<ImageView> privateImage=new ArrayList<>();
+            ZoomController zoomController;
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/fxml/zoom.fxml"));
+            Parent root = loader.load();
+            zoomController=loader.getController();
+            Stage primaryStage = new Stage();
+            primaryStage.setTitle("Sagrada");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+            primaryStage.setResizable(false);
+            privateImage.add(privateObjectImageView);
+            zoomController.setImages(privateImage);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
     @FXML
     private void publicCardZoomButtonClicked(ActionEvent event){
-        // ZOOM OBIETTIVI PUBBLICI
+        try{
+            ArrayList<ImageView> publicImage=new ArrayList<>();
+            ZoomController zoomController;
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/fxml/zoom.fxml"));
+            Parent root = loader.load();
+            zoomController=loader.getController();
+            Stage primaryStage = new Stage();
+            primaryStage.setTitle("Sagrada");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+            primaryStage.setResizable(false);
+            for (int i=0;i<3;i++){
+                publicImage.add(publicObjectImageViewArray[i]);
+            }
+            zoomController.setImages(publicImage);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
     public void resetPlusMinus(){
         plusMinusClicked = false;
@@ -689,8 +751,11 @@ public class MainScreenController implements Initializable {
     public void notValideMoveMessagge(String message){
         if (placingDice){
             placingDice=false;
-            alredyPlaced=false;
             resetValuesforPlaceDice();
+            enableMainPlayerButtons();
+        }
+        if (usingTool){
+            usingTool=false;
             enableMainPlayerButtons();
         }
         guiModel.alertMessage(message);
@@ -754,11 +819,11 @@ public class MainScreenController implements Initializable {
         final String NEW_GAME_MESSAGE = "\nVuoi iniziare una nuova partita?";
         String pointsMessage;
 
-        int maxPoints=-1;
+        int maxPoints=-20;
         int winnerPosition=-1;
         String winner;
         for (int i=0; i< endMatch.getPoints().size();i++){
-            if (endMatch.getPoints().get(i)>maxPoints){
+            if (endMatch.getPoints().get(i)>=maxPoints){
                 maxPoints=endMatch.getPoints().get(i);
                 winnerPosition=endMatch.getPoints().indexOf(endMatch.getPoints().get(i));
             }

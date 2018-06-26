@@ -3,7 +3,9 @@ package it.polimi.se2018.classes.model.effects;
 import it.polimi.se2018.classes.events.PlaceDiceEvent;
 import it.polimi.se2018.classes.model.MatchHandlerModel;
 
-public class PlacementWithoutVicinity implements ToolCardsEffectsInterface{
+import java.io.Serializable;
+
+public class PlacementWithoutVicinity implements ToolCardsEffectsInterface,Serializable {
 
         private MatchHandlerModel model;
 

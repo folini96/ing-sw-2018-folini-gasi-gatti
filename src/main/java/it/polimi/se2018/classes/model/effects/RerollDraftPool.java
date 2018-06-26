@@ -2,7 +2,9 @@ package it.polimi.se2018.classes.model.effects;
 
 import it.polimi.se2018.classes.model.MatchHandlerModel;
 
-public class RerollDraftPool implements ToolCardsEffectsInterface {
+import java.io.Serializable;
+
+public class RerollDraftPool implements ToolCardsEffectsInterface,Serializable {
 
     private MatchHandlerModel model;
 

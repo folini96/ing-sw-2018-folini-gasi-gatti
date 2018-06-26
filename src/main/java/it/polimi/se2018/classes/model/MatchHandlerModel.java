@@ -39,13 +39,14 @@ public class MatchHandlerModel extends Observable {
      * @param publicObjDeck the public objective cards used in the game
      * @param privateObjDeck the private objective cards used in the game
      */
-    public MatchHandlerModel(VirtualView view, PublicObjCard[] publicObjDeck, PrivateObjCard[] privateObjDeck){
+    public MatchHandlerModel(VirtualView view, PublicObjCard[] publicObjDeck, PrivateObjCard[] privateObjDeck, ToolCard[] toolDeck){
         addObserver(view);
         diceBag= new DiceBag();
         roundTrack=new Round[10];
         draftPool=new ArrayList<>();
         this.publicObjDeck= publicObjDeck;
         this.privateObjDeck=privateObjDeck;
+        this.toolDeck=toolDeck;
 
     }
 
@@ -186,7 +187,27 @@ public class MatchHandlerModel extends Observable {
         setChanged();
         notifyObservers(new ModifiedWindowEvent(players.get(currentPlayer).getName(), players.get(currentPlayer).getWindow()));
     }
-
+    public boolean checkBeforePlacing(int toolCard){
+        return toolDeck[toolCard].getBlockedAfterPlacement();
+    }
+    public boolean checkEnoughToken(int toolCard, int currentPlayer){
+        int currentToken=players.get(currentPlayer).getToken();
+        if (toolDeck[toolCard].getToken()>0){
+            if (currentToken<2){
+                return false;
+            }else{
+                players.get(currentPlayer).setToken(currentToken-2);
+                return true;
+            }
+        }else {
+            if (currentToken<1){
+                return false;
+            }else{
+                players.get(currentPlayer).setToken(currentToken-1);
+                return true;
+            }
+        }
+    }
     /**
      * @param placeDiceEvent the number of the dice of the draft and the coordinate of the box the player wants to put the dice into
      * @param currentPlayer the number of the player currently in control

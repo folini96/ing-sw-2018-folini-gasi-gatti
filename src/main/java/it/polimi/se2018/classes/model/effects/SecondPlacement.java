@@ -1,4 +1,7 @@
 package it.polimi.se2018.classes.model.effects;
 
-public class SecondPlacement implements ToolCardsEffectsInterface {
+import java.io.Serializable;
+
+public class SecondPlacement implements ToolCardsEffectsInterface,Serializable {
+
 }

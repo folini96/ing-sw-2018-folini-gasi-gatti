@@ -4,7 +4,9 @@ import it.polimi.se2018.classes.events.ExchangeFromRoundTrackEvent;
 import it.polimi.se2018.classes.events.SelectedDraftPoolDice;
 import it.polimi.se2018.classes.model.MatchHandlerModel;
 
-public class Exchange implements ToolCardsEffectsInterface {
+import java.io.Serializable;
+
+public class Exchange implements ToolCardsEffectsInterface,Serializable {
 
     private MatchHandlerModel model;
 

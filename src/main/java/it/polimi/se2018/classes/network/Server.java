@@ -18,7 +18,7 @@ public class Server {
     private Timer lobbyTimer = new Timer();
     HashMap<Integer,Timer> playTimer = new HashMap<>();
     HashMap<Integer,Timer> windowTimer = new HashMap<>();
-    private static int LOBBYTIME=20;
+    private static int LOBBYTIME=5;
     private int passedTime;
     private int lobbyNumber=0;
     private RMIServerImplementation rmiHandler;
@@ -180,13 +180,13 @@ public class Server {
     }
 
     public void sendStartMatchEvent(StartMatchEvent startMatchEvent, int matchNumber) {
-        System.out.println(matchNumber);
         for (VirtualClientInterface client : clients) {
             if (client.getLobbyNumber()==matchNumber && (!disconnectedClients.contains(client))){
                 try{
+
                     client.sendToClient(startMatchEvent);
                 }catch (Exception e){
-                    disconnectedClients.add(client);
+                   disconnectedClients.add(client);
                 }
             }
         }
@@ -232,7 +232,7 @@ public class Server {
             }
         }
         playTimer.put(matchNumber,new Timer());
-        playTimer.get(matchNumber).schedule(new PlayTask(matchNumber),20000);
+        playTimer.get(matchNumber).schedule(new PlayTask(matchNumber),200000);
 
     }
 

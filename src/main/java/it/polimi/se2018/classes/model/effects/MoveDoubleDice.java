@@ -4,10 +4,12 @@ import it.polimi.se2018.classes.events.MoveDiceEvent;
 import it.polimi.se2018.classes.model.MatchHandlerModel;
 import it.polimi.se2018.classes.model.ToolCard;
 
-public class MoveDoubleDice implements ToolCardsEffectsInterface{
+import java.io.Serializable;
+
+public class MoveDoubleDice implements ToolCardsEffectsInterface,Serializable {
 
     private MatchHandlerModel model;
-    private ToolCard[] toolDeck=model.getToolDeck();
+    private ToolCard[] toolDeck;
 
     public MoveDoubleDice(){
 

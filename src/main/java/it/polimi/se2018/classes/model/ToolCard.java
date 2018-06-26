@@ -54,7 +54,9 @@ public class ToolCard implements Serializable {
         return token;
 
     }
-
+    public boolean getBlockedAfterPlacement(){
+        return blockedAfterPlacement;
+    }
     public int getNumber(){
         return number;
     }

@@ -30,7 +30,11 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     private int firstPlayer;
     private int currentPlayer;
     private int turnPassed;
+    private int activeToolCard;
+    private boolean alredyPlaced;
     private static final String NOT_VALIDE_MOVE_MESSAGE = "Mossa non valida. Fare un'altra mossa o finire il turno";
+    private static final String NOT_ENOUGH_TOKEN = "Non hai abbastanza token per usare questa carta";
+    private static final String NOT_VALIDE_TOOL_CARD_USE = "Non puoi utilizzare questa carta dopo aver già piazzato un dado";
     public MatchHandlerController(VirtualView view){
 
         this.view =view;
@@ -43,7 +47,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         int randomInt = random.nextInt(playerNumber);
         firstPlayer = randomInt;
         playerNames=usernames;
-        matchHandlerModel=new MatchHandlerModel(view, parsePublicObjCard(), parsePrivateObjCard());
+        matchHandlerModel=new MatchHandlerModel(view, parsePublicObjCard(), parsePrivateObjCard(), parseToolCard());
         matchHandlerModel.prepareMatch(playerNumber,playerNames);
         handleWindowCreation();
     }
@@ -236,7 +240,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
                 JsonObject card = (JsonObject) o;
                 String name=card.get("name").getAsString();
                 int number=card.get("number").getAsInt();
-                int token=card.get("tokrn").getAsInt();
+                int token=card.get("token").getAsInt();
                 String colorCard=card.get("color").getAsString();
                 Color color=null;
                 switch (colorCard){
@@ -316,7 +320,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
                         break;
                 }
 
-                new ToolCard(name, number, token, color, effect, allDices, twoTurnsInOne,
+                toolCards[currentCard]=new ToolCard(name, number, token, color, effect, allDices, twoTurnsInOne,
                         takeFromDraftPool, selectFromWindow, takeFromRoundTrack, takeFromDiceBag,
                         blockedAfterPlacement, blockedFirstTurn, vicinityBound, typeOfEffect);
                 currentCard++;
@@ -353,6 +357,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     public void handleEndTurn(){
         view.cancelTimer();
         turnPassed++;
+        alredyPlaced=false;
         if (turnPassed==(playerNumber*2)) {
             handleEndRound();
         }else {
@@ -395,6 +400,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     public void handlePlaceDice(PlaceDiceEvent placeDiceEvent){
         if(matchHandlerModel.checkCorrectPlacement(placeDiceEvent, currentPlayer)){
             matchHandlerModel.placeDice(placeDiceEvent,currentPlayer);
+            alredyPlaced=true;
         }
         else{
             Message message = new Message(NOT_VALIDE_MOVE_MESSAGE, playerNames.get(currentPlayer));
@@ -416,7 +422,19 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         matchHandlerModel.useToolCard(toolCardEvent, currentPlayer);
 
     }
-
+    public void handleToolCardSelection(int toolCard){
+        if ((alredyPlaced)&&(matchHandlerModel.checkBeforePlacing(toolCard))){
+            Message message = new Message(NOT_VALIDE_TOOL_CARD_USE, playerNames.get(currentPlayer));
+            message.accept(view);
+        }else{
+            if (matchHandlerModel.checkEnoughToken(toolCard,currentPlayer)){
+                activeToolCard=toolCard;
+            }else {
+                Message message = new Message(NOT_ENOUGH_TOKEN, playerNames.get(currentPlayer));
+                message.accept(view);
+            }
+        }
+    }
     public void update(Observable view, Object arg) {
         ViewControllerEvent event=(ViewControllerEvent) arg;
         event.accept(this);
@@ -428,7 +446,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         handlePlaceDice(placeDiceEvent);
     }
     public void visit(UseToolCardEvent toolCard){
-
+        handleToolCardSelection(toolCard.getToolCard());
     }
     public void visit(EndTurnEvent endTurnEvent){
         handleEndTurn();

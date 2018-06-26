@@ -4,7 +4,9 @@ import it.polimi.se2018.classes.model.Color;
 import it.polimi.se2018.classes.model.Dice;
 import it.polimi.se2018.classes.model.MatchHandlerModel;
 
-public class Modify implements ToolCardsEffectsInterface {
+import java.io.Serializable;
+
+public class Modify implements ToolCardsEffectsInterface,Serializable {
 
     private MatchHandlerModel model;
 

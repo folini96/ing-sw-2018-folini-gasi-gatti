@@ -7,7 +7,9 @@ import it.polimi.se2018.classes.model.Dice;
 import it.polimi.se2018.classes.model.MatchHandlerModel;
 import it.polimi.se2018.classes.model.ToolCard;
 
-public class Move implements ToolCardsEffectsInterface {
+import java.io.Serializable;
+
+public class Move implements ToolCardsEffectsInterface,Serializable {
 
     private MatchHandlerModel model;
 
