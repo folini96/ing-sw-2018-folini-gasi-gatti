@@ -1,21 +1,24 @@
 package it.polimi.se2018.classes.model.effects;
 
 import it.polimi.se2018.classes.model.MatchHandlerModel;
+import it.polimi.se2018.classes.view.MainScreenController;
 
 import java.io.Serializable;
 
 public class RerollDraftPool implements ToolCardsEffectsInterface,Serializable {
 
     private MatchHandlerModel model;
-
-    public RerollDraftPool(){
-
+    private EffectType effectType;
+    public RerollDraftPool(EffectType effectType){
+        this.effectType=effectType;
     }
 
-    public void useEffect(){
-        model.rerollDraftPool();
+    public EffectType getEffectType() {
+        return effectType;
+    }
 
-        //solo durante il secondo turno, prima di piazzare un dado
-        //aggiorna interfaccia
+
+    public void accept(MainScreenController visitor){
+        visitor.visit(this);
     }
 }

@@ -309,6 +309,18 @@ public class Server {
             }
         }
     }
+    public void sendEffect(SendEffectEvent effectEvent,int matchNumber){
+        for (VirtualClientInterface client : clients) {
+            if ((client.getUsername().equals(effectEvent.getPlayer()))&&(client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))) {
+
+                try{
+                    client.sendToClient(effectEvent);
+                }catch (Exception e){
+                    disconnectedClients.add(client);
+                }
+            }
+        }
+    }
     public void endByTime(int lobbyNumber){
         for (VirtualClientInterface client : clients) {
             if (client.getLobbyNumber()==lobbyNumber){

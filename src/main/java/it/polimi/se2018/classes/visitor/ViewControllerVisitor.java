@@ -1,6 +1,7 @@
 package it.polimi.se2018.classes.visitor;
 
 import it.polimi.se2018.classes.events.*;
+import it.polimi.se2018.classes.model.effects.Modify;
 
 public interface ViewControllerVisitor {
     void visit(ChoseWindowEvent window);
@@ -8,4 +9,5 @@ public interface ViewControllerVisitor {
     void visit(UseToolCardEvent toolCard);
     void visit(EndTurnEvent endTurnEvent);
     void visit(MoveDiceEvent moveDiceEvent);
+    void visit(ModifyDiceEvent modifyDiceEvent);
 }

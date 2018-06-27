@@ -35,6 +35,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     private static final String NOT_VALIDE_MOVE_MESSAGE = "Mossa non valida. Fare un'altra mossa o finire il turno";
     private static final String NOT_ENOUGH_TOKEN = "Non hai abbastanza token per usare questa carta";
     private static final String NOT_VALIDE_TOOL_CARD_USE = "Non puoi utilizzare questa carta dopo aver già piazzato un dado";
+    private static final String NOT_VALIDE_MODIFY ="Modifica non valida";
     public MatchHandlerController(VirtualView view){
 
         this.view =view;
@@ -293,36 +294,38 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
                     case "novaluebound":
                         typeOfEffect=EffectType.NOVALUEBOUND;
                         break;
+                    case "movetwodice":
+                        typeOfEffect=EffectType.MOVETWODICE;
+                        break;
+                    case "movetwodiceselectedcolor":
+                        typeOfEffect=EffectType.MOVETWODICESELECTEDCOLOR;
                 }
                 String effectCard=card.get("effect").getAsString();
                 ToolCardsEffectsInterface effect=null;
                 switch (effectCard){
                     case "modify":
-                        effect=new Modify();
+                        effect=new Modify(typeOfEffect);
                         break;
                     case "move":
-                        effect=new Move();
-                        break;
-                    case "movedoubledice":
-                        effect=new MoveDoubleDice();
+                        effect=new Move(typeOfEffect);
                         break;
                     case "exchange":
-                        effect=new Exchange();
+                        effect=new Exchange(typeOfEffect);
                         break;
                     case "rerolldraftpooldices":
-                        effect=new RerollDraftPool();
+                        effect=new RerollDraftPool(typeOfEffect);
                         break;
                     case "secondplacement":
-                        effect=new SecondPlacement();
+                        effect=new SecondPlacement(typeOfEffect);
                         break;
                     case "placementwithoutvicinity":
-                        effect=new PlacementWithoutVicinity();
+                        effect=new PlacementWithoutVicinity(typeOfEffect);
                         break;
                 }
 
                 toolCards[currentCard]=new ToolCard(name, number, token, color, effect, allDices, twoTurnsInOne,
                         takeFromDraftPool, selectFromWindow, takeFromRoundTrack, takeFromDiceBag,
-                        blockedAfterPlacement, blockedFirstTurn, vicinityBound, typeOfEffect);
+                        blockedAfterPlacement, blockedFirstTurn, vicinityBound);
                 currentCard++;
             }
         }catch (FileNotFoundException e){
@@ -429,6 +432,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         }else{
             if (matchHandlerModel.checkEnoughToken(toolCard,currentPlayer)){
                 activeToolCard=toolCard;
+                matchHandlerModel.sendEffect(toolCard,currentPlayer);
             }else {
                 Message message = new Message(NOT_ENOUGH_TOKEN, playerNames.get(currentPlayer));
                 message.accept(view);
@@ -455,6 +459,11 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     public void visit(MoveDiceEvent moveDiceEvent) {
 
     }
-
+    public void visit(ModifyDiceEvent modifyDiceEvent){
+        if (!matchHandlerModel.modifyDice(modifyDiceEvent,activeToolCard,currentPlayer)){
+            Message message = new Message(NOT_VALIDE_MODIFY, playerNames.get(currentPlayer));
+            message.accept(view);
+        }
+    }
 
 }

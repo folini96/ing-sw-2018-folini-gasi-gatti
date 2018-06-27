@@ -6,36 +6,22 @@ import it.polimi.se2018.classes.events.PlaceDiceEvent;
 import it.polimi.se2018.classes.model.Dice;
 import it.polimi.se2018.classes.model.MatchHandlerModel;
 import it.polimi.se2018.classes.model.ToolCard;
+import it.polimi.se2018.classes.view.MainScreenController;
 
 import java.io.Serializable;
 
 public class Move implements ToolCardsEffectsInterface,Serializable {
 
     private MatchHandlerModel model;
-
-    public Move(){
-
+    private EffectType effectType;
+    public Move(EffectType effectType){
+        this.effectType=effectType;
     }
 
-    public void useEffect(EffectType type, MoveDiceEvent moveDice1, int currentPlayer){
-
-        if(type==EffectType.NOCOLORBOUND){
-            if(model.checkCorrectSecondToolCardMove(moveDice1, currentPlayer)){
-                model.moveDice(moveDice1, currentPlayer);
-            }
-            else{
-                //messaggio errore
-            }
-        }
-        if(type==EffectType.NOVALUEBOUND){
-            if(model.checkCorrectThirdToolCardMove(moveDice1, currentPlayer)){
-                model.moveDice(moveDice1, currentPlayer);
-            }
-            else {
-                //messaggio errore
-            }
-        }
-
-        //aggiorna intefaccia
+    public EffectType getEffectType() {
+        return effectType;
+    }
+public void accept(MainScreenController visitor){
+        visitor.visit(this);
     }
 }

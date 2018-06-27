@@ -2,26 +2,25 @@ package it.polimi.se2018.classes.model.effects;
 
 import it.polimi.se2018.classes.events.PlaceDiceEvent;
 import it.polimi.se2018.classes.model.MatchHandlerModel;
+import it.polimi.se2018.classes.view.MainScreenController;
 
 import java.io.Serializable;
 
 public class PlacementWithoutVicinity implements ToolCardsEffectsInterface,Serializable {
 
-        private MatchHandlerModel model;
-
-    public PlacementWithoutVicinity(){
-
+    private MatchHandlerModel model;
+    private EffectType effectType;
+    public PlacementWithoutVicinity(EffectType effectType){
+        this.effectType=effectType;
     }
 
-    public void useEffect(PlaceDiceEvent placeDiceEvent, int currentPlayer){
-        if(model.checkCorrectNinthToolCardPlacement(placeDiceEvent, currentPlayer)){
-            model.placeDice(placeDiceEvent, currentPlayer);
-        }
-        else{
-            //messaggio errore
-        }
+    public EffectType getEffectType() {
+        return effectType;
+    }
 
-        //usata prima di piazzare
-        //aggiorna interfaccia
+
+
+    public void accept(MainScreenController visitor){
+        visitor.visit(this);
     }
 }

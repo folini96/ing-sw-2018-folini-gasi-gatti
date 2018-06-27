@@ -21,13 +21,12 @@ public class ToolCard implements Serializable {
     private boolean blockedAfterPlacement;
     private boolean blockedFirstTurn;
     private boolean vicinityBound;
-    private EffectType type;
     private ToolCardsEffectsInterface effect;
 
     public ToolCard(String name, int number, int token, Color color, ToolCardsEffectsInterface effect,
                     boolean allDices, boolean twoTurnsInOne, boolean takeFromDraftPool,
                     boolean selectFromWindow, boolean takeFromRoundTrack, boolean takeFromDiceBag,
-                    boolean blockedAfterPlacement, boolean blockedFirstTurn, boolean vicinityBound, EffectType type){
+                    boolean blockedAfterPlacement, boolean blockedFirstTurn, boolean vicinityBound){
         this.name=name;
         this.number=number;
         this.token=token;
@@ -42,7 +41,6 @@ public class ToolCard implements Serializable {
         this.blockedAfterPlacement=blockedAfterPlacement;
         this.blockedFirstTurn=blockedFirstTurn;
         this.vicinityBound=vicinityBound;
-        this.type=type;
     }
 
     public void setToken(int token){
@@ -73,10 +71,6 @@ public class ToolCard implements Serializable {
 
     public ToolCardsEffectsInterface getEffect(){
         return effect;
-    }
-
-    public EffectType getType() {
-        return type;
     }
 
     public boolean isTakeFromRoundTrack(){

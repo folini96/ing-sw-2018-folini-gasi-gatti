@@ -208,6 +208,10 @@ public class MatchHandlerModel extends Observable {
             }
         }
     }
+    public void sendEffect(int toolCard,int currenPlayer){
+        setChanged();
+        notifyObservers(new SendEffectEvent(toolDeck[toolCard].getEffect(),players.get(currenPlayer).getName()));
+    }
     /**
      * @param placeDiceEvent the number of the dice of the draft and the coordinate of the box the player wants to put the dice into
      * @param currentPlayer the number of the player currently in control
@@ -540,6 +544,23 @@ public class MatchHandlerModel extends Observable {
             return true;
         }
     }
+    public boolean modifyDice (ModifyDiceEvent modifyDiceEvent,int toolCard,int currentPlayer){
+        switch (toolDeck[toolCard].getEffect().getEffectType()){
+            case UPORDOWNVALUEMODIFY:
+                if(!upOrDownValue(draftPool.get(modifyDiceEvent.getDraftDice()),modifyDiceEvent.getUpOrDown())){
+                    return false;
+                }
+                break;
+            case NEWRANDOMVALUEMODIFY:
+                getNewRandomValue(draftPool.get(modifyDiceEvent.getDraftDice()));
+                break;
+            case ROTATEDICEMODIFY:
+                rotateDice(draftPool.get(modifyDiceEvent.getDraftDice()));
+        }
+        setChanged();
+        notifyObservers(new ModifiedDraftEvent(draftPool));
+        return true;
+    }
 
     public void rotateDice(Dice dice){
         switch (dice.getValue()){
@@ -568,24 +589,23 @@ public class MatchHandlerModel extends Observable {
         dice.getRandomValue();
     }
 
-    public void upOrDownValue(Dice dice){
-        boolean isIncrease=true;
-        //chiedi se aumentare o diminuire e assegna la flag;
-
-        if(isIncrease){
+    public boolean upOrDownValue(Dice dice, int upOrDown){
+        if(upOrDown==1){
             if(dice.getValue() < 6){
                 dice.setValue(dice.getValue()+1);
+                return true;
             }
             else{
-                //errore
+                return false;
             }
         }
         else{
             if(dice.getValue()>1){
                 dice.setValue(dice.getValue()-1);
+                return true;
             }
             else{
-                //messaggio errore
+                return false;
             }
         }
 

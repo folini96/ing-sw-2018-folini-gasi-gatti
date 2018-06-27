@@ -217,6 +217,14 @@ public class GUIHandler {
             }
         });
     }
+    public void sendEffect(SendEffectEvent effectEvent){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mainScreenController.sendEffect(effectEvent);
+            }
+        });
+    }
     public void endByTime(){
         Platform.runLater(new Runnable() {
             @Override
@@ -228,5 +236,7 @@ public class GUIHandler {
     public void useToolCard(int toolCard){
         virtualServer.sendToServer(new UseToolCardEvent(toolCard));
     }
-
+    public void modifyDice(int draftDice, int upOrDown){
+        virtualServer.sendToServer(new ModifyDiceEvent(draftDice,upOrDown));
+    }
 }
