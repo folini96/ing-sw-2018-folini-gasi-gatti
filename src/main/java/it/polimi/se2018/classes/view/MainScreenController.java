@@ -50,7 +50,7 @@ public class MainScreenController implements Initializable {
     private static final String MOVE = "Scegli il dado della finestra che vuoi spostare.";
     private static final String MOVETWO = "Scegli i dadi della finestra che vuoi spostare.";
     private static final String REROLL = "Rilancia tutti i dadi della riserva.";
-    private static final String EXCHANGEWITHROUND = "Scegli un dado dal tracciato dei round e successivamente il dado della riserva con cui scambiarlo.";
+    private static final String EXCHANGEWITHROUND = "Scegli un dado dalla riserva e successivamente il dado del tracciato del round con cui scambiarlo.";
     private static final String PLACEANOTHER = "Piazza il secondo dado.";
     private static final String EXCHANGEWITHBAG = "Scegli il dado della riserva da riporre nel sacchetto";
     private static final String MOVESELECTEDCOLOR = "Scegli il dado del tracciato dal round e successivamente sposta i dadi sulla finestra.";
@@ -71,6 +71,8 @@ public class MainScreenController implements Initializable {
     private boolean rerollDraft;
     private boolean alredyPlaced;
     private boolean alredyUsedTool;
+    private boolean exchangeDice;
+    private boolean fromRoundTrack;
     private int moveNumber;
     private int modifiedDice;
     private int diceRow;
@@ -518,6 +520,7 @@ public class MainScreenController implements Initializable {
     private void toolCardButtonClicked(ActionEvent event){
         final String NO_TOOL_CARD_MESSAGE = "Seleziona una Tool Card!";
         disableMainPlayerButtons();
+        selectedDiceImageView.setImage(null);
         if (selectedToolCard==-1){
             guiModel.alertMessage(NO_TOOL_CARD_MESSAGE);
             enableMainPlayerButtons();
@@ -568,6 +571,7 @@ public class MainScreenController implements Initializable {
             guiHandler.modifyDice(reserveSelectedDice,-1);
             return;
         }
+
         if (upOrDown){
             modifiedDice=reserveSelectedDice;
         }
@@ -575,6 +579,17 @@ public class MainScreenController implements Initializable {
         ImageView imageView = (ImageView) list.get(reserveSelectedDice);
         Image image = imageView.getImage();
         selectedDiceImageView.setImage(image);
+        if (exchangeDice){
+
+            modifiedDice=reserveSelectedDice;
+            if (fromRoundTrack){
+                roundTrackGridPane.setDisable(false);
+            }else{
+                selectedDiceImageView.setImage(null);
+                guiHandler.exchangeDice(reserveSelectedDice,-1,-1);
+            }
+            return;
+        }
         placeDiceButtonClicked=false;
         enablePlaceDiceButton();
     }
@@ -673,7 +688,13 @@ public class MainScreenController implements Initializable {
         ImageView imageView = (ImageView) list.get(roundTrackSelectedDice[0]*9+roundTrackSelectedDice[1]);
         Image image = imageView.getImage();
         selectedDiceBisImageView.setImage(image);
-        mainPlayerGridPane.setDisable(false);
+        if(!exchangeDice){
+            mainPlayerGridPane.setDisable(false);
+        }else{
+            selectedDiceBisImageView.setImage(null);
+            guiHandler.exchangeDice(reserveSelectedDice,roundNumber,diceInRound);
+        }
+
 
     }
 
@@ -791,8 +812,8 @@ public class MainScreenController implements Initializable {
 
 
 
-    public int choseNewValue(){
-        final String CHOSE_DICE_NUMBER_MESSAGE = "Quale valore vuoi assegnare al dado?";
+    public int choseNewValue(Dice dice){
+        final String CHOSE_DICE_NUMBER_MESSAGE = "Il dado estratto è " + dice.getColor().name()+ ". Quale valore vuoi assegnare al dado?";
         List<String> choices = new ArrayList<>();
         choices.add("1");
         choices.add("2");
@@ -815,7 +836,18 @@ public class MainScreenController implements Initializable {
         }
 
     }
+    public void newDiceValue(Dice dice){
+        boolean okValue=false;
+        int diceValue=0;
+        while (!okValue){
+            diceValue=choseNewValue(dice);
+            if (diceValue>0){
+                okValue=true;
 
+            }
+        }
+        guiHandler.setValue(diceValue);
+    }
     public void setOpacityOthers(int row, int column){
         ObservableList<Node> lista = playersGridPaneArray[0].getChildren();
         ImageView selected = (ImageView) lista.get(row*5 + (column));
@@ -864,6 +896,8 @@ public class MainScreenController implements Initializable {
         placingDice=false;
         changingUpOrDown=false;
         rerollDraft=false;
+        exchangeDice=false;
+        fromRoundTrack=false;
         roundTrackGridPane.setDisable(true);
         setNotVisibleThrowDiceButton();
         setNotVisiblePlusMinusButtons();
@@ -884,7 +918,7 @@ public class MainScreenController implements Initializable {
     }
     public void notValideMoveMessagge(String message){
         if (placingDice){
-            if (!((modifyDice)||(upOrDown))){
+            if (!((modifyDice)||(upOrDown)||(exchangeDice))){
 
                 resetValuesforPlaceDice();
                 enableMainPlayerButtons();
@@ -962,7 +996,7 @@ public class MainScreenController implements Initializable {
     }
     public void modifiedDraft(ArrayList<Dice> draftPool){
         updateDraft(draftPool);
-        if ((modifyDice)||(upOrDown)){
+        if ((modifyDice)||(upOrDown)||(exchangeDice)){
             reserveGridPane.setDisable(true);
             ObservableList<Node> list = reserveGridPane.getChildren();
             ImageView imageView = (ImageView) list.get(modifiedDice);
@@ -972,6 +1006,7 @@ public class MainScreenController implements Initializable {
             changingUpOrDown=false;
             disablePlusMinusButtons();
             enablePlaceDiceButton();
+            roundTrackGridPane.setDisable(true);
 
         }
         if (rerollDraft){
@@ -983,37 +1018,18 @@ public class MainScreenController implements Initializable {
         }
     }
     public void endRound(Round[] roundTrack){
+        modifiedRoundTrack(roundTrack);
+
+    }
+    public void modifiedRoundTrack(Round[] roundTrack){
         for (int i=0;i<10;i++){
             if(roundTrack[i]!=null){
                 updateRoundTrack(roundTrack[i],i);
             }
 
         }
-
     }
-    public void endMatch(ArrayList<String> players, ArrayList<Integer> points){
-        String message= "";
-        Integer maxPoints=0;
-        int winnerPosition=0;
-        String winner;
 
-        for (Integer point:points){
-            if (point>maxPoints){
-                maxPoints=point;
-                winnerPosition=points.indexOf(point);
-
-            }
-        }
-        winner=players.get(winnerPosition);
-        for (String name:players){
-            message=message + name + "punteggio: " + points.get(players.indexOf(name)).toString() + ", ";
-        }
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("Il vincitore è "+winner);
-        alert.setContentText(message);
-        alert.showAndWait();
-
-    }
     public void sendEffect(SendEffectEvent effectEvent){
         usingTool=false;
         alredyUsedTool=true;
@@ -1022,8 +1038,11 @@ public class MainScreenController implements Initializable {
     }
     public void visit(Exchange exchange){
         String cardMessage=ACTIVE_TOOL_CARD;
+        reserveGridPane.setDisable(false);
+        exchangeDice=true;
         switch (exchange.getEffectType()){
             case DRAFTPOOLROUNDTRACKEXCHANGE:
+                fromRoundTrack=true;
                 cardMessage=cardMessage + EXCHANGEWITHROUND;
                 break;
             case DRAFTPOOLBAGEXCHANGE:

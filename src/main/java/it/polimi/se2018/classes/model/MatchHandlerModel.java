@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.model.effects.EffectType;
+import it.polimi.se2018.classes.model.effects.Exchange;
 import it.polimi.se2018.classes.view.VirtualView;
 
 import java.awt.*;
@@ -26,7 +27,6 @@ public class MatchHandlerModel extends Observable {
 
     private ArrayList <Player> players= new ArrayList<>();
     private int playerNumber;
-    private int activeToolCard;
     private ToolCard[] toolDeck;
     private PublicObjCard[] publicObjDeck;
     private PrivateObjCard[] privateObjDeck;
@@ -56,29 +56,6 @@ public class MatchHandlerModel extends Observable {
      */
     public ToolCard[] getToolDeck(){
         return toolDeck;
-    }
-
-    /**
-     * @return the number of the tool card currently in use
-     */
-    public int getActiveToolCard(){
-        return activeToolCard;
-    }
-
-    /**
-     * @param activeToolCard the number of the tool card currently in use
-     */
-    public void setActiveToolCard(int activeToolCard){
-        this.activeToolCard=activeToolCard;
-    }
-
-    /**
-     * @param toolCardEvent the event representing the use of a particular tool card
-     * @param currentPlayer the player who is currently in control
-     */
-    public void useToolCard(UseToolCardEvent toolCardEvent, int currentPlayer){
-        setActiveToolCard(toolCardEvent.getToolCard());
-        toolDeck[activeToolCard].getEffect().useEffect();
     }
 
     /**
@@ -202,6 +179,13 @@ public class MatchHandlerModel extends Observable {
     }
     public boolean checkBeforePlacing(int toolCard){
         return toolDeck[toolCard].getBlockedAfterPlacement();
+    }
+    public boolean checkNotUseWithEmptyDiceBag(int toolCard){
+        if (diceBag.getDiceSet().size()==0){
+            return true;
+        }else{
+            return false;
+        }
     }
     public boolean checkNotUseWithEmptyWindow(int toolCard, int currentPlayer){
         if ((players.get(currentPlayer).getWindow().isEmpty())&&(toolDeck[toolCard].getEffect().toString().equals("Move"))){
@@ -608,7 +592,7 @@ public class MatchHandlerModel extends Observable {
             return true;
         }
     }
-    public boolean modifyDice (ModifyDiceEvent modifyDiceEvent,int toolCard,int currentPlayer){
+    public boolean modifyDice (ModifyDiceEvent modifyDiceEvent,int toolCard){
         switch (toolDeck[toolCard].getEffect().getEffectType()){
             case UPORDOWNVALUEMODIFY:
                 if(!upOrDownValue(draftPool.get(modifyDiceEvent.getDraftDice()),modifyDiceEvent.getUpOrDown())){
@@ -694,48 +678,49 @@ public class MatchHandlerModel extends Observable {
         notifyObservers(new ModifiedDraftEvent(draftPool));
     }
 
-    public boolean checkDraftPoolRoundTrackDices(ExchangeFromRoundTrackEvent exchangeFromRoundTrackEvent){
-        if(draftPool.get(exchangeFromRoundTrackEvent.getDraftPoolDice())==null) return false;
-        if(roundTrack[exchangeFromRoundTrackEvent.getRound()].getLeftDices().get(exchangeFromRoundTrackEvent.getRoundTrackDice())==null)
-            return false;
-        return true;
+
+
+    public void exchange(int toolCard,ExchangeEvent exchangeEvent, int currentPlayer){
+        if (toolDeck[toolCard].getEffect().getEffectType().equals(EffectType.DRAFTPOOLBAGEXCHANGE)){
+            exchangeDraftPoolDiceBag(exchangeEvent,currentPlayer);
+        }else{
+            exchangeDraftPoolRoundTrack(exchangeEvent);
+        }
     }
 
-    public void exchangeDraftPoolRoundTrack(ExchangeFromRoundTrackEvent exchangeFromRoundTrackEvent){
-        Dice dice1=draftPool.get(exchangeFromRoundTrackEvent.getDraftPoolDice());
-        Dice dice2=roundTrack[exchangeFromRoundTrackEvent.getRound()].getLeftDices().get(exchangeFromRoundTrackEvent.getRoundTrackDice());
-
-        draftPool.get(exchangeFromRoundTrackEvent.getDraftPoolDice()).setValue(dice2.getValue());
-        draftPool.get(exchangeFromRoundTrackEvent.getDraftPoolDice()).setColor(dice2.getColor());
-        roundTrack[exchangeFromRoundTrackEvent.getRound()].getLeftDices()
-                .get(exchangeFromRoundTrackEvent.getRoundTrackDice()).setValue(dice1.getValue());
-        roundTrack[exchangeFromRoundTrackEvent.getRound()].getLeftDices()
-                .get(exchangeFromRoundTrackEvent.getRoundTrackDice()).setColor(dice1.getColor());
+    private void exchangeDraftPoolRoundTrack(ExchangeEvent exchangeEvent){
+        Color draftDiceColor=draftPool.get(exchangeEvent.getDraftDice()).getColor();
+        int draftDiceValue=draftPool.get(exchangeEvent.getDraftDice()).getValue();
+        Dice roundTrackDice=roundTrack[exchangeEvent.getRoundNumber()].getLeftDices().get(exchangeEvent.getDiceInRound());
+        draftPool.get(exchangeEvent.getDraftDice()).setValue(roundTrackDice.getValue());
+        draftPool.get(exchangeEvent.getDraftDice()).setColor(roundTrackDice.getColor());
+        roundTrackDice.setColor(draftDiceColor);
+        roundTrackDice.setValue(draftDiceValue);
+        setChanged();
+        notifyObservers(new ModifiedRoundTrack(roundTrack));
+        setChanged();
+        notifyObservers(new ModifiedDraftEvent(draftPool));
     }
-
-    public boolean checkDraftPoolDiceBagDices(SelectedDraftPoolDice selectedDraftPoolDice){
-        if(draftPool.get(selectedDraftPoolDice.getDice())==null) return false;
-        if(diceBag.getDiceSet().isEmpty()) return false;
-        return true;
+    private void exchangeDraftPoolDiceBag(ExchangeEvent exchangeEvent,int currentPlayer){
+        Dice draftDice=draftPool.get(exchangeEvent.getDraftDice());
+        Dice newDice;
+        diceBag.getDiceSet().add(new Dice(draftDice.getColor()));
+        newDice=diceBag.extractDice(1).get(0);
+        draftDice.setColor(newDice.getColor());
+        setChanged();
+        notifyObservers(new NewDiceFromBagEvent(newDice,players.get(currentPlayer).getName()));
     }
-
-    public void exchangeDraftPoolDiceBag(SelectedDraftPoolDice selectedDraftPoolDice){
-        int randomInt;
-
-        Dice dice=draftPool.get(selectedDraftPoolDice.getDice());
-        diceBag.getDiceSet().add(dice);
-
-        Random random = new Random();
-        randomInt = random.nextInt(diceBag.getDiceSet().size());
-        draftPool.get(selectedDraftPoolDice.getDice()).setColor(diceBag.getDiceSet().get(randomInt).getColor());
-        //set valore a scelta del giocatore
+    public void setValueDiceFromBag(SetValueEvent setValueEvent, int modifiedDraftDice){
+        draftPool.get(modifiedDraftDice).setValue(setValueEvent.getNewValue());
+        setChanged();
+        notifyObservers(new ModifiedDraftEvent(draftPool));
     }
 
     /**
      * @param player the player the score is calculated for
      * @return the score
      */
-    public int calculateScore(Player player){
+    private int calculateScore(Player player){
         int i, publicObjCardPoints=0;
         int privateObjCardPoints, lostPoints, playerScore;
 

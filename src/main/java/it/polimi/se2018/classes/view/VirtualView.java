@@ -58,6 +58,12 @@ public class VirtualView extends Observable implements Observer,ModelViewEventVi
     public void visit (SendEffectEvent effectEvent){
         server.sendEffect(effectEvent,matchNumber);
     }
+    public void visit (ModifiedRoundTrack modifiedRoundTrack){
+        server.sendModifiedRoundTrack(modifiedRoundTrack,matchNumber);
+    }
+    public void visit (NewDiceFromBagEvent newDiceFromBagEvent){
+        server.sendNewDiceFromBag(newDiceFromBagEvent,matchNumber);
+    }
     /*public void visit(int removedToken){
         server.removeFavorToken(removedToken);
     }*/

@@ -13,4 +13,6 @@ public interface ModelViewEventVisitor {
         void visit (ModifiedDraftEvent modifiedDraftEvent);
         void visit (EndMatchEvent endMatchEvent);
         void visit (SendEffectEvent effectEvent);
+        void visit (ModifiedRoundTrack modifiedRoundTrack);
+        void visit (NewDiceFromBagEvent newDiceFromBagEvent);
 }

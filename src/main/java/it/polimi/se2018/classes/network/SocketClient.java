@@ -71,6 +71,12 @@ public class SocketClient implements ClientInterface,ModelViewEventVisitor {
     public void visit (SendEffectEvent effectEvent){
         interfaceHandler.sendEffect(effectEvent);
     }
+    public void visit (ModifiedRoundTrack modifiedRoundTrack){
+        interfaceHandler.modifiedRoundTrack(modifiedRoundTrack);
+    }
+    public void visit (NewDiceFromBagEvent newDiceFromBagEvent){
+        interfaceHandler.askNewDiceValue(newDiceFromBagEvent);
+    }
     public void endByTime(){
         interfaceHandler.endByTime();
     }

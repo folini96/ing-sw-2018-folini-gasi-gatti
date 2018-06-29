@@ -6,9 +6,7 @@ import javafx.scene.effect.Effect;
 
 public interface ToolCardsEffectsInterface {
 
-    default void useEffect() {
 
-    }
     void accept(MainScreenController visitor);
     EffectType getEffectType();
     String toString();

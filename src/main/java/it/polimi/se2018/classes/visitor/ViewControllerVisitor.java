@@ -11,4 +11,6 @@ public interface ViewControllerVisitor {
     void visit(MoveDiceEvent moveDiceEvent);
     void visit(ModifyDiceEvent modifyDiceEvent);
     void visit(RerollDraftEvent rerollDraftEvent);
+    void visit (ExchangeEvent exchangeEvent);
+    void visit (SetValueEvent setValueEvent);
 }

@@ -194,6 +194,14 @@ public class GUIHandler {
         });
 
     }
+    public void modifiedRoundTrack(ModifiedRoundTrack modifiedRoundTrack){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mainScreenController.modifiedRoundTrack(modifiedRoundTrack.getRoundTrack());
+            }
+        });
+    }
     public void modifiedDraft(ModifiedDraftEvent modifiedDraftEvent){
         Platform.runLater(new Runnable() {
             @Override
@@ -245,5 +253,19 @@ public class GUIHandler {
     }
     public void rerollDraft(){
         virtualServer.sendToServer(new RerollDraftEvent());
+    }
+    public void exchangeDice(int draftDice, int roundNumber, int diceInRound){
+        virtualServer.sendToServer(new ExchangeEvent(draftDice,roundNumber,diceInRound));
+    }
+    public void askNewDiceValue(NewDiceFromBagEvent newDiceFromBagEvent){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mainScreenController.newDiceValue(newDiceFromBagEvent.getExtractedDice());
+            }
+        });
+    }
+    public void setValue(int diceValue){
+        virtualServer.sendToServer(new SetValueEvent(diceValue));
     }
 }

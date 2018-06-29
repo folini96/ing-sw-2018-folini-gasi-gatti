@@ -179,7 +179,7 @@ public class Server {
         }
     }
 
-    public void sendStartMatchEvent(StartMatchEvent startMatchEvent, int matchNumber) {
+    public synchronized void sendStartMatchEvent(StartMatchEvent startMatchEvent, int matchNumber) {
         for (VirtualClientInterface client : clients) {
             if (client.getLobbyNumber()==matchNumber && (!disconnectedClients.contains(client))){
                 try{
@@ -298,11 +298,34 @@ public class Server {
             }
         }
     }
+    public void sendModifiedRoundTrack(ModifiedRoundTrack modifiedRoundTrack, int matchNumber){
+        for (VirtualClientInterface client : clients) {
+            if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))){
+                try{
+                    client.sendToClient(modifiedRoundTrack);
+                }catch (Exception e){
+                    disconnectedClients.add(client);
+                }
+            }
+        }
+    }
     public void sendEndMatchEvent(EndMatchEvent endMatchEvent, int matchNumber){
         for (VirtualClientInterface client : clients) {
             if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))){
                 try{
                     client.sendToClient(endMatchEvent);
+                }catch (Exception e){
+                    disconnectedClients.add(client);
+                }
+            }
+        }
+    }
+    public void sendNewDiceFromBag(NewDiceFromBagEvent newDiceFromBagEvent, int matchNumber){
+        for (VirtualClientInterface client : clients) {
+            if ((client.getUsername().equals(newDiceFromBagEvent.getPlayer()))&&(client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))) {
+
+                try{
+                    client.sendToClient(newDiceFromBagEvent);
                 }catch (Exception e){
                     disconnectedClients.add(client);
                 }

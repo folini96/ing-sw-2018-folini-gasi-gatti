@@ -10,14 +10,10 @@ import it.polimi.se2018.classes.model.Box;
 import it.polimi.se2018.classes.view.VirtualView;
 import it.polimi.se2018.classes.visitor.ViewControllerVisitor;
 
-import javax.swing.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Random;
+import java.util.*;
 
 public class MatchHandlerController implements Observer,ViewControllerVisitor {
     private int playerNumber=0;
@@ -31,6 +27,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     private int currentPlayer;
     private int turnPassed;
     private int activeToolCard;
+    private int modifiedDraftDiceInExchange;
     private boolean alredyPlaced;
     private ArrayList<Integer> noSecondTurn;
     private static final String NOT_VALIDE_MOVE_MESSAGE = "Mossa non valida. Fare un'altra mossa o finire il turno";
@@ -39,6 +36,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     private static final String NOT_VALIDE_BEFORE_PLACEMENT = "Non puoi utilizzare questa carta prima di aver piazzato un dado";
     private static final String NOT_VALIDE_WITH_EMPTY_WINDOW = "Non puoi utilizzare questa carta se la tua vetrata è ancora vuota";
     private static final String NOT_VALIDE_WITH_EMPTY_ROUND_TRACK = "Non puoi utilizzare questa carta se il tracciato del round è vuoto";
+    private static final String NOT_VALIDE_WITH_EMPTY_DICE_BAG = "Non puoi utilizzare questa carta se il sacchetto dei dadi è vuoto";
     private static final String NOT_VALIDE_MODIFY ="Modifica non valida";
     private static final String NOT_VALIDE_MOVE ="Spostamento non valido";
     private static final String NOT_VALIDE_IN_FIRST_TURN ="Non puoi utilizzare questa carta durante il primo turno";
@@ -351,21 +349,21 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         return chosenToolCards;
     }
 
-    public void handleWindowCreation(){
+    private void handleWindowCreation(){
         view.windowToChose(parseWindowSide());
     }
 
-    public void  handleStartRound(){
+    private void  handleStartRound(){
         currentPlayer=firstPlayer;
         turnPassed=0;
         handleStartTurn();
         matchHandlerModel.startRound(round, firstPlayer);
 
     }
-    public void handleStartTurn(){
+    private void handleStartTurn(){
         matchHandlerModel.startTurn(currentPlayer);
     }
-    public void handleEndTurn(){
+    private void handleEndTurn(){
         boolean endRound;
         view.cancelTimer();
         turnPassed++;
@@ -412,7 +410,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         }
 
     }
-    public void handleEndRound(){
+    private void handleEndRound(){
         noSecondTurn.clear();
         matchHandlerModel.endRound(round);
         if (round==9){
@@ -428,11 +426,11 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         }
     }
 
-    public void handleEndMatch(){
+    private void handleEndMatch(){
         matchHandlerModel.endMatch();
     }
 
-    public void handlePlaceDice(PlaceDiceEvent placeDiceEvent){
+    private void handlePlaceDice(PlaceDiceEvent placeDiceEvent){
         if(matchHandlerModel.checkCorrectPlacement(placeDiceEvent, currentPlayer)){
             matchHandlerModel.placeDice(placeDiceEvent,currentPlayer);
             alredyPlaced=true;
@@ -443,7 +441,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         }
 
     }
-    public void handleWindowSelection(ChoseWindowEvent window){
+    private void handleWindowSelection(ChoseWindowEvent window){
         chosenWindow.add(window);
         if (chosenWindow.size()==playerNumber){
             matchHandlerModel.windowSelection(chosenWindow,windowSides);
@@ -452,14 +450,13 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         }
     }
 
-    public void handleUseEffect(UseToolCardEvent toolCardEvent){
-
-        matchHandlerModel.useToolCard(toolCardEvent, currentPlayer);
-
-    }
-    public void handleToolCardSelection(int toolCard){
+    private void handleToolCardSelection(int toolCard){
         if ((matchHandlerModel.checkUseSecondTurn(toolCard))&&((turnPassed<playerNumber))){
             Message message = new Message(NOT_VALIDE_IN_FIRST_TURN, playerNames.get(currentPlayer));
+            message.accept(view);
+        }
+        else if ((round==9)&&(playerNumber==4)&&(matchHandlerModel.checkNotUseWithEmptyDiceBag(toolCard))){
+            Message message = new Message(NOT_VALIDE_WITH_EMPTY_DICE_BAG, playerNames.get(currentPlayer));
             message.accept(view);
         }
         else if ((matchHandlerModel.checkUseFirstTurn(toolCard))&&(turnPassed>=playerNumber)) {
@@ -499,7 +496,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         ViewControllerEvent event=(ViewControllerEvent) arg;
         event.accept(this);
     }
-    public void handleMoveDice(MoveDiceEvent moveDiceEvent){
+    private void handleMoveDice(MoveDiceEvent moveDiceEvent){
         if(!matchHandlerModel.checkCorrectMove(moveDiceEvent,currentPlayer,activeToolCard)){
             Message message = new Message(NOT_VALIDE_MOVE, playerNames.get(currentPlayer));
             message.accept(view);
@@ -507,14 +504,21 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
             matchHandlerModel.moveDice(moveDiceEvent,currentPlayer);
         }
     }
-    public void handleModifiyDice(ModifyDiceEvent modifyDiceEvent){
-        if (!matchHandlerModel.modifyDice(modifyDiceEvent,activeToolCard,currentPlayer)){
+    private void handleModifiyDice(ModifyDiceEvent modifyDiceEvent){
+        if (!matchHandlerModel.modifyDice(modifyDiceEvent,activeToolCard)){
             Message message = new Message(NOT_VALIDE_MODIFY, playerNames.get(currentPlayer));
             message.accept(view);
         }
     }
-    public void handleRerollDraft(RerollDraftEvent rerollDraftEvent){
+    private void handleRerollDraft(RerollDraftEvent rerollDraftEvent){
         matchHandlerModel.rerollDraftPool();
+    }
+    private void handleExchangeDice(ExchangeEvent exchangeEvent){
+        modifiedDraftDiceInExchange=exchangeEvent.getDraftDice();
+        matchHandlerModel.exchange(activeToolCard,exchangeEvent,currentPlayer);
+    }
+    private void handleSetValue(SetValueEvent setValueEvent){
+        matchHandlerModel.setValueDiceFromBag(setValueEvent,modifiedDraftDiceInExchange);
     }
     public void visit(ChoseWindowEvent window){
         handleWindowSelection(window);
@@ -537,5 +541,11 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     }
     public void visit(RerollDraftEvent rerollDraftEvent){
         handleRerollDraft(rerollDraftEvent);
+    }
+    public void visit(ExchangeEvent exchangeEvent){
+        handleExchangeDice(exchangeEvent);
+    }
+    public void visit(SetValueEvent setValueEvent){
+        handleSetValue(setValueEvent);
     }
 }
