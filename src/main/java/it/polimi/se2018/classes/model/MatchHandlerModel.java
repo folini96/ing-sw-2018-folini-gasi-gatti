@@ -201,6 +201,13 @@ public class MatchHandlerModel extends Observable {
             return false;
         }
     }
+    public boolean checkNoVicinityBound(int toolCard){
+        if ((toolDeck[toolCard].getName()).equals("Riga in Sughero")){
+            return true;
+        }else{
+            return false;
+        }
+    }
     private boolean isEmptyRoundTrack(){
         if (roundTrack[0]==null){
             return true;
@@ -210,11 +217,13 @@ public class MatchHandlerModel extends Observable {
     }
     public boolean checkEnoughToken(int toolCard, int currentPlayer){
         int currentToken=players.get(currentPlayer).getToken();
-        if (toolDeck[toolCard].getToken()>0){
+        int toolCardToken=toolDeck[toolCard].getToken();
+        if (toolCardToken>0){
             if (currentToken<2){
                 return false;
             }else{
                 players.get(currentPlayer).setToken(currentToken-2);
+                toolDeck[toolCard].setToken(toolCardToken+2);
                 return true;
             }
         }else {
@@ -222,6 +231,7 @@ public class MatchHandlerModel extends Observable {
                 return false;
             }else{
                 players.get(currentPlayer).setToken(currentToken-1);
+                toolDeck[toolCard].setToken(toolCardToken+1);
                 return true;
             }
         }
@@ -229,13 +239,15 @@ public class MatchHandlerModel extends Observable {
     public void sendEffect(int toolCard,int currenPlayer){
         setChanged();
         notifyObservers(new SendEffectEvent(toolDeck[toolCard].getEffect(),players.get(currenPlayer).getName()));
+        setChanged();
+        notifyObservers(new ModifiedTokenEvent(players.get(currenPlayer).getName(),players.get(currenPlayer).getToken(),toolCard,toolDeck[toolCard].getToken()));
     }
     /**
      * @param placeDiceEvent the number of the dice of the draft and the coordinate of the box the player wants to put the dice into
      * @param currentPlayer the number of the player currently in control
      * @return true if the placement is allowed, false if not
      */
-    public boolean checkCorrectPlacement(PlaceDiceEvent placeDiceEvent, int currentPlayer){
+    public boolean checkCorrectPlacement(PlaceDiceEvent placeDiceEvent, int currentPlayer,boolean noVicinityBound){
         Dice dice=draftPool.get(placeDiceEvent.getDraftDice());
 
         if(players.get(currentPlayer).getWindow().isEmpty()){
@@ -250,7 +262,10 @@ public class MatchHandlerModel extends Observable {
             if(!checkBoxNotEmpty(placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
             if(!checkColorVicinity(dice, placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
             if(!checkValueVicinity(dice, placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
-            if(!checkDiceVicinity(placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
+            if (!noVicinityBound){
+                if(!checkDiceVicinity(placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
+            }
+
             return true;
         }
     }

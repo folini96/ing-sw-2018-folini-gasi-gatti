@@ -1,7 +1,7 @@
 package it.polimi.se2018.classes.visitor;
 
 import it.polimi.se2018.classes.events.*;
-import it.polimi.se2018.classes.model.effects.EffectType;
+
 
 public interface ModelViewEventVisitor {
         void visit (Message message);
@@ -15,4 +15,5 @@ public interface ModelViewEventVisitor {
         void visit (SendEffectEvent effectEvent);
         void visit (ModifiedRoundTrack modifiedRoundTrack);
         void visit (NewDiceFromBagEvent newDiceFromBagEvent);
+        void visit (ModifiedTokenEvent modifiedTokenEvent);
 }

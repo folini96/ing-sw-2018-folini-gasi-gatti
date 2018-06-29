@@ -28,7 +28,8 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     private int turnPassed;
     private int activeToolCard;
     private int modifiedDraftDiceInExchange;
-    private boolean alredyPlaced;
+    private boolean noVicinityBound;
+    private boolean alreadyPlaced;
     private ArrayList<Integer> noSecondTurn;
     private static final String NOT_VALIDE_MOVE_MESSAGE = "Mossa non valida. Fare un'altra mossa o finire il turno";
     private static final String NOT_ENOUGH_TOKEN = "Non hai abbastanza token per usare questa carta";
@@ -361,13 +362,14 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
 
     }
     private void handleStartTurn(){
+        noVicinityBound=false;
         matchHandlerModel.startTurn(currentPlayer);
     }
     private void handleEndTurn(){
         boolean endRound;
         view.cancelTimer();
         turnPassed++;
-        alredyPlaced=false;
+        alreadyPlaced=false;
         if (turnPassed==(playerNumber*2)) {
             endRound=true;
         }else {
@@ -431,9 +433,9 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     }
 
     private void handlePlaceDice(PlaceDiceEvent placeDiceEvent){
-        if(matchHandlerModel.checkCorrectPlacement(placeDiceEvent, currentPlayer)){
+        if(matchHandlerModel.checkCorrectPlacement(placeDiceEvent, currentPlayer, noVicinityBound)){
             matchHandlerModel.placeDice(placeDiceEvent,currentPlayer);
-            alredyPlaced=true;
+            alreadyPlaced=true;
         }
         else{
             Message message = new Message(NOT_VALIDE_MOVE_MESSAGE, playerNames.get(currentPlayer));
@@ -463,12 +465,12 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
             Message message = new Message(NOT_VALIDE_IN_SECOND_TURN, playerNames.get(currentPlayer));
             message.accept(view);
         }
-        else if ((matchHandlerModel.checkUseFirstTurn(toolCard))&&(!alredyPlaced)){
+        else if ((matchHandlerModel.checkUseFirstTurn(toolCard))&&(!alreadyPlaced)){
             Message message = new Message(NOT_VALIDE_BEFORE_PLACEMENT, playerNames.get(currentPlayer));
             message.accept(view);
 
         }
-        else if ((alredyPlaced)&&(matchHandlerModel.checkBeforePlacing(toolCard))){
+        else if ((alreadyPlaced)&&(matchHandlerModel.checkBeforePlacing(toolCard))){
             Message message = new Message(NOT_VALIDE_AFTER_PLACEMENT, playerNames.get(currentPlayer));
             message.accept(view);
         }
@@ -483,7 +485,11 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
             if (matchHandlerModel.checkEnoughToken(toolCard,currentPlayer)){
                 activeToolCard=toolCard;
                 matchHandlerModel.sendEffect(toolCard,currentPlayer);
+                if (matchHandlerModel.checkNoVicinityBound(toolCard)){
+                    noVicinityBound=true;
+                }
                 if (matchHandlerModel.checkUseFirstTurn(toolCard)){
+                    noVicinityBound=false;
                     noSecondTurn.add(currentPlayer);
                 }
             }else {

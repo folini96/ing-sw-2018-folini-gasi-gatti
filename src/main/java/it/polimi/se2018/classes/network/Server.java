@@ -344,6 +344,17 @@ public class Server {
             }
         }
     }
+    public void sendModifiedToken(ModifiedTokenEvent modifiedTokenEvent,int matchNumber){
+        for (VirtualClientInterface client : clients) {
+            if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))){
+                try{
+                    client.sendToClient(modifiedTokenEvent);
+                }catch (Exception e){
+                    disconnectedClients.add(client);
+                }
+            }
+        }
+    }
     public void endByTime(int lobbyNumber){
         for (VirtualClientInterface client : clients) {
             if (client.getLobbyNumber()==lobbyNumber){
@@ -368,8 +379,5 @@ public class Server {
     public void reconnectClient(VirtualClientInterface reconnectingClient){
 
     }
-    /*public void removeFavorToken(int removedFavorToken) {
-        for (VirtualClientInterface client : clients) {
-                    }
-    }*/
+
 }

@@ -106,6 +106,9 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
     public void visit (NewDiceFromBagEvent newDiceFromBagEvent){
         interfaceHandler.askNewDiceValue(newDiceFromBagEvent);
     }
+    public void visit (ModifiedTokenEvent modifiedTokenEvent){
+        interfaceHandler.modifiedToken(modifiedTokenEvent);
+    }
     public void endByTime(){
         interfaceHandler.endByTime();
     }

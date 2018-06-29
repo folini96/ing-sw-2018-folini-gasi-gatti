@@ -265,6 +265,14 @@ public class GUIHandler {
             }
         });
     }
+    public void modifiedToken(ModifiedTokenEvent modifiedTokenEvent){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mainScreenController.modifiedToken(modifiedTokenEvent);
+            }
+        });
+    }
     public void setValue(int diceValue){
         virtualServer.sendToServer(new SetValueEvent(diceValue));
     }

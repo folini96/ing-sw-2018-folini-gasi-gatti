@@ -64,9 +64,9 @@ public class VirtualView extends Observable implements Observer,ModelViewEventVi
     public void visit (NewDiceFromBagEvent newDiceFromBagEvent){
         server.sendNewDiceFromBag(newDiceFromBagEvent,matchNumber);
     }
-    /*public void visit(int removedToken){
-        server.removeFavorToken(removedToken);
-    }*/
+    public void visit (ModifiedTokenEvent modifiedTokenEvent){
+        server.sendModifiedToken(modifiedTokenEvent,matchNumber);
+    }
     public void windowToChose(WindowSide[] windows){
         server.sendWindowToChose(windows, matchNumber);
     }

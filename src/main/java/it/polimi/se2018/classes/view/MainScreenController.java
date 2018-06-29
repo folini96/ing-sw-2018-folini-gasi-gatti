@@ -2,6 +2,7 @@ package it.polimi.se2018.classes.view;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.polimi.se2018.classes.events.EndMatchEvent;
+import it.polimi.se2018.classes.events.ModifiedTokenEvent;
 import it.polimi.se2018.classes.events.SendEffectEvent;
 import it.polimi.se2018.classes.model.*;
 import it.polimi.se2018.classes.model.effects.*;
@@ -54,7 +55,7 @@ public class MainScreenController implements Initializable {
     private static final String PLACEANOTHER = "Piazza il secondo dado.";
     private static final String EXCHANGEWITHBAG = "Scegli il dado della riserva da riporre nel sacchetto";
     private static final String MOVESELECTEDCOLOR = "Scegli il dado del tracciato dal round e successivamente sposta i dadi sulla finestra.";
-    private static final String PLACENOVICINITYBOUNDS = "Scegli un dado della riserva e piazzalo senza rispettare i vincoli di adiacenza.";
+    private static final String PLACENOVICINITYBOUNDS = "Scegli un dado della riserva e piazzalo senza rispettare il vincolo di adiacenza ad un altro dado.";
     private ViewModel guiModel = new ViewModel();
     private GUIHandler guiHandler;
     private boolean usingTool;
@@ -67,10 +68,9 @@ public class MainScreenController implements Initializable {
     private boolean moveTwice;
     private boolean moveSelectedRoundColor;
     private boolean windowDiceSelected;
-    private boolean roundDiceSelected;
     private boolean rerollDraft;
-    private boolean alredyPlaced;
-    private boolean alredyUsedTool;
+    private boolean alreadyPlaced;
+    private boolean alreadyUsedTool;
     private boolean exchangeDice;
     private boolean fromRoundTrack;
     private int moveNumber;
@@ -681,7 +681,6 @@ public class MainScreenController implements Initializable {
         catch (NullPointerException e){
             roundTrackSelectedDice[1]=0;
         }
-        roundDiceSelected=true;
         roundNumber=roundTrackSelectedDice[0];
         diceInRound=roundTrackSelectedDice[1];
         ObservableList<Node> list = roundTrackGridPane.getChildren();
@@ -881,9 +880,8 @@ public class MainScreenController implements Initializable {
         this.guiHandler=guiHandler;
     }
     public void checkStartTurn(String playerName){
-        alredyUsedTool=false;
-        alredyPlaced=false;
-        roundDiceSelected=false;
+        alreadyUsedTool=false;
+        alreadyPlaced=false;
         windowDiceSelected=false;
         moveSelectedRoundColor=false;
         moveDice=false;
@@ -922,7 +920,7 @@ public class MainScreenController implements Initializable {
 
                 resetValuesforPlaceDice();
                 enableMainPlayerButtons();
-                if (alredyUsedTool){
+                if (alreadyUsedTool){
                     disableToolCardButton();
                 }
             }else{
@@ -946,7 +944,7 @@ public class MainScreenController implements Initializable {
         if (usingTool){
             usingTool=false;
             enableMainPlayerButtons();
-            if (alredyPlaced){
+            if (alreadyPlaced){
                 disablePlaceDiceButton();
             }
         }
@@ -960,14 +958,14 @@ public class MainScreenController implements Initializable {
             reserveGridPane.setDisable(true);
             mainPlayerGridPane.setDisable(true);
             enableEndTurnButton();
-            if(!alredyUsedTool){
+            if(!alreadyUsedTool){
                 enableToolCardButton();
             }
             disablePlaceDiceButton();
-            alredyPlaced=true;
+            alreadyPlaced=true;
         }
         if (moveDice){
-            if (!alredyPlaced){
+            if (!alreadyPlaced){
                 enablePlaceDiceButton();
                 reserveGridPane.setDisable(false);
             }
@@ -1029,10 +1027,13 @@ public class MainScreenController implements Initializable {
 
         }
     }
-
+    public void modifiedToken(ModifiedTokenEvent modifiedTokenEvent){
+        setPlayerSFLabel(modifiedTokenEvent.getPlayer(),modifiedTokenEvent.getPlayerToken());
+        setToolCardSFLabel(modifiedTokenEvent.getToolCard(),modifiedTokenEvent.getToolCardToken());
+    }
     public void sendEffect(SendEffectEvent effectEvent){
         usingTool=false;
-        alredyUsedTool=true;
+        alreadyUsedTool=true;
         disableToolCardButton();
         effectEvent.getEffect().accept(this);
     }
@@ -1071,7 +1072,7 @@ public class MainScreenController implements Initializable {
     }
     public void visit(Move move){
         disableToolCardButton();
-        if (!alredyPlaced){
+        if (!alreadyPlaced){
             enablePlaceDiceButton();
             reserveGridPane.setDisable(false);
         }
@@ -1101,6 +1102,8 @@ public class MainScreenController implements Initializable {
         guiModel.alertMessage(cardMessage);
     }
     public void visit(PlacementWithoutVicinity placementWithoutVicinity){
+        reserveSelectedDice=-1;
+        enablePlaceDiceButton();
         String cardMessage=ACTIVE_TOOL_CARD;
         cardMessage=cardMessage+PLACENOVICINITYBOUNDS;
         guiModel.alertMessage(cardMessage);
@@ -1117,7 +1120,7 @@ public class MainScreenController implements Initializable {
         String cardMessage=ACTIVE_TOOL_CARD;
         cardMessage=cardMessage+PLACEANOTHER;
         guiModel.alertMessage(cardMessage);
-        alredyPlaced=false;
+        alreadyPlaced=false;
         enablePlaceDiceButton();
         reserveGridPane.setDisable(false);
         mainPlayerGridPane.setDisable(false);
