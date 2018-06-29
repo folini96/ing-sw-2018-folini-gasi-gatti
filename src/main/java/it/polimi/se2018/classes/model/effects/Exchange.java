@@ -9,7 +9,6 @@ import java.io.Serializable;
 
 public class Exchange implements ToolCardsEffectsInterface,Serializable {
 
-    private MatchHandlerModel model;
     private EffectType effectType;
     public Exchange(EffectType effectType){
         this.effectType=effectType;
@@ -24,4 +23,8 @@ public class Exchange implements ToolCardsEffectsInterface,Serializable {
         visitor.visit(this);
     }
 
+    @Override
+    public String toString() {
+        return "Exchange";
+    }
 }

@@ -7,7 +7,6 @@ import java.io.Serializable;
 
 public class RerollDraftPool implements ToolCardsEffectsInterface,Serializable {
 
-    private MatchHandlerModel model;
     private EffectType effectType;
     public RerollDraftPool(EffectType effectType){
         this.effectType=effectType;
@@ -20,5 +19,8 @@ public class RerollDraftPool implements ToolCardsEffectsInterface,Serializable {
 
     public void accept(MainScreenController visitor){
         visitor.visit(this);
+    }
+    public String toString() {
+        return "Reroll";
     }
 }

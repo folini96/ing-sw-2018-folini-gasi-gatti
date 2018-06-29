@@ -8,7 +8,6 @@ import java.io.Serializable;
 
 public class PlacementWithoutVicinity implements ToolCardsEffectsInterface,Serializable {
 
-    private MatchHandlerModel model;
     private EffectType effectType;
     public PlacementWithoutVicinity(EffectType effectType){
         this.effectType=effectType;
@@ -22,5 +21,8 @@ public class PlacementWithoutVicinity implements ToolCardsEffectsInterface,Seria
 
     public void accept(MainScreenController visitor){
         visitor.visit(this);
+    }
+    public String toString() {
+        return "PlacementWithoutVicinity";
     }
 }

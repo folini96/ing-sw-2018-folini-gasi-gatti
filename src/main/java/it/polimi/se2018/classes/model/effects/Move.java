@@ -12,7 +12,6 @@ import java.io.Serializable;
 
 public class Move implements ToolCardsEffectsInterface,Serializable {
 
-    private MatchHandlerModel model;
     private EffectType effectType;
     public Move(EffectType effectType){
         this.effectType=effectType;
@@ -21,7 +20,10 @@ public class Move implements ToolCardsEffectsInterface,Serializable {
     public EffectType getEffectType() {
         return effectType;
     }
-public void accept(MainScreenController visitor){
+    public void accept(MainScreenController visitor){
         visitor.visit(this);
+    }
+    public String toString() {
+        return "Move";
     }
 }

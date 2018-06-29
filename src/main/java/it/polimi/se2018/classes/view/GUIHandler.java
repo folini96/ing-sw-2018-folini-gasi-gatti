@@ -155,6 +155,7 @@ public class GUIHandler {
             @Override
             public void run() {
                 mainScreenController.updateRound(startRoundEvent.getDraftPool(),startRoundEvent.getRound());
+                mainScreenController.setFirstPlayerLabel(startRoundEvent.getFirstPlayer());
             }
         });
 
@@ -238,5 +239,11 @@ public class GUIHandler {
     }
     public void modifyDice(int draftDice, int upOrDown){
         virtualServer.sendToServer(new ModifyDiceEvent(draftDice,upOrDown));
+    }
+    public void moveDice(int diceRow,int diceColumn, int newRow, int newColumn, int round,int diceInRound){
+        virtualServer.sendToServer(new MoveDiceEvent(diceRow,diceColumn,newRow,newColumn,round,diceInRound));
+    }
+    public void rerollDraft(){
+        virtualServer.sendToServer(new RerollDraftEvent());
     }
 }

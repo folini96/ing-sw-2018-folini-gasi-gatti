@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import it.polimi.se2018.classes.events.*;
+import it.polimi.se2018.classes.model.effects.EffectType;
 import it.polimi.se2018.classes.view.VirtualView;
 
 import java.awt.*;
@@ -187,8 +188,41 @@ public class MatchHandlerModel extends Observable {
         setChanged();
         notifyObservers(new ModifiedWindowEvent(players.get(currentPlayer).getName(), players.get(currentPlayer).getWindow()));
     }
+    public boolean checkUseSecondTurn(int toolCard){
+        if (toolDeck[toolCard].getName().equals("Martelletto")){
+            return true;
+        }
+        return false;
+    }
+    public boolean checkUseFirstTurn(int toolCard){
+        if (toolDeck[toolCard].getName().equals("Tenaglia a Rotelle")){
+            return true;
+        }
+        return false;
+    }
     public boolean checkBeforePlacing(int toolCard){
         return toolDeck[toolCard].getBlockedAfterPlacement();
+    }
+    public boolean checkNotUseWithEmptyWindow(int toolCard, int currentPlayer){
+        if ((players.get(currentPlayer).getWindow().isEmpty())&&(toolDeck[toolCard].getEffect().toString().equals("Move"))){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public boolean checkNotUseWithEmptyRoundTrack(int toolCard){
+        if (((toolDeck[toolCard].getName().equals("Taglierina circolare"))||(toolDeck[toolCard].getName().equals("Taglierina Manuale")))&&(isEmptyRoundTrack())){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    private boolean isEmptyRoundTrack(){
+        if (roundTrack[0]==null){
+            return true;
+        }else{
+            return false;
+        }
     }
     public boolean checkEnoughToken(int toolCard, int currentPlayer){
         int currentToken=players.get(currentPlayer).getToken();
@@ -273,7 +307,6 @@ public class MatchHandlerModel extends Observable {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -297,7 +330,6 @@ public class MatchHandlerModel extends Observable {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -318,7 +350,6 @@ public class MatchHandlerModel extends Observable {
         if(boxScheme[row][column].getDice() != null){
             return false;
         }
-
         return true;
     }
 
@@ -351,7 +382,6 @@ public class MatchHandlerModel extends Observable {
         if(vicinityCheck==0){
             return false;
         }
-
         return true;
     }
 
@@ -389,7 +419,6 @@ public class MatchHandlerModel extends Observable {
                 }
             }
         }
-
         return true;
     }
 
@@ -427,7 +456,6 @@ public class MatchHandlerModel extends Observable {
                 }
             }
         }
-
         return true;
     }
 
@@ -468,15 +496,51 @@ public class MatchHandlerModel extends Observable {
      * @param currentPlayer the number of the player currently in control
      * @return true if the move is allowed, false if not
      */
-    public boolean checkCorrectMove(MoveDiceEvent moveDiceEvent, int currentPlayer){
+    public boolean checkCorrectMove(MoveDiceEvent moveDiceEvent, int currentPlayer, int toolCard){
         Dice dice=players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].getDice();
+        players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].setDice(null);
+        if ((toolDeck[toolCard].getEffect().getEffectType()==EffectType.MOVETWODICESELECTEDCOLOR)&&(dice.getColor()!=roundTrack[moveDiceEvent.getRound()].getLeftDices().get(moveDiceEvent.getDiceInRound()).getColor())){
+            players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].setDice(dice);
+            return false;
+        }
+
         if(dice==null) return false;
-        if(!checkCorrectColorMatching(dice, moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) return false;
-        if(!checkCorrectValueMatching(dice, moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) return false;
-        if(!checkBoxNotEmpty(moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) return false;
-        if(!checkColorVicinity(dice, moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) return false;
-        if(!checkValueVicinity(dice, moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) return false;
-        if(!checkDiceVicinity(moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) return false;
+        if (toolDeck[toolCard].getEffect().getEffectType()!=EffectType.NOCOLORBOUND){
+            if(!checkCorrectColorMatching(dice, moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) {
+                players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].setDice(dice);
+                return false;
+            }
+        }
+        if (toolDeck[toolCard].getEffect().getEffectType()!=EffectType.NOVALUEBOUND){
+            if(!checkCorrectValueMatching(dice, moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) {
+                players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].setDice(dice);
+                return false;
+            }
+        }
+        if(players.get(currentPlayer).getWindow().isEmpty()){
+            if(!checkCorrectFirstMove(moveDiceEvent.getNewRow(),moveDiceEvent.getNewColumn())) {
+                players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].setDice(dice);
+                return false;
+            }
+        }else{
+            if(!checkBoxNotEmpty(moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) {
+                players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].setDice(dice);
+                return false;
+            }
+            if(!checkColorVicinity(dice, moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) {
+                players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].setDice(dice);
+                return false;
+            }
+            if(!checkValueVicinity(dice, moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) {
+                players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].setDice(dice);
+                return false;
+            }
+            if(!checkDiceVicinity(moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) {
+                players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].setDice(dice);
+                return false;
+            }
+        }
+        players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].setDice(dice);
         return true;
     }
 
@@ -591,6 +655,8 @@ public class MatchHandlerModel extends Observable {
 
     public boolean upOrDownValue(Dice dice, int upOrDown){
         if(upOrDown==1){
+            System.out.println(upOrDown);
+            System.out.println(dice.getValue());
             if(dice.getValue() < 6){
                 dice.setValue(dice.getValue()+1);
                 return true;
@@ -600,6 +666,7 @@ public class MatchHandlerModel extends Observable {
             }
         }
         else{
+            System.out.println(dice.getValue());
             if(dice.getValue()>1){
                 dice.setValue(dice.getValue()-1);
                 return true;
@@ -620,10 +687,11 @@ public class MatchHandlerModel extends Observable {
     }
 
     public void rerollDraftPool(){
-        int i;
-        for(i=0; i<draftPool.size(); i++){
-            draftPool.get(i).getRandomValue();
+        for(Dice dice:draftPool){
+            dice.getRandomValue();
         }
+        setChanged();
+        notifyObservers(new ModifiedDraftEvent(draftPool));
     }
 
     public boolean checkDraftPoolRoundTrackDices(ExchangeFromRoundTrackEvent exchangeFromRoundTrackEvent){

@@ -10,12 +10,15 @@ public class MoveDiceEvent implements ViewControllerEvent,Serializable {
     private int diceColumn;
     private int newRow;
     private int newColumn;
-
-    public MoveDiceEvent(int diceRow, int diceColumn, int newRow, int newColumn){
+    private int round;
+    private int diceInRound;
+    public MoveDiceEvent(int diceRow, int diceColumn, int newRow, int newColumn, int round, int diceInRound){
         this.diceRow=diceRow;
         this.diceColumn=diceColumn;
         this.newRow=newRow;
         this.newColumn=newColumn;
+        this.round=round;
+        this.diceInRound=diceInRound;
     }
 
     public int getDiceRow(){
@@ -30,6 +33,15 @@ public class MoveDiceEvent implements ViewControllerEvent,Serializable {
     public int getNewColumn(){
         return newColumn;
     }
+
+    public int getRound() {
+        return round;
+    }
+
+    public int getDiceInRound() {
+        return diceInRound;
+    }
+
     public void accept(ViewControllerVisitor visitor){
         visitor.visit(this);
     }

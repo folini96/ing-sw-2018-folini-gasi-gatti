@@ -16,4 +16,7 @@ public class SecondPlacement implements ToolCardsEffectsInterface,Serializable {
     public void accept(MainScreenController visitor){
         visitor.visit(this);
     }
+    public String toString() {
+        return "SecondPlacement";
+    }
 }

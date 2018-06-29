@@ -32,16 +32,24 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     private int turnPassed;
     private int activeToolCard;
     private boolean alredyPlaced;
+    private ArrayList<Integer> noSecondTurn;
     private static final String NOT_VALIDE_MOVE_MESSAGE = "Mossa non valida. Fare un'altra mossa o finire il turno";
     private static final String NOT_ENOUGH_TOKEN = "Non hai abbastanza token per usare questa carta";
-    private static final String NOT_VALIDE_TOOL_CARD_USE = "Non puoi utilizzare questa carta dopo aver già piazzato un dado";
+    private static final String NOT_VALIDE_AFTER_PLACEMENT = "Non puoi utilizzare questa carta dopo aver già piazzato un dado";
+    private static final String NOT_VALIDE_BEFORE_PLACEMENT = "Non puoi utilizzare questa carta prima di aver piazzato un dado";
+    private static final String NOT_VALIDE_WITH_EMPTY_WINDOW = "Non puoi utilizzare questa carta se la tua vetrata è ancora vuota";
+    private static final String NOT_VALIDE_WITH_EMPTY_ROUND_TRACK = "Non puoi utilizzare questa carta se il tracciato del round è vuoto";
     private static final String NOT_VALIDE_MODIFY ="Modifica non valida";
+    private static final String NOT_VALIDE_MOVE ="Spostamento non valido";
+    private static final String NOT_VALIDE_IN_FIRST_TURN ="Non puoi utilizzare questa carta durante il primo turno";
+    private static final String NOT_VALIDE_IN_SECOND_TURN ="Non puoi utilizzare questa carta durante il secondo turno";
     public MatchHandlerController(VirtualView view){
 
         this.view =view;
     }
 
     public void handleStartMatch(ArrayList<String> usernames){
+        noSecondTurn=new ArrayList<>();
         playerNumber=usernames.size();
         round=0;
         Random random = new Random();
@@ -358,30 +366,54 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         matchHandlerModel.startTurn(currentPlayer);
     }
     public void handleEndTurn(){
+        boolean endRound;
         view.cancelTimer();
         turnPassed++;
         alredyPlaced=false;
         if (turnPassed==(playerNumber*2)) {
-            handleEndRound();
+            endRound=true;
         }else {
+            endRound=false;
             if (turnPassed<playerNumber){
                 if (currentPlayer==(playerNumber-1)){
                     currentPlayer=0;
                 }else{
                     currentPlayer++;
                 }
-            }else if (turnPassed>playerNumber){
-                if (currentPlayer==0){
-                    currentPlayer=(playerNumber-1);
-                }else{
-                    currentPlayer--;
+            }else {
+                if (turnPassed!=playerNumber){
+                    if (currentPlayer==0){
+                        currentPlayer=(playerNumber-1);
+                    }else{
+                        currentPlayer--;
+                    }
                 }
+                while ((noSecondTurn.contains(currentPlayer))&&(!endRound)){
+                    System.out.println(noSecondTurn+"   "+currentPlayer);
+                    turnPassed++;
+                    if (currentPlayer==0){
+                        currentPlayer=(playerNumber-1);
+                    }else{
+                        currentPlayer--;
+                    }
+                    System.out.println(turnPassed);
+                    if (turnPassed==(playerNumber*2)){
+                    endRound=true;
+                    }
+                }
+
             }
+
+        }
+        if (endRound){
+            handleEndRound();
+        }else{
             handleStartTurn();
         }
 
     }
     public void handleEndRound(){
+        noSecondTurn.clear();
         matchHandlerModel.endRound(round);
         if (round==9){
             handleEndMatch();
@@ -426,13 +458,37 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
 
     }
     public void handleToolCardSelection(int toolCard){
-        if ((alredyPlaced)&&(matchHandlerModel.checkBeforePlacing(toolCard))){
-            Message message = new Message(NOT_VALIDE_TOOL_CARD_USE, playerNames.get(currentPlayer));
+        if ((matchHandlerModel.checkUseSecondTurn(toolCard))&&((turnPassed<playerNumber))){
+            Message message = new Message(NOT_VALIDE_IN_FIRST_TURN, playerNames.get(currentPlayer));
+            message.accept(view);
+        }
+        else if ((matchHandlerModel.checkUseFirstTurn(toolCard))&&(turnPassed>=playerNumber)) {
+            Message message = new Message(NOT_VALIDE_IN_SECOND_TURN, playerNames.get(currentPlayer));
+            message.accept(view);
+        }
+        else if ((matchHandlerModel.checkUseFirstTurn(toolCard))&&(!alredyPlaced)){
+            Message message = new Message(NOT_VALIDE_BEFORE_PLACEMENT, playerNames.get(currentPlayer));
+            message.accept(view);
+
+        }
+        else if ((alredyPlaced)&&(matchHandlerModel.checkBeforePlacing(toolCard))){
+            Message message = new Message(NOT_VALIDE_AFTER_PLACEMENT, playerNames.get(currentPlayer));
+            message.accept(view);
+        }
+        else if (matchHandlerModel.checkNotUseWithEmptyWindow(toolCard,currentPlayer)){
+            Message message = new Message(NOT_VALIDE_WITH_EMPTY_WINDOW, playerNames.get(currentPlayer));
+            message.accept(view);
+        }
+        else if (matchHandlerModel.checkNotUseWithEmptyRoundTrack(toolCard)){
+            Message message = new Message(NOT_VALIDE_WITH_EMPTY_ROUND_TRACK, playerNames.get(currentPlayer));
             message.accept(view);
         }else{
             if (matchHandlerModel.checkEnoughToken(toolCard,currentPlayer)){
                 activeToolCard=toolCard;
                 matchHandlerModel.sendEffect(toolCard,currentPlayer);
+                if (matchHandlerModel.checkUseFirstTurn(toolCard)){
+                    noSecondTurn.add(currentPlayer);
+                }
             }else {
                 Message message = new Message(NOT_ENOUGH_TOKEN, playerNames.get(currentPlayer));
                 message.accept(view);
@@ -442,6 +498,23 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     public void update(Observable view, Object arg) {
         ViewControllerEvent event=(ViewControllerEvent) arg;
         event.accept(this);
+    }
+    public void handleMoveDice(MoveDiceEvent moveDiceEvent){
+        if(!matchHandlerModel.checkCorrectMove(moveDiceEvent,currentPlayer,activeToolCard)){
+            Message message = new Message(NOT_VALIDE_MOVE, playerNames.get(currentPlayer));
+            message.accept(view);
+        }else{
+            matchHandlerModel.moveDice(moveDiceEvent,currentPlayer);
+        }
+    }
+    public void handleModifiyDice(ModifyDiceEvent modifyDiceEvent){
+        if (!matchHandlerModel.modifyDice(modifyDiceEvent,activeToolCard,currentPlayer)){
+            Message message = new Message(NOT_VALIDE_MODIFY, playerNames.get(currentPlayer));
+            message.accept(view);
+        }
+    }
+    public void handleRerollDraft(RerollDraftEvent rerollDraftEvent){
+        matchHandlerModel.rerollDraftPool();
     }
     public void visit(ChoseWindowEvent window){
         handleWindowSelection(window);
@@ -457,13 +530,12 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     }
 
     public void visit(MoveDiceEvent moveDiceEvent) {
-
+        handleMoveDice(moveDiceEvent);
     }
     public void visit(ModifyDiceEvent modifyDiceEvent){
-        if (!matchHandlerModel.modifyDice(modifyDiceEvent,activeToolCard,currentPlayer)){
-            Message message = new Message(NOT_VALIDE_MODIFY, playerNames.get(currentPlayer));
-            message.accept(view);
-        }
+        handleModifiyDice(modifyDiceEvent);
     }
-
+    public void visit(RerollDraftEvent rerollDraftEvent){
+        handleRerollDraft(rerollDraftEvent);
+    }
 }

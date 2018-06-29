@@ -9,7 +9,6 @@ import java.io.Serializable;
 
 public class Modify implements ToolCardsEffectsInterface,Serializable {
 
-    private MatchHandlerModel model;
     private EffectType effectType;
     public Modify(EffectType effectType){
         this.effectType=effectType;
@@ -22,5 +21,10 @@ public class Modify implements ToolCardsEffectsInterface,Serializable {
 
     public void accept(MainScreenController visitor){
         visitor.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Modify";
     }
 }

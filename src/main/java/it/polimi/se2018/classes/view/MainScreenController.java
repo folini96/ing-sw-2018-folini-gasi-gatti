@@ -1,5 +1,6 @@
 package it.polimi.se2018.classes.view;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.polimi.se2018.classes.events.EndMatchEvent;
 import it.polimi.se2018.classes.events.SendEffectEvent;
 import it.polimi.se2018.classes.model.*;
@@ -56,11 +57,28 @@ public class MainScreenController implements Initializable {
     private static final String PLACENOVICINITYBOUNDS = "Scegli un dado della riserva e piazzalo senza rispettare i vincoli di adiacenza.";
     private ViewModel guiModel = new ViewModel();
     private GUIHandler guiHandler;
-    private Boolean usingTool;
-    private Boolean placingDice;
-    private Boolean isMyTurn;
-    private Boolean modifyDice;
-    private Boolean upOrDown;
+    private boolean usingTool;
+    private boolean placingDice;
+    private boolean isMyTurn;
+    private boolean modifyDice;
+    private boolean upOrDown;
+    private boolean changingUpOrDown;
+    private boolean moveDice;
+    private boolean moveTwice;
+    private boolean moveSelectedRoundColor;
+    private boolean windowDiceSelected;
+    private boolean roundDiceSelected;
+    private boolean rerollDraft;
+    private boolean alredyPlaced;
+    private boolean alredyUsedTool;
+    private int moveNumber;
+    private int modifiedDice;
+    private int diceRow;
+    private int diceColumn;
+    private int newRow;
+    private int newColumn;
+    private int roundNumber;
+    private int diceInRound;
     @FXML
     private Label roundLabel = new Label();
     @FXML
@@ -149,9 +167,6 @@ public class MainScreenController implements Initializable {
     private int[] windowSelectedDice = new int[] {-1,-1};
 
     private int[] roundTrackSelectedDice = new int[] {-1,-1};
-
-    private int plusMinus;
-    private boolean plusMinusClicked = false;
 
     // array with name of players
     private ArrayList<String> playersName = new ArrayList<>();
@@ -488,8 +503,12 @@ public class MainScreenController implements Initializable {
      */
     @FXML
     private void endTurnButtonClicked(ActionEvent event){
+        modifyDice=false;
+        upOrDown=false;
+        modifiedDice=-1;
         selectedDiceImageView.setImage(null);
-       guiHandler.endTurn();
+        selectedDiceBisImageView.setImage(null);
+        guiHandler.endTurn();
     }
     /**
      * notice the intention to use a Tool Card
@@ -498,7 +517,6 @@ public class MainScreenController implements Initializable {
     @FXML
     private void toolCardButtonClicked(ActionEvent event){
         final String NO_TOOL_CARD_MESSAGE = "Seleziona una Tool Card!";
-        // segnala che si vuole utilizzare una tool card
         disableMainPlayerButtons();
         if (selectedToolCard==-1){
             guiModel.alertMessage(NO_TOOL_CARD_MESSAGE);
@@ -508,7 +526,7 @@ public class MainScreenController implements Initializable {
             usingTool=true;
             guiHandler.useToolCard(selectedToolCard);
         }
-        // segnala la tool card da utilizzare con selectedToolCard
+
     }
 
     public void resetValuesforPlaceDice(){
@@ -533,7 +551,12 @@ public class MainScreenController implements Initializable {
     @FXML
     private void selectedReserveDiceEvent(MouseEvent event){
         Node node = (Node) event.getSource();
-
+        if (moveDice){
+            moveTwice=false;
+            moveDice=false;
+            moveSelectedRoundColor=false;
+            selectedDiceBisImageView.setImage(null);
+        }
         try {
             reserveSelectedDice = GridPane.getColumnIndex(node);
         }
@@ -541,16 +564,12 @@ public class MainScreenController implements Initializable {
             reserveSelectedDice = 0;
         }
         if (modifyDice){
+            modifiedDice=reserveSelectedDice;
             guiHandler.modifyDice(reserveSelectedDice,-1);
             return;
         }
         if (upOrDown){
-            if (plusMinusClicked){
-                guiHandler.modifyDice(reserveSelectedDice,plusMinus);
-            }else{
-                guiModel.alertMessage("Scegliere se aumentare o diminuire il dado");
-            }
-            return;
+            modifiedDice=reserveSelectedDice;
         }
         ObservableList<Node> list = reserveGridPane.getChildren();
         ImageView imageView = (ImageView) list.get(reserveSelectedDice);
@@ -561,11 +580,53 @@ public class MainScreenController implements Initializable {
     }
     @FXML
     private void selectedWindowBoxEvent(MouseEvent event){
+        Node node = (Node) event.getSource();
+        if (moveDice){
+            reserveGridPane.setDisable(true);
+            try {
+                windowSelectedDice[0] = GridPane.getRowIndex(node);
+            }
+            catch (NullPointerException e){
+                windowSelectedDice[0]=0;
+            }
+            try {
+                windowSelectedDice[1] = GridPane.getColumnIndex(node);
+            }
+            catch (NullPointerException e){
+                windowSelectedDice[1]=0;
+            }
+            if (!windowDiceSelected){
+                diceRow=windowSelectedDice[0];
+                diceColumn=windowSelectedDice[1];
+                setOpacityOthers(diceRow,diceColumn);
+                windowDiceSelected=true;
+
+            }else{
+                if ((diceRow==windowSelectedDice[0])&&(diceColumn==windowSelectedDice[1])){
+                    guiModel.alertMessage("Non puoi spostare il dado nella stessa posizione");
+                }else{
+                    newRow=windowSelectedDice[0];
+                    newColumn=windowSelectedDice[1];
+                    resetOpacityOthers();
+                    if (!moveSelectedRoundColor){
+                        roundNumber=-1;
+                        diceInRound=-1;
+                    }else{
+                        roundTrackGridPane.setDisable(true);
+                    }
+                    guiHandler.moveDice(diceRow,diceColumn,newRow,newColumn,roundNumber,diceInRound);
+                    windowDiceSelected=false;
+                }
+
+
+            }
+            return;
+        }
         if (!placeDiceButtonClicked){
             return;
         }
 
-        Node node = (Node) event.getSource();
+
         try {
             windowSelectedDice[0] = GridPane.getRowIndex(node);
         }
@@ -582,10 +643,9 @@ public class MainScreenController implements Initializable {
         disablePlaceDiceButton();
         guiHandler.placeDice(reserveSelectedDice,windowSelectedDice[0],windowSelectedDice[1]);
 
-        if (!((modifyDice)||(upOrDown))){
-            resetValuesforPlaceDice();
-            selectedDiceImageView.setImage(null);
-        }
+        resetValuesforPlaceDice();
+        selectedDiceImageView.setImage(null);
+
 
 
     }
@@ -606,11 +666,14 @@ public class MainScreenController implements Initializable {
         catch (NullPointerException e){
             roundTrackSelectedDice[1]=0;
         }
+        roundDiceSelected=true;
+        roundNumber=roundTrackSelectedDice[0];
+        diceInRound=roundTrackSelectedDice[1];
         ObservableList<Node> list = roundTrackGridPane.getChildren();
-        ImageView imageView = (ImageView) list.get(roundTrackSelectedDice[0]*10+roundTrackSelectedDice[1]);
+        ImageView imageView = (ImageView) list.get(roundTrackSelectedDice[0]*9+roundTrackSelectedDice[1]);
         Image image = imageView.getImage();
         selectedDiceBisImageView.setImage(image);
-
+        mainPlayerGridPane.setDisable(false);
 
     }
 
@@ -628,17 +691,37 @@ public class MainScreenController implements Initializable {
     }
     @FXML
     private void minusButtonClicked(ActionEvent event){
-        plusMinusClicked = true;
-        plusMinus = 0;
+        if (upOrDown){
+            if (reserveSelectedDice<0){
+                guiModel.alertMessage("Selezionare un dado dalla riserva.");
+            }else{
+               modifiedDice=reserveSelectedDice;
+               changingUpOrDown=true;
+               guiHandler.modifyDice(reserveSelectedDice,0);
+            }
+
+        }
+
     }
     @FXML
     private void plusButtonClicked(ActionEvent event){
-        plusMinusClicked = true;
-        plusMinus = 1;
+       if (upOrDown){
+           if (reserveSelectedDice<0){
+               guiModel.alertMessage("Selezionare un dado dalla riserva.");
+           }else{
+               modifiedDice=reserveSelectedDice;
+               changingUpOrDown=true;
+               guiHandler.modifyDice(reserveSelectedDice,1);
+           }
+
+       }
+
     }
     @FXML
     private void throwDiceButtonClicked(ActionEvent event){
-        //rilancia i dadi
+        if (rerollDraft){
+            guiHandler.rerollDraft();
+        }
     }
     @FXML
     private void toolCardZoomButtonClicked(ActionEvent event){
@@ -705,13 +788,8 @@ public class MainScreenController implements Initializable {
             e.printStackTrace();
         }
     }
-    public void resetPlusMinus(){
-        plusMinusClicked = false;
-    }
 
-    public int getSelectedToolCard(){
-        return selectedToolCard;
-    }
+
 
     public int choseNewValue(){
         final String CHOSE_DICE_NUMBER_MESSAGE = "Quale valore vuoi assegnare al dado?";
@@ -738,23 +816,31 @@ public class MainScreenController implements Initializable {
 
     }
 
-    public void SetOpacityOthers(int row, int column){
+    public void setOpacityOthers(int row, int column){
         ObservableList<Node> lista = playersGridPaneArray[0].getChildren();
         ImageView selected = (ImageView) lista.get(row*5 + (column));
-        for (Node node: lista){
-         ImageView current = (ImageView) node;
-         if (current!=selected){
-             current.setOpacity(0.4);
-         }
+        for (int i=0;i<4;i++){
+            for (int j=0;j<5;j++){
+                ImageView current = (ImageView) lista.get((((i)*playersGridPaneArray[0].impl_getColumnCount()))+(j));
+                if (current!=selected){
+                    current.setOpacity(0.4);
+                }
+            }
+
         }
+
     }
 
-    public void ResetOpacityOthers(){
+    public void resetOpacityOthers(){
         ObservableList<Node> lista = playersGridPaneArray[0].getChildren();
-        for (Node node: lista){
-            ImageView current = (ImageView) node;
-            node.setOpacity(1);
+
+        for (int i=0;i<4;i++){
+            for (int j=0;j<5;j++){
+                ImageView current = (ImageView) lista.get((((i)*playersGridPaneArray[0].impl_getColumnCount()))+(j));
+                current.setOpacity(1);
             }
+
+        }
     }
 
 
@@ -763,20 +849,37 @@ public class MainScreenController implements Initializable {
         this.guiHandler=guiHandler;
     }
     public void checkStartTurn(String playerName){
+        alredyUsedTool=false;
+        alredyPlaced=false;
+        roundDiceSelected=false;
+        windowDiceSelected=false;
+        moveSelectedRoundColor=false;
+        moveDice=false;
+        moveTwice=false;
+        moveNumber=0;
+        selectedToolCard=-1;
+        usingTool=false;
         modifyDice=false;
         upOrDown=false;
+        placingDice=false;
+        changingUpOrDown=false;
+        rerollDraft=false;
+        roundTrackGridPane.setDisable(true);
+        setNotVisibleThrowDiceButton();
+        setNotVisiblePlusMinusButtons();
+        disableThrowDiceButton();
         setCurrentPlayerLabel(playerName);
-      if (getIndex(playerName)==0){
+        if (getIndex(playerName)==0){
           isMyTurn=true;
           reserveGridPane.setDisable(false);
           mainPlayerGridPane.setDisable(false);
           enableMainPlayerButtons();
-      }else{
+        }else{
           isMyTurn=false;
           disableMainPlayerButtons();
           reserveGridPane.setDisable(true);
           mainPlayerGridPane.setDisable(true);
-      }
+        }
 
     }
     public void notValideMoveMessagge(String message){
@@ -785,23 +888,36 @@ public class MainScreenController implements Initializable {
 
                 resetValuesforPlaceDice();
                 enableMainPlayerButtons();
+                if (alredyUsedTool){
+                    disableToolCardButton();
+                }
             }else{
                 reserveGridPane.setDisable(true);
                 ObservableList<Node> list = reserveGridPane.getChildren();
-                ImageView imageView = (ImageView) list.get(reserveSelectedDice);
+                ImageView imageView = (ImageView) list.get(modifiedDice);
                 Image image = imageView.getImage();
                 selectedDiceImageView.setImage(image);
                 enablePlaceDiceButton();
+                reserveSelectedDice=modifiedDice;
+
+
             }
             placingDice=false;
+        }
+
+        if (changingUpOrDown){
+            selectedDiceImageView.setImage(null);
+            reserveSelectedDice=-1;
         }
         if (usingTool){
             usingTool=false;
             enableMainPlayerButtons();
+            if (alredyPlaced){
+                disablePlaceDiceButton();
+            }
         }
-        if (upOrDown){
-            plusMinusClicked=false;
-        }
+        selectedToolCard=-1;
+        enableEndTurnButton();
         guiModel.alertMessage(message);
 
     }
@@ -809,11 +925,37 @@ public class MainScreenController implements Initializable {
         if ((isMyTurn)&&(placingDice)){
             reserveGridPane.setDisable(true);
             mainPlayerGridPane.setDisable(true);
-            enableMainPlayerButtons();
+            enableEndTurnButton();
+            if(!alredyUsedTool){
+                enableToolCardButton();
+            }
             disablePlaceDiceButton();
+            alredyPlaced=true;
         }
+        if (moveDice){
+            if (!alredyPlaced){
+                enablePlaceDiceButton();
+                reserveGridPane.setDisable(false);
+            }
+            enableEndTurnButton();
+            moveNumber++;
+            if (moveTwice){
+                if (moveNumber==2){
+                    moveTwice=false;
+                    moveDice=false;
+                    moveSelectedRoundColor=false;
+                    selectedDiceBisImageView.setImage(null);
+                }
+            }else{
+                moveDice=false;
+
+            }
+        }
+
+        selectedToolCard=-1;
         resetValuesforPlaceDice();
-        selectedDiceImageView=null;
+        selectedDiceImageView.setImage(null);
+        placingDice=false;
         modifyDice=false;
         upOrDown=false;
         updateScheme(player,window);
@@ -823,11 +965,21 @@ public class MainScreenController implements Initializable {
         if ((modifyDice)||(upOrDown)){
             reserveGridPane.setDisable(true);
             ObservableList<Node> list = reserveGridPane.getChildren();
-            ImageView imageView = (ImageView) list.get(reserveSelectedDice);
+            ImageView imageView = (ImageView) list.get(modifiedDice);
             Image image = imageView.getImage();
             selectedDiceImageView.setImage(image);
+            setNotVisiblePlusMinusButtons();
+            changingUpOrDown=false;
+            disablePlusMinusButtons();
             enablePlaceDiceButton();
 
+        }
+        if (rerollDraft){
+            setNotVisibleThrowDiceButton();
+            disableThrowDiceButton();
+            rerollDraft=false;
+            enableEndTurnButton();
+            enablePlaceDiceButton();
         }
     }
     public void endRound(Round[] roundTrack){
@@ -863,6 +1015,8 @@ public class MainScreenController implements Initializable {
 
     }
     public void sendEffect(SendEffectEvent effectEvent){
+        usingTool=false;
+        alredyUsedTool=true;
         disableToolCardButton();
         effectEvent.getEffect().accept(this);
     }
@@ -897,7 +1051,15 @@ public class MainScreenController implements Initializable {
         guiModel.alertMessage(cardMessage);
     }
     public void visit(Move move){
+        disableToolCardButton();
+        if (!alredyPlaced){
+            enablePlaceDiceButton();
+            reserveGridPane.setDisable(false);
+        }
+        mainPlayerGridPane.setDisable(false);
+        reserveSelectedDice=-1;
         String cardMessage=ACTIVE_TOOL_CARD;
+        moveDice=true;
         switch (move.getEffectType()){
             case NOVALUEBOUND:
                 cardMessage=cardMessage + MOVE;
@@ -906,9 +1068,14 @@ public class MainScreenController implements Initializable {
                 cardMessage=cardMessage + MOVE;
                 break;
             case MOVETWODICE:
+                moveTwice=true;
                 cardMessage=cardMessage + MOVETWO;
                 break;
             case MOVETWODICESELECTEDCOLOR:
+                moveTwice=true;
+                moveSelectedRoundColor=true;
+                roundTrackGridPane.setDisable(false);
+                mainPlayerGridPane.setDisable(true);
                 cardMessage=cardMessage+MOVESELECTEDCOLOR;
                 break;
         }
@@ -916,18 +1083,26 @@ public class MainScreenController implements Initializable {
     }
     public void visit(PlacementWithoutVicinity placementWithoutVicinity){
         String cardMessage=ACTIVE_TOOL_CARD;
-        cardMessage=cardMessage+placementWithoutVicinity;
+        cardMessage=cardMessage+PLACENOVICINITYBOUNDS;
         guiModel.alertMessage(cardMessage);
     }
     public void visit(RerollDraftPool rerollDraftPool){
         String cardMessage=ACTIVE_TOOL_CARD;
         cardMessage=cardMessage+REROLL;
         guiModel.alertMessage(cardMessage);
+        setVisibleThrowDiceButton();
+        enableThrowDiceButton();
+        rerollDraft=true;
     }
     public void visit(SecondPlacement secondPlacement){
         String cardMessage=ACTIVE_TOOL_CARD;
         cardMessage=cardMessage+PLACEANOTHER;
         guiModel.alertMessage(cardMessage);
+        alredyPlaced=false;
+        enablePlaceDiceButton();
+        reserveGridPane.setDisable(false);
+        mainPlayerGridPane.setDisable(false);
+        enableEndTurnButton();
     }
 
     public void endByTime(){

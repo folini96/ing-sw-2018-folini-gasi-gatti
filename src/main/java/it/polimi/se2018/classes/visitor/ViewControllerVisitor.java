@@ -10,4 +10,5 @@ public interface ViewControllerVisitor {
     void visit(EndTurnEvent endTurnEvent);
     void visit(MoveDiceEvent moveDiceEvent);
     void visit(ModifyDiceEvent modifyDiceEvent);
+    void visit(RerollDraftEvent rerollDraftEvent);
 }

@@ -11,4 +11,5 @@ public interface ToolCardsEffectsInterface {
     }
     void accept(MainScreenController visitor);
     EffectType getEffectType();
+    String toString();
 }
