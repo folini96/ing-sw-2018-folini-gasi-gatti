@@ -730,7 +730,10 @@ public class MatchHandlerModel extends Observable {
         setChanged();
         notifyObservers(new ModifiedDraftEvent(draftPool));
     }
-
+    public void sendReconnectionUpdate(String reconnectingClient){
+        setChanged();
+        notifyObservers(new UpdateReconnectedClientEvent(reconnectingClient,players,roundTrack,toolDeck,draftPool));
+    }
     /**
      * @param player the player the score is calculated for
      * @return the score

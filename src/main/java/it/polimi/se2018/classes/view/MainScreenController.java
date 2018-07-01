@@ -4,6 +4,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.polimi.se2018.classes.events.EndMatchEvent;
 import it.polimi.se2018.classes.events.ModifiedTokenEvent;
 import it.polimi.se2018.classes.events.SendEffectEvent;
+import it.polimi.se2018.classes.events.UpdateReconnectedClientEvent;
 import it.polimi.se2018.classes.model.*;
 import it.polimi.se2018.classes.model.effects.*;
 import javafx.collections.ObservableList;
@@ -25,6 +26,7 @@ import javafx.stage.Stage;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -394,22 +396,25 @@ public class MainScreenController implements Initializable {
         playersUselessLabelArray[getIndex(name)].setDisable(false);
     }
 
-    public void alertPlayerDisconnected(String name){
-        final String PLAYER_DISCONNECTED_MESSAGE = " è stato disconnesso!";
-        guiModel.alertMessage(name+PLAYER_DISCONNECTED_MESSAGE);
+
+
+    public void alertMainPlayerSuspended(){
+        final String MAIN_PLAYER_DISCONNECTED_MESSAGE = "Sei stato sospeso dalla partita per inattività. Premi il bottone Riconnetti per rientrare alla fine del turno in corso";
+        disableMainPlayerButtons();
+        reserveGridPane.setDisable(true);
+        roundTrackGridPane.setDisable(true);
+        mainPlayerGridPane.setDisable(true);
+        ButtonType reconnect = new ButtonType("Riconnetti", ButtonBar.ButtonData.OK_DONE);
+        Alert alert=new Alert(Alert.AlertType.WARNING,MAIN_PLAYER_DISCONNECTED_MESSAGE,reconnect);
+        alert.setTitle("Disconnessione");
+        alert.setHeaderText(null);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent()){
+            guiHandler.reconnect();
+        }
+
     }
-    public void alertPlayerReconnected(String name){
-        final String PLAYER_RICONNECTED_MESSAGE = " si è riconnesso!";
-        guiModel.alertMessage(name+PLAYER_RICONNECTED_MESSAGE);
-    }
-    public void alertMainPlayerDisconnected(String name){
-        final String MAIN_PLAYER_DISCONNECTED_MESSAGE = "Sei stato disconnesso!";
-        guiModel.alertMessage(name+MAIN_PLAYER_DISCONNECTED_MESSAGE);
-    }
-    public void alertPlayerRiconnected(String name){
-        final String MAIN_PLAYER_RICONNECTED_MESSAGE = "Sei stato riconesso!";
-        guiModel.alertMessage(name+MAIN_PLAYER_RICONNECTED_MESSAGE);
-    }
+
 
     public void updateRoundTrack(Round round, int roundNumber){
 
@@ -1127,12 +1132,37 @@ public class MainScreenController implements Initializable {
         enableEndTurnButton();
     }
 
-    public void endByTime(){
-        disableMainPlayerButtons();
-        selectedDiceImageView.setImage(null);
+    public void endByTime(String player){
+        if (getIndex(player)==0){
+            disableMainPlayerButtons();
+            selectedDiceImageView.setImage(null);
+            alertMainPlayerSuspended();
+        }else{
+            setDisconnectedPlayer(player);
+        }
 
     }
+    public void updateReconnection(UpdateReconnectedClientEvent updateReconnectedClientEvent){
+        if (getIndex(updateReconnectedClientEvent.getPlayer())==0){
+            for (Player player:updateReconnectedClientEvent.getPlayers()){
+                setPlayerSFLabel(player.getName(),player.getToken());
+                updateScheme(player.getName(),player.getWindow());
 
+            }
+            updateDraft(updateReconnectedClientEvent.getDraftPool());
+            for (int i=0;i<10;i++){
+                if(updateReconnectedClientEvent.getRoundTrack()[i]!=null){
+                    updateRoundTrack(updateReconnectedClientEvent.getRoundTrack()[i],i);
+                }
+
+            }
+            for (int j=0;j<3;j++){
+                setToolCardSFLabel(j,updateReconnectedClientEvent.getToolCards()[j].getToken());
+            }
+        }else{
+            setReconnectedPlayer(updateReconnectedClientEvent.getPlayer());
+        }
+    }
     public void matchEnd(EndMatchEvent endMatch){
         final String POINTS_FIRST_PART_MESSAGE = "Punteggi finali:\n\n";
         final String MAIN_PLAYER_WINNER_MESSAGE = "Hai vinto!";
@@ -1143,6 +1173,10 @@ public class MainScreenController implements Initializable {
         int maxPoints=-20;
         int winnerPosition=-1;
         String winner;
+        disableMainPlayerButtons();
+        reserveGridPane.setDisable(true);
+        roundTrackGridPane.setDisable(true);
+        mainPlayerGridPane.setDisable(true);
         for (int i=0; i< endMatch.getPoints().size();i++){
             if (endMatch.getPoints().get(i)>=maxPoints){
                 maxPoints=endMatch.getPoints().get(i);
@@ -1175,6 +1209,27 @@ public class MainScreenController implements Initializable {
             // azione da eseguire se non si vuole fare nuova partita o si chiude finestra dialogo
         }
     }
+    public void lastPlayerLeft(){
+        final String MAIN_PLAYER_WINNER_MESSAGE = "Hai vinto perchè sei rimasto l'unico giocatore in partita";
+        final String NEW_GAME_MESSAGE = "\nVuoi iniziare una nuova partita?";
+        String message;
+        message=MAIN_PLAYER_WINNER_MESSAGE+NEW_GAME_MESSAGE;
+        disableMainPlayerButtons();
+        reserveGridPane.setDisable(true);
+        roundTrackGridPane.setDisable(true);
+        mainPlayerGridPane.setDisable(true);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("End Match");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
 
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+
+            // Azione da eseguire se si vuole fare nuova patita
+        } else {
+            // azione da eseguire se non si vuole fare nuova partita o si chiude finestra dialogo
+        }
+    }
 
 }

@@ -20,8 +20,6 @@ import java.util.TimerTask;
 public class GUIHandler {
     private static final String SOCKET_CONNESSION = "Socket";
     private static final String RMI_CONNECTION = "RMI";
-    private static final String MULTI_PLAYER = "Multi player";
-    private static final String SINGLE_PLAYER = "Single player";
     private SettingsController settingsController;
     private UserNameController userNameController;
     private WindowSelectionController windowSelectionController;
@@ -234,11 +232,11 @@ public class GUIHandler {
             }
         });
     }
-    public void endByTime(){
+    public void endByTime(String player){
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                mainScreenController.endByTime();
+                mainScreenController.endByTime(player);
             }
         });
     }
@@ -275,5 +273,32 @@ public class GUIHandler {
     }
     public void setValue(int diceValue){
         virtualServer.sendToServer(new SetValueEvent(diceValue));
+    }
+    public void reconnect(){
+        virtualServer.reconnect(username);
+    }
+    public void updateReconnectedPlayer(UpdateReconnectedClientEvent updateReconnectedClientEvent){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mainScreenController.updateReconnection(updateReconnectedClientEvent);
+            }
+        });
+    }
+    public void disconnectedPlayer(String player){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mainScreenController.setDisconnectedPlayer(player);
+            }
+        });
+    }
+    public void lastPlayerLeft(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                mainScreenController.lastPlayerLeft();
+            }
+        });
     }
 }

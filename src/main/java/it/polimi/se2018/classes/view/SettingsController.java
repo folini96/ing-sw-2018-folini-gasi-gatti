@@ -64,8 +64,6 @@ public class SettingsController implements Initializable {
             guiHandler.setClientType(SOCKET_CONNECTION);
         }
 
-        //Da modificare
-
         ((Node)(event.getSource())).getScene().getWindow().hide();
         guiHandler.userNameStage();
 

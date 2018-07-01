@@ -13,4 +13,6 @@ public interface ViewControllerVisitor {
     void visit(RerollDraftEvent rerollDraftEvent);
     void visit (ExchangeEvent exchangeEvent);
     void visit (SetValueEvent setValueEvent);
+    void visit (ReconnectClientEvent reconnectClientEvent);
+    void visit (ConnectionErrorEvent connectionErrorEvent);
 }

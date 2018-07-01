@@ -80,7 +80,19 @@ public class SocketClient implements ClientInterface,ModelViewEventVisitor {
     public void visit (ModifiedTokenEvent modifiedTokenEvent){
         interfaceHandler.modifiedToken(modifiedTokenEvent);
     }
-    public void endByTime(){
-        interfaceHandler.endByTime();
+    public void visit (UpdateReconnectedClientEvent updateReconnectedClientEvent){
+        interfaceHandler.updateReconnectedPlayer(updateReconnectedClientEvent);
+    }
+    public void endByTime(String player){
+        interfaceHandler.endByTime(player);
+    }
+    public void reconnect(String username){
+        clientImplementation.reconnect();
+    }
+    public void playerDisconnected(String player){
+        interfaceHandler.disconnectedPlayer(player);
+    }
+    public void lastPlayerLeft(){
+        interfaceHandler.lastPlayerLeft();
     }
 }

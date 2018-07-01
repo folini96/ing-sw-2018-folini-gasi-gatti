@@ -31,6 +31,8 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     private boolean noVicinityBound;
     private boolean alreadyPlaced;
     private ArrayList<Integer> noSecondTurn;
+    private ArrayList<String> playerReconnecting;
+    private ArrayList<String> reconnected;
     private static final String NOT_VALIDE_MOVE_MESSAGE = "Mossa non valida. Fare un'altra mossa o finire il turno";
     private static final String NOT_ENOUGH_TOKEN = "Non hai abbastanza token per usare questa carta";
     private static final String NOT_VALIDE_AFTER_PLACEMENT = "Non puoi utilizzare questa carta dopo aver già piazzato un dado";
@@ -42,13 +44,16 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     private static final String NOT_VALIDE_MOVE ="Spostamento non valido";
     private static final String NOT_VALIDE_IN_FIRST_TURN ="Non puoi utilizzare questa carta durante il primo turno";
     private static final String NOT_VALIDE_IN_SECOND_TURN ="Non puoi utilizzare questa carta durante il secondo turno";
-    public MatchHandlerController(VirtualView view){
 
-        this.view =view;
+
+    public void setView(VirtualView view) {
+        this.view = view;
     }
 
     public void handleStartMatch(ArrayList<String> usernames){
         noSecondTurn=new ArrayList<>();
+        playerReconnecting=new ArrayList<>();
+        reconnected=new ArrayList<>();
         playerNumber=usernames.size();
         round=0;
         Random random = new Random();
@@ -268,15 +273,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
                         color=Color.VIOLA;
                         break;
                 }
-                boolean allDices=card.get("allDices").getAsBoolean();
-                boolean twoTurnsInOne=card.get("twoTurnsInOne").getAsBoolean();
-                boolean takeFromDraftPool=card.get("takeFromDraftPool").getAsBoolean();
-                boolean selectFromWindow=card.get("selectFromWindow").getAsBoolean();
-                boolean takeFromRoundTrack=card.get("takeFromRoundTrack").getAsBoolean();
-                boolean takeFromDiceBag=card.get("takeFromDiceBag").getAsBoolean();
                 boolean blockedAfterPlacement=card.get("blockedAfterPlacement").getAsBoolean();
-                boolean blockedFirstTurn=card.get("blockedFirstTurn").getAsBoolean();
-                boolean vicinityBound=card.get("vicinityBound").getAsBoolean();
                 String typeOfEffectCard=card.get("typeofeffect").getAsString();
                 EffectType typeOfEffect=null;
                 switch (typeOfEffectCard){
@@ -330,9 +327,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
                         break;
                 }
 
-                toolCards[currentCard]=new ToolCard(name, number, token, color, effect, allDices, twoTurnsInOne,
-                        takeFromDraftPool, selectFromWindow, takeFromRoundTrack, takeFromDiceBag,
-                        blockedAfterPlacement, blockedFirstTurn, vicinityBound);
+                toolCards[currentCard]=new ToolCard(name, number, token, color, effect, blockedAfterPlacement);
                 currentCard++;
             }
         }catch (FileNotFoundException e){
@@ -368,6 +363,14 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     private void handleEndTurn(){
         boolean endRound;
         view.cancelTimer();
+        for (String player:playerReconnecting){
+            reconnected.add(player);
+            matchHandlerModel.sendReconnectionUpdate(player);
+        }
+        for (String player:reconnected){
+            playerReconnecting.remove(player);
+        }
+        reconnected.clear();
         turnPassed++;
         alreadyPlaced=false;
         if (turnPassed==(playerNumber*2)) {
@@ -526,6 +529,9 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     private void handleSetValue(SetValueEvent setValueEvent){
         matchHandlerModel.setValueDiceFromBag(setValueEvent,modifiedDraftDiceInExchange);
     }
+    private void handleReconnection(ReconnectClientEvent reconnectClientEvent){
+        playerReconnecting.add(reconnectClientEvent.getPlayer());
+    }
     public void visit(ChoseWindowEvent window){
         handleWindowSelection(window);
     }
@@ -553,5 +559,15 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     }
     public void visit(SetValueEvent setValueEvent){
         handleSetValue(setValueEvent);
+    }
+    public void visit(ReconnectClientEvent reconnectClientEvent){
+        handleReconnection(reconnectClientEvent);
+    }
+    public void visit(ConnectionErrorEvent connectionErrorEvent){
+        int player;
+        player=playerNames.indexOf(connectionErrorEvent.getDisconnectedClient());
+        if (player==currentPlayer){
+            handleEndTurn();
+        }
     }
 }

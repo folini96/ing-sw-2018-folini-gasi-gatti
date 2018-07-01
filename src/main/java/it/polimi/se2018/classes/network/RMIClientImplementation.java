@@ -32,10 +32,16 @@ public class RMIClientImplementation implements RMIRemoteClientInterface {
     public void sendToClient(ModelViewEvent modelViewEvent)throws  RemoteException{
         client.sendToClient(modelViewEvent);
     }
-    public void endByTime()throws RemoteException{
-        client.endByTime();
+    public void endByTime(String player)throws RemoteException{
+        client.endByTime(player);
     }
     public void ping()throws  RemoteException{
         //EMPTY METHOD USED TO CATCH DISCONNECTION DURING THE LOBBY SETUP
+    }
+    public void disconnectedPlayer(String player) throws RemoteException{
+        client.playerDisconnected(player);
+    }
+    public void lastPlayerLeft(){
+        client.lastPlayerLeft();
     }
 }

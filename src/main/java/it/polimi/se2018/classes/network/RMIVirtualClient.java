@@ -11,9 +11,11 @@ public class RMIVirtualClient implements VirtualClientInterface {
     private RMIRemoteClientInterface rmiClient;
     private String username;
     private int lobbyNumber;
-    public RMIVirtualClient(RMIRemoteClientInterface client, String username){
+    private Server server;
+    public RMIVirtualClient(RMIRemoteClientInterface client, String username, Server server){
         rmiClient=client;
         this.username=username;
+        this.server=server;
     }
     public String getUsername(){
         return username;
@@ -44,11 +46,21 @@ public class RMIVirtualClient implements VirtualClientInterface {
        rmiClient.sendToClient(modelViewEvent);
 
     }
-    public void endByTime() throws RemoteException{
-        rmiClient.endByTime();
+    public void endByTime(String player) throws RemoteException{
+        rmiClient.endByTime(player);
 
     }
     public void ping() throws RemoteException{
         rmiClient.ping();
+    }
+    public void otherPlayerDisconnected(OtherPlayerDisconnectedEvent otherPlayerDisconnectedEvent) throws RemoteException{
+        rmiClient.disconnectedPlayer(otherPlayerDisconnectedEvent.getPlayer());
+    }
+    public void deleteAfterMatch(){
+        //void method that needed to be implemented for interface
+    }
+    public void lastPlayerLeft()throws RemoteException{
+        rmiClient.lastPlayerLeft();
+
     }
 }

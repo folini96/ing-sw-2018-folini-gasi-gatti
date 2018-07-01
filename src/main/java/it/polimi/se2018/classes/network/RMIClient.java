@@ -14,9 +14,9 @@ import java.rmi.server.UnicastRemoteObject;
 
 
 public class RMIClient implements ClientInterface,ModelViewEventVisitor {
-    GUIHandler interfaceHandler;
-    RMIRemoteClientInterface remoteRef;
-    RMIClientImplementation client;
+    private GUIHandler interfaceHandler;
+    private RMIRemoteClientInterface remoteRef;
+    private RMIClientImplementation client;
     private RMIRemoteServerInterface server;
     private int lobbyNumber;
 
@@ -62,9 +62,7 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
        interfaceHandler.askUsername();
     }
 
-    public void notValideMoveMessage (Message message){
 
-    }
     public void sendWindowToChose(WindowToChoseEvent windowToChoseEvent){
         interfaceHandler.windowToChose(windowToChoseEvent);
     }
@@ -106,10 +104,27 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
     public void visit (NewDiceFromBagEvent newDiceFromBagEvent){
         interfaceHandler.askNewDiceValue(newDiceFromBagEvent);
     }
+    public void visit (UpdateReconnectedClientEvent updateReconnectedClientEvent){
+        interfaceHandler.updateReconnectedPlayer(updateReconnectedClientEvent);
+    }
     public void visit (ModifiedTokenEvent modifiedTokenEvent){
         interfaceHandler.modifiedToken(modifiedTokenEvent);
     }
-    public void endByTime(){
-        interfaceHandler.endByTime();
+    public void endByTime(String player){
+        interfaceHandler.endByTime(player);
+    }
+    public void reconnect(String username){
+        try{
+            server.reconnect(username,lobbyNumber);
+        }catch (RemoteException e){
+            e.printStackTrace();
+        }
+
+    }
+    public void playerDisconnected(String player){
+        interfaceHandler.disconnectedPlayer(player);
+    }
+    public void lastPlayerLeft(){
+        interfaceHandler.lastPlayerLeft();
     }
 }

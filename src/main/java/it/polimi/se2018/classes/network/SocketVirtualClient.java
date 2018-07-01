@@ -13,15 +13,11 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
     private static final String WINDOW_TO_CHOSE="window to chose";
     private static final String VIEW_CONTROLLER="view controller event";
     private static final String MODEL_VIEW="model view event";
-    private static final String SENDMESSAGE = "message";
-    private static final String SENDPUBLICOBJDECK = "public card deck";
-    private static final String SENDPRIVATEOBJCARD = "private card";
-    private static final String SENDTOOLDECK = "tool card deck";
-    private static final String SENDWINDOW = "window";
-    private static final String SENDDRAFT = "draft";
-    private static final String SENDTOKEN = "favor token";
     private static final String END_BY_TIME = "end by time";
     private static final String PING = "ping";
+    private static final String RECONNECT = "reconnect";
+    private static final String PLAYER_DISCONNECTED = "player disconnected";
+    private static final String LAST_PLAYER = "last player left";
     private Server server;
     private String username;
     private Socket socket;
@@ -76,10 +72,11 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
                 action=(String)reader.readUnshared();
                 switch (action){
                     case VIEW_CONTROLLER:
-                        server.sendToServer((ViewControllerEvent)reader.readUnshared(), lobbyNumber);
+                        server.sendToServer((ViewControllerEvent)reader.readUnshared(), lobbyNumber,false);
                         break;
 
-
+                    case RECONNECT:
+                        server.reconnectClient(this);
                 }
 
 
@@ -90,12 +87,26 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
 
         }
     }
-    public void endByTime() throws IOException{
+    public void endByTime(String player) throws IOException{
        writer.reset();
        writer.writeUnshared(END_BY_TIME);
-
+       writer.writeUnshared(player);
     }
     public void ping() throws IOException{
         writer.writeUnshared(PING);
+    }
+    public void otherPlayerDisconnected(OtherPlayerDisconnectedEvent otherPlayerDisconnectedEvent) throws IOException{
+        writer.writeUnshared(PLAYER_DISCONNECTED);
+        writer.writeUnshared(otherPlayerDisconnectedEvent.getPlayer());
+    }
+    public void deleteAfterMatch(){
+        try{
+            socket.close();
+        }catch (IOException e){
+            System.out.println("Error closing socket");
+        }
+    }
+    public void lastPlayerLeft() throws IOException{
+        writer.writeUnshared(LAST_PLAYER);
     }
 }

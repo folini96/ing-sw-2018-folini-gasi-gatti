@@ -21,6 +21,9 @@ public class VirtualView extends Observable implements Observer,ModelViewEventVi
     }
 
 
+    public int getMatchNumber() {
+        return matchNumber;
+    }
 
     @Override
     public void update(Observable model, Object arg) {
@@ -67,11 +70,21 @@ public class VirtualView extends Observable implements Observer,ModelViewEventVi
     public void visit (ModifiedTokenEvent modifiedTokenEvent){
         server.sendModifiedToken(modifiedTokenEvent,matchNumber);
     }
+    public void visit (UpdateReconnectedClientEvent updateReconnectedClientEvent){
+        server.sendReconnectionUpdate(updateReconnectedClientEvent,matchNumber);
+    }
     public void windowToChose(WindowSide[] windows){
         server.sendWindowToChose(windows, matchNumber);
     }
     public void cancelTimer(){
         server.cancelTimer(matchNumber);
     }
-
+    public void reconnect(ReconnectClientEvent reconnectClientEvent){
+        setChanged();
+        notifyObservers(reconnectClientEvent);
+    }
+    public void connectionError(ConnectionErrorEvent connectionErrorEvent){
+        setChanged();
+        notifyObservers(connectionErrorEvent);
+    }
 }

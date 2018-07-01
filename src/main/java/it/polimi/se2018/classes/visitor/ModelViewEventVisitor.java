@@ -16,4 +16,5 @@ public interface ModelViewEventVisitor {
         void visit (ModifiedRoundTrack modifiedRoundTrack);
         void visit (NewDiceFromBagEvent newDiceFromBagEvent);
         void visit (ModifiedTokenEvent modifiedTokenEvent);
+        void visit (UpdateReconnectedClientEvent updateReconnectedClientEvent);
 }

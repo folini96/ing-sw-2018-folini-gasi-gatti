@@ -10,6 +10,9 @@ public interface VirtualClientInterface {
     String getUsername();
     void sendWindowToChose(WindowToChoseEvent windowToChoseEvent);
     void sendToClient(ModelViewEvent modelViewEvent) throws Exception;
-    void endByTime() throws Exception;
+    void endByTime(String player) throws Exception;
     void ping() throws Exception;
+    void otherPlayerDisconnected(OtherPlayerDisconnectedEvent otherPlayerDisconnectedEvent)throws Exception;
+    void deleteAfterMatch();
+    void lastPlayerLeft() throws Exception;
 }

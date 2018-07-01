@@ -1,35 +1,36 @@
 package it.polimi.se2018.classes.network;
 
+
 import it.polimi.se2018.classes.controller.MatchHandlerController;
 import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.model.*;
 import it.polimi.se2018.classes.view.VirtualView;
-import sun.reflect.annotation.ExceptionProxy;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Server {
     private static int RMIPORT = 1099; // porta di default RMI
     private static int SOCKETPORT = 5463; //porta di default SOCKET
     private Timer lobbyTimer = new Timer();
-    HashMap<Integer,Timer> playTimer = new HashMap<>();
-    HashMap<Integer,Timer> windowTimer = new HashMap<>();
+    private ConcurrentHashMap<Integer,Timer> playTimer = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Integer,Timer> windowTimer = new ConcurrentHashMap<>();
     private static int LOBBYTIME=5;
     private int passedTime;
     private int lobbyNumber=0;
+    private ConcurrentHashMap<Integer,Boolean> lockCommunication=new ConcurrentHashMap<>();
     private RMIServerImplementation rmiHandler;
-    private ArrayList<VirtualView> proxyViews;
-    private ArrayList<MatchHandlerController> controllers;
+    private CopyOnWriteArrayList<VirtualView> proxyViews;
     private ArrayList<VirtualClientInterface> removedClients = new ArrayList<>();
-    private ArrayList<VirtualClientInterface> clients = new ArrayList<VirtualClientInterface>();
-    private ArrayList<VirtualClientInterface> disconnectedClients = new ArrayList<>();
+    private CopyOnWriteArrayList<VirtualClientInterface> clients = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<VirtualClientInterface> disconnectedClients = new CopyOnWriteArrayList<>();
     public void main() {
-        proxyViews=new ArrayList<>();
-        controllers =new ArrayList<>();
+        proxyViews=new CopyOnWriteArrayList<>();
         rmiMain();
         socketMain();
 
@@ -88,9 +89,7 @@ public class Server {
 
     }
 
-    public synchronized void disconnectPlayer(VirtualClientInterface player){
 
-    }
     public void startLobby() {
         passedTime=0;
         TimerTask startMatchTask = new TimerTask() {
@@ -135,16 +134,22 @@ public class Server {
 
     public void startMatch() {
         ArrayList<String> usernames = new ArrayList<>();
+        MatchHandlerController controller=new MatchHandlerController();
         proxyViews.add(new VirtualView(this,lobbyNumber));
-        controllers.add(new MatchHandlerController(proxyViews.get(lobbyNumber)));
-        proxyViews.get(lobbyNumber).addObserver(controllers.get(lobbyNumber));
+        for (VirtualView proxy:proxyViews){
+            if (proxy.getMatchNumber()==lobbyNumber){
+                controller.setView(proxy);
+                proxy.addObserver(controller);
+            }
+        }
+
         for (VirtualClientInterface client : clients) {
             if (client.getLobbyNumber() == lobbyNumber){
                 usernames.add(client.getUsername());
             }
         }
-
-        controllers.get(lobbyNumber).handleStartMatch(usernames);
+        controller.handleStartMatch(usernames);
+        lockCommunication.put(lobbyNumber,false);
 
         lobbyNumber++;
     }
@@ -161,8 +166,23 @@ public class Server {
 
 
 
-    public synchronized void sendToServer(ViewControllerEvent viewControllerEvent,int clientLobbyNumber){
-       proxyViews.get(clientLobbyNumber).sendToServer(viewControllerEvent);
+    public synchronized void sendToServer(ViewControllerEvent viewControllerEvent,int clientLobbyNumber, boolean endForDisconnection){
+        if (lockCommunication!=null){
+
+            if ((lockCommunication.containsKey(clientLobbyNumber))&&(!lockCommunication.get(clientLobbyNumber))||(endForDisconnection)){
+                VirtualView proxyView=new VirtualView(this,clientLobbyNumber);
+                for (VirtualView proxy:proxyViews){
+                    if (clientLobbyNumber==proxy.getMatchNumber()){
+                        proxyView=proxy;
+                    }
+                }
+                proxyView.sendToServer(viewControllerEvent);
+
+            }
+
+        }
+
+
     }
 
     public void notValideMoveMessage(Message message, int matchNumber) {
@@ -173,7 +193,7 @@ public class Server {
                 try{
                     client.sendToClient(message);
                 }catch (Exception e){
-                    disconnectedClients.add(client);
+                    connectionError(client,matchNumber);
                 }
             }
         }
@@ -186,7 +206,7 @@ public class Server {
 
                     client.sendToClient(startMatchEvent);
                 }catch (Exception e){
-                   disconnectedClients.add(client);
+                    connectionError(client,matchNumber);
                 }
             }
         }
@@ -200,7 +220,7 @@ public class Server {
                 try{
                     client.sendToClient(startRoundEvent);
                 }catch (Exception e){
-                    disconnectedClients.add(client);
+                    connectionError(client,matchNumber);
                 }
             }
 
@@ -209,30 +229,43 @@ public class Server {
     }
 
     public void sendStartTurnEvent(StartTurnEvent startTurnEvent, int matchNumber) {
-        for (VirtualClientInterface client : clients) {
+        lockCommunication.put(matchNumber,false);
+        boolean skipTurn=false;
+        for (VirtualClientInterface player:disconnectedClients){
+            if ((player.getLobbyNumber()==matchNumber)&&(player.getUsername().equals(startTurnEvent.getPlayer()))){
+                skipTurn=true;
+            }
+        }
+        if (!skipTurn){
+            for (VirtualClientInterface client : clients) {
 
-            if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))){
-                try{
-                    client.sendToClient(startTurnEvent);
+                if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))){
+                    try{
+                        client.sendToClient(startTurnEvent);
                     }catch (Exception e){
-                        disconnectedClients.add(client);
+                        connectionError(client,matchNumber);
                     }
-            }
+                }
 
-        }
-        class PlayTask extends TimerTask{
-            int lobbyNumber;
-            public PlayTask(int lobbyNumber){
-                this.lobbyNumber=lobbyNumber;
-            };
-            public void run() {
-                endByTime(lobbyNumber);
-                playTimer.remove(lobbyNumber);
-                sendToServer(new EndTurnEvent(),lobbyNumber);
             }
+            class PlayTask extends TimerTask{
+                private int lobby;
+                public PlayTask(int lobbyNumber){
+                    this.lobby=lobbyNumber;
+                };
+                public void run() {
+                    lockCommunication.put(lobby,true);
+                    endByTime(lobby,startTurnEvent.getPlayer());
+                    playTimer.remove(lobby);
+                    sendToServer(new EndTurnEvent(),lobby,true);
+                }
+            }
+            playTimer.put(matchNumber,new Timer());
+            playTimer.get(matchNumber).schedule(new PlayTask(matchNumber),40000);
+        }else{
+            sendToServer(new EndTurnEvent(),matchNumber,false);
         }
-        playTimer.put(matchNumber,new Timer());
-        playTimer.get(matchNumber).schedule(new PlayTask(matchNumber),200000);
+
 
     }
 
@@ -242,7 +275,7 @@ public class Server {
                 try{
                     client.sendToClient(endRoundEvent);
                 }catch (Exception e){
-                    disconnectedClients.add(client);
+                    connectionError(client,matchNumber);
                 }
 
             }
@@ -282,7 +315,7 @@ public class Server {
                 try{
                     client.sendToClient(modifiedWindowEvent);
                 }catch (Exception e){
-                    disconnectedClients.add(client);
+                    connectionError(client,matchNumber);
                 }
             }
         }
@@ -293,7 +326,7 @@ public class Server {
                 try{
                     client.sendToClient(modifiedDraftEvent);
                 }catch (Exception e){
-                    disconnectedClients.add(client);
+                    connectionError(client,matchNumber);
                 }
             }
         }
@@ -304,7 +337,7 @@ public class Server {
                 try{
                     client.sendToClient(modifiedRoundTrack);
                 }catch (Exception e){
-                    disconnectedClients.add(client);
+                    connectionError(client,matchNumber);
                 }
             }
         }
@@ -315,10 +348,11 @@ public class Server {
                 try{
                     client.sendToClient(endMatchEvent);
                 }catch (Exception e){
-                    disconnectedClients.add(client);
+                    connectionError(client,matchNumber);
                 }
             }
         }
+        deleteEndedMatch(matchNumber);
     }
     public void sendNewDiceFromBag(NewDiceFromBagEvent newDiceFromBagEvent, int matchNumber){
         for (VirtualClientInterface client : clients) {
@@ -327,7 +361,7 @@ public class Server {
                 try{
                     client.sendToClient(newDiceFromBagEvent);
                 }catch (Exception e){
-                    disconnectedClients.add(client);
+                    connectionError(client,matchNumber);
                 }
             }
         }
@@ -339,7 +373,7 @@ public class Server {
                 try{
                     client.sendToClient(effectEvent);
                 }catch (Exception e){
-                    disconnectedClients.add(client);
+                    connectionError(client,matchNumber);
                 }
             }
         }
@@ -350,21 +384,57 @@ public class Server {
                 try{
                     client.sendToClient(modifiedTokenEvent);
                 }catch (Exception e){
-                    disconnectedClients.add(client);
+                    connectionError(client,matchNumber);
                 }
             }
         }
     }
-    public void endByTime(int lobbyNumber){
+    public void endByTime(int lobbyNumber,String player){
         for (VirtualClientInterface client : clients) {
             if (client.getLobbyNumber()==lobbyNumber){
                 try{
-                    client.endByTime();
-                    disconnectedClients.add(client);
+                    client.endByTime(player);
+                    if (client.getUsername().equals(player)){
+                        disconnectedClients.add(client);
+                    }
+
                 }catch (Exception e){
-                    disconnectedClients.add(client);
+                    connectionError(client,lobbyNumber);
                 }
             }
+        }
+        if (checkNoPlayersLeft(lobbyNumber)){
+            lockCommunication.put(lobbyNumber,true);
+            cancelTimer(lobbyNumber);
+            for (VirtualClientInterface client : clients) {
+                if ((client.getLobbyNumber()==lobbyNumber)&& (!disconnectedClients.contains(client))) {
+                    try{
+                        client.lastPlayerLeft();
+                    }catch (Exception e){
+                        System.out.println("No players left in lobby matchNumber");
+                    }
+                }
+            }
+            deleteEndedMatch(lobbyNumber);
+        }
+    }
+    public boolean checkNoPlayersLeft(int matchNumber){
+        int disconnected=0;
+        int connected=0;
+        for (VirtualClientInterface client:clients){
+            if (client.getLobbyNumber()==matchNumber){
+                connected++;
+            }
+        }
+        for (VirtualClientInterface client:disconnectedClients){
+            if (client.getLobbyNumber()==matchNumber){
+                disconnected++;
+            }
+        }
+        if ((connected-disconnected)<2){
+            return true;
+        }else{
+            return false;
         }
     }
     public void cancelTimer(int matcNumber){
@@ -374,10 +444,104 @@ public class Server {
         }
     }
     public void reconnectRMIClient(String username, int lobbyNumber){
-        
+        VirtualClientInterface reconnectingClient=null;
+        for (VirtualClientInterface disconnectedClient:disconnectedClients){
+            if ((disconnectedClient.getUsername().equals(username))&&disconnectedClient.getLobbyNumber()==lobbyNumber){
+                reconnectingClient=disconnectedClient;
+            }
+        }
+        reconnectClient(reconnectingClient);
     }
     public void reconnectClient(VirtualClientInterface reconnectingClient){
+        disconnectedClients.remove(reconnectingClient);
+        for (VirtualView proxy:proxyViews){
+            if (reconnectingClient.getLobbyNumber()==proxy.getMatchNumber()){
+                proxy.reconnect(new ReconnectClientEvent(reconnectingClient.getUsername()));
+            }
+        }
 
+    }
+    public void sendReconnectionUpdate(UpdateReconnectedClientEvent updateReconnectedClientEvent,int matchNumber){
+        for (VirtualClientInterface client : clients) {
+            if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))) {
+
+                try{
+                    client.sendToClient(updateReconnectedClientEvent);
+                }catch (Exception e){
+                    connectionError(client,matchNumber);
+                }
+            }
+        }
+    }
+    private void connectionError(VirtualClientInterface disconnectedClient, int matchNumber){
+        disconnectedClients.add(disconnectedClient);
+        if (checkNoPlayersLeft(matchNumber)){
+            lockCommunication.put(matchNumber,true);
+            cancelTimer(matchNumber);
+            for (VirtualClientInterface client : clients) {
+                if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))) {
+                    try{
+                        client.lastPlayerLeft();
+                    }catch (Exception e){
+                        System.out.println("No players left in lobby matchNumber");
+                    }
+                }
+            }
+            deleteEndedMatch(matchNumber);
+        }else{
+            for (VirtualClientInterface client : clients) {
+                if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))){
+                    try{
+                        client.otherPlayerDisconnected(new OtherPlayerDisconnectedEvent(disconnectedClient.getUsername()));
+                    }catch (Exception e){
+                        connectionError(client,matchNumber);
+                    }
+                }
+            }
+            for (VirtualView proxy:proxyViews){
+                if (matchNumber==proxy.getMatchNumber()){
+                    proxy.connectionError(new ConnectionErrorEvent(disconnectedClient.getUsername()));
+                }
+            }
+        }
+
+
+
+    }
+    private synchronized void deleteEndedMatch(int matchNumber){
+        ArrayList<VirtualClientInterface> remove=new ArrayList<>();
+        VirtualView removeView=null;
+        for (VirtualClientInterface client:clients){
+            if (client.getLobbyNumber()==matchNumber){
+                client.deleteAfterMatch();
+                remove.add(client);
+            }
+        }
+        for (VirtualClientInterface client:remove){
+            if (clients.contains(client)){
+                clients.remove(client);
+            }
+        }
+        remove.clear();
+        for (VirtualClientInterface client:disconnectedClients){
+            if (client.getLobbyNumber()==matchNumber){
+                client.deleteAfterMatch();
+                remove.add(client);
+            }
+        }
+        for (VirtualClientInterface client:remove){
+            if (disconnectedClients.contains(client)){
+                disconnectedClients.remove(client);
+            }
+        }
+        remove.clear();
+        for (VirtualView view:proxyViews){
+            if (view.getMatchNumber()==matchNumber){
+                removeView=view;
+            }
+        }
+        lockCommunication.remove(matchNumber);
+        proxyViews.remove(removeView);
     }
 
 }

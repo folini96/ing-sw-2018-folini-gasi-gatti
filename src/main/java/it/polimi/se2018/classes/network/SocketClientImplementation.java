@@ -17,6 +17,9 @@ public class SocketClientImplementation extends Thread{
     private static final String VIEW_CONTROLLER="view controller event";
     private static final String MODEL_VIEW="model view event";
     private static final String END_BY_TIME = "end by time";
+    private static final String RECONNECT = "reconnect";
+    private static final String PLAYER_DISCONNECTED = "player disconnected";
+    private static final String LAST_PLAYER = "last player left";
     private Socket socket;
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
@@ -52,6 +55,14 @@ public class SocketClientImplementation extends Thread{
             e.printStackTrace();
         }
     }
+    public void reconnect(){
+        try{
+            writer.reset();
+            writer.writeUnshared(RECONNECT);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
     @Override
     public void run() {
         try{
@@ -81,7 +92,13 @@ public class SocketClientImplementation extends Thread{
                         client.sendToClient((ModelViewEvent)reader.readUnshared());
                         break;
                      case END_BY_TIME:
-                         client.endByTime();
+                         client.endByTime((String)reader.readUnshared());
+                         break;
+                     case PLAYER_DISCONNECTED:
+                         client.playerDisconnected((String)reader.readUnshared());
+                         break;
+                     case LAST_PLAYER:
+                         client.lastPlayerLeft();
                          break;
                 }
 
