@@ -26,7 +26,8 @@ public class SettingsController implements Initializable {
     private GUIHandler guiHandler;
     @FXML
     private ComboBox<String> connectionComboBox;
-
+    @FXML
+    private TextField serverIPTextField;
 
     private ObservableList<String> connectionList = FXCollections.observableArrayList(SOCKET_CONNECTION,RMI_CONNECTION);
 
@@ -50,12 +51,18 @@ public class SettingsController implements Initializable {
     private void confirmButtonClicked(ActionEvent event) throws Exception {
 
         final String NULL_CONNECTION_COMBO_BOX_MESSAGE = "Scegli una connessione!";
-
+        final String INVALID_IP_MESSAGE = "Inserisci un indirizzo IP valido!";
 
         if (connectionComboBox.getSelectionModel().isEmpty()){
             viewModel.alertMessage(NULL_CONNECTION_COMBO_BOX_MESSAGE);
             return;
         }
+
+        if (!viewModel.isIP(serverIPTextField.getText())){
+            viewModel.alertMessage(INVALID_IP_MESSAGE);
+        }
+
+        // codice per indirizzo ip ( per avere testo-->> serverIPTextField.getText()
 
 
         if (connectionComboBox.getValue().equals(RMI_CONNECTION)){

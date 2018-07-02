@@ -26,6 +26,12 @@
                     <VBox.margin>
                         <Insets top="5.0" />
                     </VBox.margin></ComboBox>
+            <Label prefHeight="17.0" prefWidth="160.0" text="Server IP address:" textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="serverIPTextField" />
                 <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#confirmButtonClicked" text="Inizia">
                     <VBox.margin>
                         <Insets top="20.0" />
