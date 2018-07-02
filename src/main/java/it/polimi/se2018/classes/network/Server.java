@@ -1,6 +1,7 @@
 package it.polimi.se2018.classes.network;
 
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.polimi.se2018.classes.controller.MatchHandlerController;
 import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.model.*;
@@ -150,7 +151,6 @@ public class Server {
         }
         controller.handleStartMatch(usernames);
         lockCommunication.put(lobbyNumber,false);
-
         lobbyNumber++;
     }
 
@@ -238,12 +238,15 @@ public class Server {
         }
         if (!skipTurn){
             for (VirtualClientInterface client : clients) {
-
                 if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))){
                     try{
                         client.sendToClient(startTurnEvent);
                     }catch (Exception e){
                         connectionError(client,matchNumber);
+                        if (client.getUsername().equals(startTurnEvent.getPlayer())){
+                            return;
+                        }
+
                     }
                 }
 
@@ -391,7 +394,7 @@ public class Server {
     }
     public void endByTime(int lobbyNumber,String player){
         for (VirtualClientInterface client : clients) {
-            if (client.getLobbyNumber()==lobbyNumber){
+            if ((client.getLobbyNumber()==lobbyNumber)&& (!disconnectedClients.contains(client))){
                 try{
                     client.endByTime(player);
                     if (client.getUsername().equals(player)){
