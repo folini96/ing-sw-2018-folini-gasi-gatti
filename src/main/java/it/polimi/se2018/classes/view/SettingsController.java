@@ -28,6 +28,8 @@ public class SettingsController implements Initializable {
     private ComboBox<String> connectionComboBox;
     @FXML
     private TextField serverIPTextField;
+    @FXML
+    private TextField doorTextField;
 
     private ObservableList<String> connectionList = FXCollections.observableArrayList(SOCKET_CONNECTION,RMI_CONNECTION);
 
