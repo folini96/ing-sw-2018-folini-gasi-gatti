@@ -6,22 +6,27 @@ import it.polimi.se2018.classes.visitor.ModelViewEventVisitor;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
 public class SocketClient implements ClientInterface,ModelViewEventVisitor {
-    private static final int PORT = 5463;
-    private static final String HOST = "localhost";
     private SocketClientImplementation clientImplementation;
     private GUIHandler interfaceHandler;
     private String username;
+    private boolean matchEnded;
     public void SocketClient(){
 
     }
-    public void main(String username, GUIHandler interfaceHandler) {
+    public void main(String username, GUIHandler interfaceHandler,String serverIp,int serverPort) {
         this.username=username;
+        matchEnded=false;
         this.interfaceHandler=interfaceHandler;
-        clientImplementation= new SocketClientImplementation(username,HOST,PORT, this);
+        try{
+            clientImplementation= new SocketClientImplementation(username,serverIp,serverPort, this);
+        }catch(IOException e){
+            interfaceHandler.createClientError();
+        }
     }
 
     public void sendToServer(ViewControllerEvent viewControllerEvent){
@@ -94,5 +99,15 @@ public class SocketClient implements ClientInterface,ModelViewEventVisitor {
     }
     public void lastPlayerLeft(){
         interfaceHandler.lastPlayerLeft();
+    }
+    public void connectionLost(){
+        if (!matchEnded){
+            interfaceHandler.connectionToServerLost();
+        }
+
+    }
+    public void deleteAfterMatch(){
+        matchEnded=true;
+        clientImplementation.closeConnection();
     }
 }

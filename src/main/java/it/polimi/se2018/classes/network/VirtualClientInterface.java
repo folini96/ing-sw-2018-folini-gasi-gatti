@@ -13,6 +13,5 @@ public interface VirtualClientInterface {
     void endByTime(String player) throws Exception;
     void ping() throws Exception;
     void otherPlayerDisconnected(OtherPlayerDisconnectedEvent otherPlayerDisconnectedEvent)throws Exception;
-    void deleteAfterMatch();
     void lastPlayerLeft() throws Exception;
 }

@@ -5,8 +5,8 @@ import it.polimi.se2018.classes.view.GUIHandler;
 
 
 public interface ClientInterface {
-     void main(String username, GUIHandler interfaceHandler);
+     void main(String username, GUIHandler interfaceHandler,String serverIp,int serverPort);
      void sendToServer(ViewControllerEvent viewControllerVisitor);
-     void newUsername(String username);
      void reconnect(String username);
+     void deleteAfterMatch();
 }

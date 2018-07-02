@@ -6,6 +6,7 @@ import it.polimi.se2018.classes.model.Player;
 import it.polimi.se2018.classes.network.ClientInterface;
 import it.polimi.se2018.classes.network.RMIClient;
 import it.polimi.se2018.classes.network.SocketClient;
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +18,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class GUIHandler {
+public class GUIHandler extends Application {
     private static final String SOCKET_CONNESSION = "Socket";
     private static final String RMI_CONNECTION = "RMI";
     private SettingsController settingsController;
@@ -28,8 +29,10 @@ public class GUIHandler {
     private String clientType;
     private String username;
     private Timer windowSelectionTimer;
-    private int selectionTime=10000;
-    public void main(Stage primaryStage){
+    private String serverIp;
+    private int serverPort;
+    private boolean matchEnded;
+    public void start(Stage primaryStage){
         try{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/fxml/settings.fxml"));
@@ -40,6 +43,7 @@ public class GUIHandler {
             primaryStage.setScene(new Scene(root));
             primaryStage.show();
             primaryStage.setResizable(false);
+            matchEnded=false;
         }catch (IOException e){
             e.printStackTrace();
         }
@@ -47,9 +51,10 @@ public class GUIHandler {
 
 
     }
-    public void setClientType(String clientType){
+    public void setClientType(String clientType,String serverIp,int serverPort){
         this.clientType=clientType;
-
+        this.serverIp=serverIp;
+        this.serverPort=serverPort;
     }
     public void setWindowSelectionController(WindowSelectionController windowSelectionController){
         this.windowSelectionController=windowSelectionController;
@@ -100,13 +105,21 @@ public class GUIHandler {
     public void createClient(String username){
         if (clientType==RMI_CONNECTION){
             virtualServer=new RMIClient();
-            virtualServer.main(username,this);
+            virtualServer.main(username,this,serverIp,serverPort);
         }else{
             virtualServer=new SocketClient();
-            virtualServer.main(username,this);
+            virtualServer.main(username,this,serverIp,serverPort);
         }
     }
+    public void createClientError(){
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                userNameController.connectionError();
 
+            }
+        });
+    }
     public void windowToChose(WindowToChoseEvent windowToChoseEvent){
         TimerTask windowSelectionTask = new TimerTask() {
             @Override
@@ -125,7 +138,7 @@ public class GUIHandler {
             }
         };
         windowSelectionTimer=new Timer();
-        windowSelectionTimer.schedule(windowSelectionTask, selectionTime);
+        windowSelectionTimer.schedule(windowSelectionTask, windowToChoseEvent.getTimer());
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -217,6 +230,7 @@ public class GUIHandler {
         });
     }
     public void endMatch(EndMatchEvent endMatchEvent){
+        matchEnded=true;
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -294,11 +308,25 @@ public class GUIHandler {
         });
     }
     public void lastPlayerLeft(){
+        matchEnded=true;
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
                 mainScreenController.lastPlayerLeft();
             }
         });
+    }
+    public void connectionToServerLost(){
+        if ((!matchEnded)&&(mainScreenController!=null)){
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    mainScreenController.connectionLost();
+                }
+            });
+        }
+    }
+    public void closeConnectionAfterEnd(){
+        virtualServer.deleteAfterMatch();
     }
 }

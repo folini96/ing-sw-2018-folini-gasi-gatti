@@ -99,13 +99,7 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
         writer.writeUnshared(PLAYER_DISCONNECTED);
         writer.writeUnshared(otherPlayerDisconnectedEvent.getPlayer());
     }
-    public void deleteAfterMatch(){
-        try{
-            socket.close();
-        }catch (IOException e){
-            System.out.println("Error closing socket");
-        }
-    }
+
     public void lastPlayerLeft() throws IOException{
         writer.writeUnshared(LAST_PLAYER);
     }

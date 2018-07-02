@@ -24,17 +24,14 @@ public class SocketClientImplementation extends Thread{
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
     private SocketClient client;
-    public  SocketClientImplementation(String username, String host, int port, SocketClient client){
+    public  SocketClientImplementation(String username, String host, int port, SocketClient client) throws IOException{
 
-        try {
-            this.client=client;
-            socket =  new Socket( host, port);
-            writer = new ObjectOutputStream(socket.getOutputStream());
-            sendUsername(username);
-            this.start();
-        } catch (IOException e) {
-            System.out.println("Connection Error.");
-        }
+        this.client=client;
+        socket =  new Socket( host, port);
+        writer = new ObjectOutputStream(socket.getOutputStream());
+        sendUsername(username);
+        this.start();
+
 
 
     }
@@ -43,7 +40,7 @@ public class SocketClientImplementation extends Thread{
              writer.reset();
              writer.writeObject(username);
         }catch (IOException e){
-            e.printStackTrace();
+            client.connectionLost();
         }
     }
     public void sendToServer(ViewControllerEvent viewControllerEvent){
@@ -52,7 +49,7 @@ public class SocketClientImplementation extends Thread{
             writer.writeUnshared(VIEW_CONTROLLER);
             writer.writeUnshared(viewControllerEvent);
         }catch (IOException e){
-            e.printStackTrace();
+            client.connectionLost();
         }
     }
     public void reconnect(){
@@ -60,7 +57,7 @@ public class SocketClientImplementation extends Thread{
             writer.reset();
             writer.writeUnshared(RECONNECT);
         }catch (IOException e){
-            e.printStackTrace();
+            client.connectionLost();
         }
     }
     @Override
@@ -69,7 +66,7 @@ public class SocketClientImplementation extends Thread{
             reader = new ObjectInputStream(socket.getInputStream());
 
         }catch(IOException e){
-            e.printStackTrace();
+            client.connectionLost();
         }
         String action;
         boolean loop = true;
@@ -104,10 +101,19 @@ public class SocketClientImplementation extends Thread{
 
 
             } catch (Exception e) {
+                client.connectionLost();
                 loop=false;
             }
 
         }
+    }
+    public void closeConnection(){
+        try {
+            socket.close();
+        }catch (IOException e){
+            //this exception won't cause any problem with the software, as this method is called at the end of the game
+        }
+
     }
 
 

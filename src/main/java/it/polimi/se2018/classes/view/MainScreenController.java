@@ -1173,10 +1173,7 @@ public class MainScreenController implements Initializable {
         int maxPoints=-20;
         int winnerPosition=-1;
         String winner;
-        disableMainPlayerButtons();
-        reserveGridPane.setDisable(true);
-        roundTrackGridPane.setDisable(true);
-        mainPlayerGridPane.setDisable(true);
+
         for (int i=0; i< endMatch.getPoints().size();i++){
             if (endMatch.getPoints().get(i)>=maxPoints){
                 maxPoints=endMatch.getPoints().get(i);
@@ -1196,24 +1193,24 @@ public class MainScreenController implements Initializable {
         }
         pointsMessage=pointsMessage+NEW_GAME_MESSAGE;
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("End Match");
-        alert.setHeaderText(null);
-        alert.setContentText(pointsMessage);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-
-            // Azione da eseguire se si vuole fare nuova patita
-        } else {
-            // azione da eseguire se non si vuole fare nuova partita o si chiude finestra dialogo
-        }
+        newMatch(pointsMessage);
     }
     public void lastPlayerLeft(){
         final String MAIN_PLAYER_WINNER_MESSAGE = "Hai vinto perchè sei rimasto l'unico giocatore in partita";
         final String NEW_GAME_MESSAGE = "\nVuoi iniziare una nuova partita?";
         String message;
         message=MAIN_PLAYER_WINNER_MESSAGE+NEW_GAME_MESSAGE;
+        newMatch(message);
+    }
+    public void connectionLost(){
+        final String LOST_CONNECTION = "Hai perso la connesione con il server a causa di un errore di rete";
+        final String NEW_GAME_MESSAGE = "\nVuoi iniziare una nuova partita?";
+        String message;
+        message=LOST_CONNECTION+NEW_GAME_MESSAGE;
+        newMatch(message);
+
+    }
+    private void newMatch(String message){
         disableMainPlayerButtons();
         reserveGridPane.setDisable(true);
         roundTrackGridPane.setDisable(true);
@@ -1224,12 +1221,25 @@ public class MainScreenController implements Initializable {
         alert.setContentText(message);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-
-            // Azione da eseguire se si vuole fare nuova patita
-        } else {
-            // azione da eseguire se non si vuole fare nuova partita o si chiude finestra dialogo
+        if ((result.isPresent())&&(result.get() == ButtonType.OK)){
+            try{
+                SettingsController settingsController;
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getResource("/fxml/settings.fxml"));
+                Parent root = loader.load();
+                settingsController=loader.getController();
+                settingsController.setGuiHandler(guiHandler);
+                Stage primaryStage = new Stage();
+                primaryStage.setTitle("Sagrada");
+                primaryStage.setScene(new Scene(root));
+                primaryStage.show();
+                primaryStage.setResizable(false);
+            }catch (IOException e){
+                e.printStackTrace();
+            }
         }
-    }
+        guiHandler.closeConnectionAfterEnd();
+        placeDiceButton.getScene().getWindow().hide();
 
+    }
 }

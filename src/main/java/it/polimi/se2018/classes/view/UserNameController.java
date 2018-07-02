@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,7 +31,6 @@ public class UserNameController {
     @FXML
     private void userNameConfirmButtonClicked (ActionEvent event) throws Exception {
 
-        // CONTROLLO USERNAME
         String name = userNameTextField.getText();
         guiHandler.createClient(name);
 
@@ -61,5 +61,14 @@ public class UserNameController {
 
 
     }
+    public void connectionError(){
+        final String LOST_CONNECTION = "Non è stato possibile connettersi al server";
+        String message;
+        message=LOST_CONNECTION;
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
 
+    }
 }

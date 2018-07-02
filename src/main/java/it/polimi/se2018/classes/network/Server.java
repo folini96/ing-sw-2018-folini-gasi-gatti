@@ -1,7 +1,6 @@
 package it.polimi.se2018.classes.network;
 
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.polimi.se2018.classes.controller.MatchHandlerController;
 import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.model.*;
@@ -16,12 +15,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Server {
-    private static int RMIPORT = 1099; // porta di default RMI
-    private static int SOCKETPORT = 5463; //porta di default SOCKET
+    private  int rmiPort;
+    private int socketPort ;
     private Timer lobbyTimer = new Timer();
     private ConcurrentHashMap<Integer,Timer> playTimer = new ConcurrentHashMap<>();
     private ConcurrentHashMap<Integer,Timer> windowTimer = new ConcurrentHashMap<>();
-    private static int LOBBYTIME=5;
+    private int lobbyTime;
+    private int playTime;
     private int passedTime;
     private int lobbyNumber=0;
     private ConcurrentHashMap<Integer,Boolean> lockCommunication=new ConcurrentHashMap<>();
@@ -30,8 +30,12 @@ public class Server {
     private ArrayList<VirtualClientInterface> removedClients = new ArrayList<>();
     private CopyOnWriteArrayList<VirtualClientInterface> clients = new CopyOnWriteArrayList<>();
     private CopyOnWriteArrayList<VirtualClientInterface> disconnectedClients = new CopyOnWriteArrayList<>();
-    public void main() {
+    public void main(int rmiPort,int socketPort,int lobbyTime,int playTime) {
         proxyViews=new CopyOnWriteArrayList<>();
+        this.rmiPort=rmiPort;
+        this.socketPort=socketPort;
+        this.lobbyTime=lobbyTime;
+        this.playTime=playTime*1000;
         rmiMain();
         socketMain();
 
@@ -41,7 +45,7 @@ public class Server {
 
         try {
 
-            LocateRegistry.createRegistry(RMIPORT);
+            LocateRegistry.createRegistry(rmiPort);
 
         } catch (RemoteException e) {
 
@@ -51,7 +55,7 @@ public class Server {
         try {
 
             rmiHandler = new RMIServerImplementation(this);
-            Naming.rebind("//localhost/MyServer", rmiHandler);
+            Naming.rebind("//0.0.0.0/MyServer", rmiHandler);
 
         } catch (MalformedURLException e) {
             System.err.println("Impossibile registrare l'oggetto indicato!");
@@ -62,7 +66,7 @@ public class Server {
     }
 
     public void socketMain() {
-        (new SocketClientGatherer(this, SOCKETPORT)).start();
+        (new SocketClientGatherer(this, socketPort)).start();
 
     }
 
@@ -96,7 +100,7 @@ public class Server {
         TimerTask startMatchTask = new TimerTask() {
             public void run() {
                 passedTime++;
-                if (passedTime==LOBBYTIME){
+                if (passedTime==lobbyTime){
                     lobbyTimer.cancel();
                     startMatch();
                 }else{
@@ -200,17 +204,35 @@ public class Server {
     }
 
     public synchronized void sendStartMatchEvent(StartMatchEvent startMatchEvent, int matchNumber) {
-        for (VirtualClientInterface client : clients) {
-            if (client.getLobbyNumber()==matchNumber && (!disconnectedClients.contains(client))){
-                try{
+        if (checkNoPlayersLeft(matchNumber)){
+            lockCommunication.put(matchNumber,true);
+            cancelTimer(matchNumber);
+            for (VirtualClientInterface client : clients) {
+                if ((client.getLobbyNumber()==matchNumber)&& (!disconnectedClients.contains(client))) {
+                    try{
+                        client.lastPlayerLeft();
+                    }catch (Exception e){
+                        System.out.println("No players left in lobby matchNumber");
+                    }
+                }
+            }
+            deleteEndedMatch(matchNumber);
+        }else {
 
-                    client.sendToClient(startMatchEvent);
-                }catch (Exception e){
-                    connectionError(client,matchNumber);
+            for (VirtualClientInterface client : clients) {
+                if (client.getLobbyNumber() == matchNumber && (!disconnectedClients.contains(client))) {
+                    try {
+
+                        client.sendToClient(startMatchEvent);
+                        for (VirtualClientInterface disconnectedClient:disconnectedClients){
+                            client.otherPlayerDisconnected(new OtherPlayerDisconnectedEvent(disconnectedClient.getUsername()));
+                        }
+                    } catch (Exception e) {
+                        connectionError(client, matchNumber);
+                    }
                 }
             }
         }
-
     }
 
 
@@ -253,7 +275,7 @@ public class Server {
             }
             class PlayTask extends TimerTask{
                 private int lobby;
-                public PlayTask(int lobbyNumber){
+                private PlayTask(int lobbyNumber){
                     this.lobby=lobbyNumber;
                 };
                 public void run() {
@@ -264,7 +286,7 @@ public class Server {
                 }
             }
             playTimer.put(matchNumber,new Timer());
-            playTimer.get(matchNumber).schedule(new PlayTask(matchNumber),40000);
+            playTimer.get(matchNumber).schedule(new PlayTask(matchNumber),playTime);
         }else{
             sendToServer(new EndTurnEvent(),matchNumber,false);
         }
@@ -286,7 +308,6 @@ public class Server {
     }
 
     public void sendWindowToChose(WindowSide[] windows, int matchNumber) {
-
         int firstPlayerInLobby=-1;
         for (VirtualClientInterface client : clients) {
             if (client.getLobbyNumber()==matchNumber){
@@ -295,21 +316,36 @@ public class Server {
                 }
                 int windowPosition=(clients.indexOf(client)-firstPlayerInLobby)*4;
                 WindowSide[] windowToSend=Arrays.copyOfRange(windows,windowPosition,windowPosition+4);
-                client.sendWindowToChose(new WindowToChoseEvent(windowToSend));
+                client.sendWindowToChose(new WindowToChoseEvent(windowToSend,playTime));
             }
         }
-        //startWindowTimer(matchNumber);
+        startWindowTimer(matchNumber);
     }
     public void startWindowTimer(int lobbyNumber){
         TimerTask windowTask=new TimerTask(){
             public void run() {
                 for (VirtualClientInterface client:clients){
-                    //client.ping()
+                    try{
+                        client.ping();
+                    }catch (Exception e){
+                        windowConnectionError(client,lobbyNumber);
+                    }
                 }
             }
         };
         windowTimer.put(lobbyNumber,new Timer());
         windowTimer.get(lobbyNumber).schedule(windowTask,1000,1000);
+
+    }
+    private void windowConnectionError(VirtualClientInterface disconnectedClient, int matchNumber){
+        disconnectedClients.add(disconnectedClient);
+        Random random = new Random();
+        int randomInt = random.nextInt(4);
+        for (VirtualView proxy:proxyViews){
+            if (matchNumber==proxy.getMatchNumber()){
+                proxy.sendToServer(new ChoseWindowEvent(randomInt,disconnectedClient.getUsername()));
+            }
+        }
 
     }
     public void sendModifiedWindow(ModifiedWindowEvent modifiedWindowEvent, int matchNumber){
@@ -516,7 +552,6 @@ public class Server {
         VirtualView removeView=null;
         for (VirtualClientInterface client:clients){
             if (client.getLobbyNumber()==matchNumber){
-                client.deleteAfterMatch();
                 remove.add(client);
             }
         }
@@ -528,7 +563,6 @@ public class Server {
         remove.clear();
         for (VirtualClientInterface client:disconnectedClients){
             if (client.getLobbyNumber()==matchNumber){
-                client.deleteAfterMatch();
                 remove.add(client);
             }
         }

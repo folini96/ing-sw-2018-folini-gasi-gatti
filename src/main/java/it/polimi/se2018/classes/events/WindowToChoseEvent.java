@@ -6,11 +6,18 @@ import java.io.Serializable;
 
 public class WindowToChoseEvent implements Serializable {
     private WindowSide[] windows;
-    public WindowToChoseEvent(WindowSide[] windows){
+    private int timer;
+    public WindowToChoseEvent(WindowSide[] windows, int timer){
         this.windows=windows;
+        this.timer = timer;
     }
 
     public WindowSide[] getWindows() {
         return windows;
+    }
+
+
+    public int getTimer() {
+        return timer;
     }
 }

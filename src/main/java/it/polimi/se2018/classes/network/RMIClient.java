@@ -4,13 +4,14 @@ package it.polimi.se2018.classes.network;
 import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.view.GUIHandler;
 import it.polimi.se2018.classes.visitor.ModelViewEventVisitor;
-import it.polimi.se2018.classes.visitor.ViewControllerVisitor;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class RMIClient implements ClientInterface,ModelViewEventVisitor {
@@ -19,40 +20,42 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
     private RMIClientImplementation client;
     private RMIRemoteServerInterface server;
     private int lobbyNumber;
-
-    public void main(String username, GUIHandler interfaceHandler){
-       this.interfaceHandler=interfaceHandler;
+    private Timer disconnectionTimer=new Timer();
+    public void main(String username, GUIHandler interfaceHandler,String serverIp,int serverPort){
+      this.interfaceHandler=interfaceHandler;
       try {
-         server = (RMIRemoteServerInterface)Naming.lookup("//localhost/MyServer");
+         server = (RMIRemoteServerInterface)Naming.lookup("//" + serverIp+"/MyServer");
          client= new RMIClientImplementation(this);
          remoteRef = (RMIRemoteClientInterface) UnicastRemoteObject.exportObject(client, 0);
          server.addClient(remoteRef, username);
-
-      }catch (MalformedURLException e) {
-         System.err.println("URL non trovato!");
-      }catch (RemoteException e) {
-         System.err.println("Errore di connessione: " + e.getMessage() + "!");
-      }catch (NotBoundException e) {
-         System.err.println("Il riferimento passato non è associato a nulla!");
+         startDisconnectionTimer();
+      }catch (MalformedURLException|RemoteException|NotBoundException e) {
+         interfaceHandler.createClientError();
       }
    }
+    public void startDisconnectionTimer(){
+        TimerTask disconnectionTask=new TimerTask() {
+            @Override
+            public void run() {
+               try{
+                   client.ping();
+               }catch (RemoteException e){
+                   interfaceHandler.connectionToServerLost();
+               }
+            }
+        };
+        disconnectionTimer.schedule(disconnectionTask,1000,1000);
+    }
+
     public void setLobbyNumber(int number){
         lobbyNumber=number;
     }
-   public void newUsername(String username){
-       try {
 
-           server.addClient(remoteRef, username);
-       }catch (RemoteException e){
-           System.err.println("Errore di connessione: " + e.getMessage() + "!");
-       }
-
-   }
    public void sendToServer (ViewControllerEvent viewControllerEvent){
        try{
            server.sendToServer(viewControllerEvent,lobbyNumber);
        }catch (RemoteException e){
-           System.out.println("Errore nella comunicazione con il server");
+           interfaceHandler.connectionToServerLost();
        }
    }
     public void okUsername(String username){
@@ -117,7 +120,7 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
         try{
             server.reconnect(username,lobbyNumber);
         }catch (RemoteException e){
-            e.printStackTrace();
+            interfaceHandler.connectionToServerLost();
         }
 
     }
@@ -126,5 +129,9 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
     }
     public void lastPlayerLeft(){
         interfaceHandler.lastPlayerLeft();
+    }
+    public void deleteAfterMatch(){
+        disconnectionTimer.cancel();
+
     }
 }

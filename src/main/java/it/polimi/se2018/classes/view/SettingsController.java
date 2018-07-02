@@ -54,7 +54,7 @@ public class SettingsController implements Initializable {
 
         final String NULL_CONNECTION_COMBO_BOX_MESSAGE = "Scegli una connessione!";
         final String INVALID_IP_MESSAGE = "Inserisci un indirizzo IP valido!";
-
+        final String INVALID_DOOR="inserisci una porta valida";
         if (connectionComboBox.getSelectionModel().isEmpty()){
             viewModel.alertMessage(NULL_CONNECTION_COMBO_BOX_MESSAGE);
             return;
@@ -62,19 +62,20 @@ public class SettingsController implements Initializable {
 
         if (!viewModel.isIP(serverIPTextField.getText())){
             viewModel.alertMessage(INVALID_IP_MESSAGE);
-        }
-
-        // codice per indirizzo ip ( per avere testo-->> serverIPTextField.getText()
-
-
-        if (connectionComboBox.getValue().equals(RMI_CONNECTION)){
-            guiHandler.setClientType(RMI_CONNECTION);
+        }else if(doorTextField.getText().equals("")){
+            viewModel.alertMessage(INVALID_DOOR);
         }else{
-            guiHandler.setClientType(SOCKET_CONNECTION);
+            if (connectionComboBox.getValue().equals(RMI_CONNECTION)){
+                guiHandler.setClientType(RMI_CONNECTION,serverIPTextField.getText(),Integer.parseInt(doorTextField.getText()));
+            }else{
+                guiHandler.setClientType(SOCKET_CONNECTION,serverIPTextField.getText(),Integer.parseInt(doorTextField.getText()));
+            }
+            ((Node)(event.getSource())).getScene().getWindow().hide();
+            guiHandler.userNameStage();
         }
 
-        ((Node)(event.getSource())).getScene().getWindow().hide();
-        guiHandler.userNameStage();
+
+
 
     }
     public void setGuiHandler(GUIHandler guiHandler){
