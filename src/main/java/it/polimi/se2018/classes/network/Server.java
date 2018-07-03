@@ -563,6 +563,11 @@ public class Server {
         remove.clear();
         for (VirtualClientInterface client:disconnectedClients){
             if (client.getLobbyNumber()==matchNumber){
+                try{
+                    client.notifyEndMatchToDisconnected();
+                }catch (Exception e){
+                    //the client was disconnected by a connection error and doesn't need to be notify of the ended match
+                }
                 remove.add(client);
             }
         }

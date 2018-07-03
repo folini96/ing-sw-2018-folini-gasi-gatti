@@ -289,7 +289,12 @@ public class GUIHandler extends Application {
         virtualServer.sendToServer(new SetValueEvent(diceValue));
     }
     public void reconnect(){
-        virtualServer.reconnect(username);
+        if (matchEnded){
+            //todo:blocca riconnessione
+        }else{
+            virtualServer.reconnect(username);
+        }
+
     }
     public void updateReconnectedPlayer(UpdateReconnectedClientEvent updateReconnectedClientEvent){
         Platform.runLater(new Runnable() {
@@ -329,4 +334,8 @@ public class GUIHandler extends Application {
     public void closeConnectionAfterEnd(){
         virtualServer.deleteAfterMatch();
     }
+    public void gameEnded(){
+        matchEnded=true;
+    }
+
 }

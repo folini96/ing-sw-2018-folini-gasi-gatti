@@ -20,6 +20,7 @@ public class SocketClientImplementation extends Thread{
     private static final String RECONNECT = "reconnect";
     private static final String PLAYER_DISCONNECTED = "player disconnected";
     private static final String LAST_PLAYER = "last player left";
+    private static final String END_GAME="end game";
     private Socket socket;
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
@@ -97,6 +98,11 @@ public class SocketClientImplementation extends Thread{
                      case LAST_PLAYER:
                          client.lastPlayerLeft();
                          break;
+                     case END_GAME:
+                         client.gameEnded();
+                         closeConnection();
+                         break;
+
                 }
 
 

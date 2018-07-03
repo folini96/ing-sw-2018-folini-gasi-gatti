@@ -14,4 +14,5 @@ public interface VirtualClientInterface {
     void ping() throws Exception;
     void otherPlayerDisconnected(OtherPlayerDisconnectedEvent otherPlayerDisconnectedEvent)throws Exception;
     void lastPlayerLeft() throws Exception;
+    void notifyEndMatchToDisconnected() throws Exception;
 }

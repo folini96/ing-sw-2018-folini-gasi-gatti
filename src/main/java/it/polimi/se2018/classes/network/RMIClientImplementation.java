@@ -15,9 +15,6 @@ public class RMIClientImplementation implements RMIRemoteClientInterface {
         client.askUsername();
     }
 
-    public void sendMessage(Message message) throws RemoteException {
-
-    }
 
     public void setLobbyNumber(int number){
         client.setLobbyNumber(number);
@@ -43,5 +40,8 @@ public class RMIClientImplementation implements RMIRemoteClientInterface {
     }
     public void lastPlayerLeft(){
         client.lastPlayerLeft();
+    }
+    public void gameEnded(){
+        client.gameEnded();
     }
 }

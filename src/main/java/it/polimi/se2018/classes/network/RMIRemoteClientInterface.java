@@ -18,4 +18,5 @@ public interface RMIRemoteClientInterface extends Remote {
      void ping() throws RemoteException;
      void disconnectedPlayer(String player) throws RemoteException;
      void lastPlayerLeft() throws RemoteException;
+     void gameEnded() throws RemoteException;
 }

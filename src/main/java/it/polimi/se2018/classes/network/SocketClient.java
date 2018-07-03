@@ -110,4 +110,8 @@ public class SocketClient implements ClientInterface,ModelViewEventVisitor {
         matchEnded=true;
         clientImplementation.closeConnection();
     }
+    public void gameEnded(){
+        interfaceHandler.gameEnded();
+    }
+
 }

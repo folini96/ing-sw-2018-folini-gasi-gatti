@@ -11,8 +11,8 @@ import it.polimi.se2018.classes.view.VirtualView;
 import it.polimi.se2018.classes.visitor.ViewControllerVisitor;
 
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
+import java.net.URISyntaxException;
 import java.util.*;
 
 public class MatchHandlerController implements Observer,ViewControllerVisitor {
@@ -71,17 +71,15 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         PublicObjCard[] chosenCards = new PublicObjCard[3];
         ArrayList<Integer> cardNotAvailable = new ArrayList<>();
         JsonParser publicObjParser = new JsonParser();
-        try{
-            JsonObject cardArray = (JsonObject) publicObjParser.parse(new FileReader("src/main/resources/PublicObjCards.json"));
-            JsonArray cards= cardArray.get("publicobjcards").getAsJsonArray();
-            int currentCard=0;
-            for (Object o: cards){
-                JsonObject card = (JsonObject) o;
-                publicObjCards[currentCard]=card.get("name").getAsString();
-                currentCard++;
-            }
-        }catch (FileNotFoundException e){
-            System.out.println("File JSON non trovato");
+        InputStream in = this.getClass().getResourceAsStream("/PublicObjCards.json");
+        JsonObject cardArray = (JsonObject) publicObjParser.parse(new InputStreamReader(in));
+        JsonArray cards= cardArray.get("publicobjcards").getAsJsonArray();
+        int currentCard=0;
+        for (Object o: cards){
+        JsonObject card = (JsonObject) o;
+        publicObjCards[currentCard]=card.get("name").getAsString();
+        currentCard++;
+
         }
         for (i=0; i<3; i++){
             do{
@@ -132,18 +130,16 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         PrivateObjCard[] chosenCards = new PrivateObjCard[playerNumber];
         ArrayList<Integer> cardNotAvailable = new ArrayList<>();
         JsonParser privateObjParser = new JsonParser();
-        try{
-            JsonObject cardArray = (JsonObject) privateObjParser.parse(new FileReader("src/main/resources/PrivateObjCards.json"));
-            JsonArray cards= cardArray.get("privateobjcards").getAsJsonArray();
-            int currentCard=0;
-            for (Object o: cards){
-                JsonObject card = (JsonObject) o;
-                privateObjCards[currentCard]=card.get("color").getAsString();
-                currentCard++;
-            }
-        }catch (FileNotFoundException e){
-            System.out.println("File JSON non trovato");
+        InputStream in = this.getClass().getResourceAsStream("/PrivateObjCards.json");
+        JsonObject cardArray = (JsonObject) privateObjParser.parse(new InputStreamReader(in));
+        JsonArray cards= cardArray.get("privateobjcards").getAsJsonArray();
+        int currentCard=0;
+        for (Object o: cards){
+            JsonObject card = (JsonObject) o;
+            privateObjCards[currentCard]=card.get("color").getAsString();
+            currentCard++;
         }
+
         for (i=0; i<playerNumber; i++){
             do{
                 Random random = new Random();
@@ -180,49 +176,47 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         WindowSide[] chosenWindows = new WindowSide[playerNumber*4];
         ArrayList<Integer> windowNotAvailable=new ArrayList<>();
         JsonParser windowParser=new JsonParser();
-        try{
-            JsonObject windowArray = (JsonObject) windowParser.parse(new FileReader("src/main/resources/Windows.json"));
-            JsonArray sides = windowArray.get("windows").getAsJsonArray();
-            int currentWindow=0;
-            for (Object o: sides){
-                JsonObject side = (JsonObject) o;
-                String name = side.get("name").getAsString();
-                int difficult = side.get("difficult").getAsInt();
-                JsonArray scheme = side.get("boxScheme").getAsJsonArray();
-                Box[][] boxScheme = new Box[4][5];
-                for (Object b: scheme){
-                    JsonObject box = (JsonObject) b;
-                    String color = box.get("color").getAsString();
-                    Color boxColor=null;
-                    int value = box.get("value").getAsInt();
-                    switch (color){
-                        case "rosso":
-                            boxColor=Color.ROSSO;
-                            break;
-                        case "giallo":
-                            boxColor=Color.GIALLO;
-                            break;
-                        case "blu":
-                            boxColor=Color.BLU;
-                            break;
-                        case "verde":
-                            boxColor=Color.VERDE;
-                            break;
-                        case "viola":
-                            boxColor=Color.VIOLA;
-                            break;
-                        case "null":
-                            boxColor=null;
-                            break;
-                    }
-                    boxScheme[box.get("row").getAsInt()][box.get("column").getAsInt()]= new Box(boxColor,value);
+        InputStream in = this.getClass().getResourceAsStream("/Windows.json");
+        JsonObject windowArray = (JsonObject) windowParser.parse(new InputStreamReader(in));
+        JsonArray sides = windowArray.get("windows").getAsJsonArray();
+        int currentWindow=0;
+        for (Object o: sides){
+            JsonObject side = (JsonObject) o;
+            String name = side.get("name").getAsString();
+            int difficult = side.get("difficult").getAsInt();
+            JsonArray scheme = side.get("boxScheme").getAsJsonArray();
+            Box[][] boxScheme = new Box[4][5];
+            for (Object b: scheme){
+                JsonObject box = (JsonObject) b;
+                String color = box.get("color").getAsString();
+                Color boxColor=null;
+                int value = box.get("value").getAsInt();
+                switch (color){
+                    case "rosso":
+                        boxColor=Color.ROSSO;
+                        break;
+                    case "giallo":
+                        boxColor=Color.GIALLO;
+                        break;
+                    case "blu":
+                        boxColor=Color.BLU;
+                        break;
+                    case "verde":
+                        boxColor=Color.VERDE;
+                        break;
+                    case "viola":
+                        boxColor=Color.VIOLA;
+                        break;
+                    case "null":
+                        boxColor=null;
+                        break;
                 }
-                windows[currentWindow]=new WindowSide(name,difficult,boxScheme);
-                currentWindow++;
+                boxScheme[box.get("row").getAsInt()][box.get("column").getAsInt()]= new Box(boxColor,value);
             }
-        }catch(FileNotFoundException e){
-            System.out.println("File JSON non trovato");
+            windows[currentWindow]=new WindowSide(name,difficult,boxScheme);
+            currentWindow++;
         }
+
         for (i=0; i<playerNumber;i++){
             for(j=0;j<2;j++){
                 do{
@@ -245,95 +239,92 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         ToolCard[] chosenToolCards = new ToolCard[3];
         ArrayList<Integer> NotAvailable = new ArrayList<>();
         JsonParser toolCardParser = new JsonParser();
-        try{
-            JsonObject toolCardArray = (JsonObject) toolCardParser.parse(new FileReader("src/main/resources/ToolCards.json"));
-            JsonArray cards= toolCardArray.get("toolcards").getAsJsonArray();
-            int currentCard=0;
-            for (Object o: cards){
-                JsonObject card = (JsonObject) o;
-                String name=card.get("name").getAsString();
-                int number=card.get("number").getAsInt();
-                int token=card.get("token").getAsInt();
-                String colorCard=card.get("color").getAsString();
-                Color color=null;
-                switch (colorCard){
-                    case "rosso":
-                        color=Color.ROSSO;
-                        break;
-                    case "giallo":
-                        color=Color.GIALLO;
-                        break;
-                    case "blu":
-                        color=Color.BLU;
-                        break;
-                    case "verde":
-                        color=Color.VERDE;
-                        break;
-                    case "viola":
-                        color=Color.VIOLA;
-                        break;
+        InputStream in = this.getClass().getResourceAsStream("/ToolCards.json");
+        JsonObject toolCardArray = (JsonObject) toolCardParser.parse(new InputStreamReader(in));
+        JsonArray cards= toolCardArray.get("toolcards").getAsJsonArray();
+        int currentCard=0;
+        for (Object o: cards){
+            JsonObject card = (JsonObject) o;
+            String name=card.get("name").getAsString();
+            int number=card.get("number").getAsInt();
+            int token=card.get("token").getAsInt();
+            String colorCard=card.get("color").getAsString();
+            Color color=null;
+            switch (colorCard){
+                case "rosso":
+                    color=Color.ROSSO;
+                    break;
+                case "giallo":
+                    color=Color.GIALLO;
+                    break;
+                case "blu":
+                    color=Color.BLU;
+                    break;
+                case "verde":
+                    color=Color.VERDE;
+                    break;
+                case "viola":
+                    color=Color.VIOLA;
+                    break;
                 }
-                boolean blockedAfterPlacement=card.get("blockedAfterPlacement").getAsBoolean();
-                String typeOfEffectCard=card.get("typeofeffect").getAsString();
-                EffectType typeOfEffect=null;
-                switch (typeOfEffectCard){
-                    case "upordownvalue":
-                        typeOfEffect=EffectType.UPORDOWNVALUEMODIFY;
-                        break;
-                    case "draftpoolroundtrackexchange":
-                        typeOfEffect=EffectType.DRAFTPOOLROUNDTRACKEXCHANGE;
-                        break;
-                    case "newrandomvalue":
-                        typeOfEffect=EffectType.NEWRANDOMVALUEMODIFY;
-                        break;
-                    case "rotatedice":
-                        typeOfEffect=EffectType.ROTATEDICEMODIFY;
-                        break;
-                    case "draftpoolbagexchange":
-                        typeOfEffect=EffectType.DRAFTPOOLBAGEXCHANGE;
-                        break;
-                    case "nocolorbound":
-                        typeOfEffect=EffectType.NOCOLORBOUND;
-                        break;
-                    case "novaluebound":
-                        typeOfEffect=EffectType.NOVALUEBOUND;
-                        break;
-                    case "movetwodice":
-                        typeOfEffect=EffectType.MOVETWODICE;
-                        break;
-                    case "movetwodiceselectedcolor":
-                        typeOfEffect=EffectType.MOVETWODICESELECTEDCOLOR;
-                }
-                String effectCard=card.get("effect").getAsString();
-                ToolCardsEffectsInterface effect=null;
-                switch (effectCard){
-                    case "modify":
-                        effect=new Modify(typeOfEffect);
-                        break;
-                    case "move":
-                        effect=new Move(typeOfEffect);
-                        break;
-                    case "exchange":
-                        effect=new Exchange(typeOfEffect);
-                        break;
-                    case "rerolldraftpooldices":
-                        effect=new RerollDraftPool(typeOfEffect);
-                        break;
-                    case "secondplacement":
-                        effect=new SecondPlacement(typeOfEffect);
-                        break;
-                    case "placementwithoutvicinity":
-                        effect=new PlacementWithoutVicinity(typeOfEffect);
-                        break;
-                }
-
-                toolCards[currentCard]=new ToolCard(name, number, token, color, effect, blockedAfterPlacement);
-                currentCard++;
+            boolean blockedAfterPlacement=card.get("blockedAfterPlacement").getAsBoolean();
+            String typeOfEffectCard=card.get("typeofeffect").getAsString();
+            EffectType typeOfEffect=null;
+            switch (typeOfEffectCard){
+                case "upordownvalue":
+                    typeOfEffect=EffectType.UPORDOWNVALUEMODIFY;
+                    break;
+                case "draftpoolroundtrackexchange":
+                    typeOfEffect=EffectType.DRAFTPOOLROUNDTRACKEXCHANGE;
+                    break;
+                case "newrandomvalue":
+                    typeOfEffect=EffectType.NEWRANDOMVALUEMODIFY;
+                    break;
+                case "rotatedice":
+                    typeOfEffect=EffectType.ROTATEDICEMODIFY;
+                    break;
+                case "draftpoolbagexchange":
+                    typeOfEffect=EffectType.DRAFTPOOLBAGEXCHANGE;
+                    break;
+                case "nocolorbound":
+                    typeOfEffect=EffectType.NOCOLORBOUND;
+                    break;
+                case "novaluebound":
+                    typeOfEffect=EffectType.NOVALUEBOUND;
+                    break;
+                case "movetwodice":
+                    typeOfEffect=EffectType.MOVETWODICE;
+                    break;
+                case "movetwodiceselectedcolor":
+                    typeOfEffect=EffectType.MOVETWODICESELECTEDCOLOR;
             }
-        }catch (FileNotFoundException e){
-            System.out.println("File JSON non trovato");
+            String effectCard=card.get("effect").getAsString();
+            ToolCardsEffectsInterface effect=null;
+            switch (effectCard){
+                case "modify":
+                    effect=new Modify(typeOfEffect);
+                    break;
+                case "move":
+                    effect=new Move(typeOfEffect);
+                    break;
+                case "exchange":
+                    effect=new Exchange(typeOfEffect);
+                    break;
+                case "rerolldraftpooldices":
+                    effect=new RerollDraftPool(typeOfEffect);
+                    break;
+                case "secondplacement":
+                    effect=new SecondPlacement(typeOfEffect);
+                    break;
+                case "placementwithoutvicinity":
+                    effect=new PlacementWithoutVicinity(typeOfEffect);
+                    break;
+            }
+
+            toolCards[currentCard]=new ToolCard(name, number, token, color, effect, blockedAfterPlacement);
+            currentCard++;
         }
-        for (i=0; i<3; i++){
+         for (i=0; i<3; i++){
             do{
                 Random random = new Random();
                 randomInt = random.nextInt(12);

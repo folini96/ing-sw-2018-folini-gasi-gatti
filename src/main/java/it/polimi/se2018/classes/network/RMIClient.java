@@ -134,4 +134,8 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
         disconnectionTimer.cancel();
 
     }
+    public void gameEnded(){
+        deleteAfterMatch();
+        interfaceHandler.gameEnded();
+    }
 }

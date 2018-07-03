@@ -63,4 +63,7 @@ public class RMIVirtualClient implements VirtualClientInterface {
         rmiClient.lastPlayerLeft();
 
     }
+    public void notifyEndMatchToDisconnected()throws RemoteException{
+        rmiClient.gameEnded();
+    }
 }
