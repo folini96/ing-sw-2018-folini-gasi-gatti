@@ -18,6 +18,7 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
     private static final String RECONNECT = "reconnect";
     private static final String PLAYER_DISCONNECTED = "player disconnected";
     private static final String LAST_PLAYER = "last player left";
+    private static final String END_GAME="end game";
     private Server server;
     private String username;
     private Socket socket;
@@ -102,5 +103,8 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
 
     public void lastPlayerLeft() throws IOException{
         writer.writeUnshared(LAST_PLAYER);
+    }
+    public void notifyEndMatchToDisconnected()throws IOException{
+        writer.writeUnshared(END_GAME);
     }
 }
