@@ -65,6 +65,10 @@ public class MatchHandlerModel extends Observable {
         return players;
     }
 
+    public ArrayList<Dice> getDraftPool(){
+        return draftPool;
+    }
+
     /**
      * @param player the player that is to be added
      */
@@ -247,7 +251,7 @@ public class MatchHandlerModel extends Observable {
      * @param currentPlayer the number of the player currently in control
      * @return true if the placement is allowed, false if not
      */
-    public boolean checkCorrectPlacement(PlaceDiceEvent placeDiceEvent, int currentPlayer,boolean noVicinityBound){
+    public boolean checkCorrectPlacement(PlaceDiceEvent placeDiceEvent, int currentPlayer, boolean noVicinityBound){
         Dice dice=draftPool.get(placeDiceEvent.getDraftDice());
 
         if(players.get(currentPlayer).getWindow().isEmpty()){
@@ -265,7 +269,6 @@ public class MatchHandlerModel extends Observable {
             if (!noVicinityBound){
                 if(!checkDiceVicinity(placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
             }
-
             return true;
         }
     }
