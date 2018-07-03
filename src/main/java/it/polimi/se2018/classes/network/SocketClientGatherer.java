@@ -4,6 +4,10 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * @author Andrea Folini
+ * listen to new connection to socket server and notify the main server
+ */
 public class SocketClientGatherer extends Thread {
     private static final String ASK_USERNAME="username";
     private static final String OK_USERNAME ="ok username";
@@ -11,6 +15,11 @@ public class SocketClientGatherer extends Thread {
     private final int port;
     private ServerSocket serverSocket;
 
+    /**
+     * constructor
+     * @param server reference to the main server
+     * @param port port of the server socket
+     */
     public SocketClientGatherer( Server server, int port) {
         this.server = server;
         this.port = port;
@@ -22,6 +31,9 @@ public class SocketClientGatherer extends Thread {
         }
     }
 
+    /**
+     * loop to catch new connection
+     */
     @Override
     public void run(){
         while(true) {

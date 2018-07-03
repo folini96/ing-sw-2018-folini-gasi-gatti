@@ -1,17 +1,24 @@
 package it.polimi.se2018.classes.network;
 
 import it.polimi.se2018.classes.events.*;
-import it.polimi.se2018.classes.model.*;
-
-import java.awt.event.WindowEvent;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
+/**
+ * @author Andrea Folini
+ * calls the remote methods to send the events to the rmi client
+ */
 public class RMIVirtualClient implements VirtualClientInterface {
     private RMIRemoteClientInterface rmiClient;
     private String username;
     private int lobbyNumber;
     private Server server;
+
+    /**
+     * constructor
+     * @param client the remote reference to the rmi client
+     * @param username name of the client
+     * @param server the reference to the server
+     */
     public RMIVirtualClient(RMIRemoteClientInterface client, String username, Server server){
         rmiClient=client;
         this.username=username;
@@ -56,9 +63,7 @@ public class RMIVirtualClient implements VirtualClientInterface {
     public void otherPlayerDisconnected(OtherPlayerDisconnectedEvent otherPlayerDisconnectedEvent) throws RemoteException{
         rmiClient.disconnectedPlayer(otherPlayerDisconnectedEvent.getPlayer());
     }
-    public void deleteAfterMatch(){
-        //void method that needed to be implemented for interface
-    }
+
     public void lastPlayerLeft()throws RemoteException{
         rmiClient.lastPlayerLeft();
 

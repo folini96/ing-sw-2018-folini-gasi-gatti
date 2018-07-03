@@ -1,14 +1,15 @@
 package it.polimi.se2018.classes.network;
 
-import com.google.gson.JsonObject;
+
 import it.polimi.se2018.classes.events.*;
-import it.polimi.se2018.classes.model.*;
 
 import java.io.*;
 import java.net.Socket;
-import java.rmi.RemoteException;
-import java.util.ArrayList;
 
+/**
+ * @author Andrea Folini
+ * write and read the message exchanged with this client
+ */
 public class SocketVirtualClient extends Thread implements VirtualClientInterface{
     private static final String WINDOW_TO_CHOSE="window to chose";
     private static final String VIEW_CONTROLLER="view controller event";
@@ -25,6 +26,15 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
     private int lobbyNumber;
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
+
+    /**
+     * constructor
+     * @param clientConnection the socket of this client
+     * @param username name of the client
+     * @param server reference to the server
+     * @param writer output stream of the socket
+     * @param reader input stream of the socket
+     */
     public SocketVirtualClient(Socket clientConnection, String username,Server server,ObjectOutputStream writer,ObjectInputStream reader){
         this.server=server;
         socket=clientConnection;
@@ -64,6 +74,10 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
     public void setLobbyNumber(int number){
         this.lobbyNumber=number;
     }
+
+    /**
+     * loop and read the socket input until it's closed
+     */
     public void run(){
         String action;
         boolean loop = true;

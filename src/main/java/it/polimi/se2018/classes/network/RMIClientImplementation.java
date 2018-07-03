@@ -1,13 +1,18 @@
 package it.polimi.se2018.classes.network;
 
 import it.polimi.se2018.classes.events.*;
-import it.polimi.se2018.classes.model.*;
-
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
+/**
+ * get the remote method calls from the rmi server
+ */
 public class RMIClientImplementation implements RMIRemoteClientInterface {
     private RMIClient client;
+
+    /**
+     * constructor
+     * @param client the reference of the intermediary with the interface handler
+     */
     public  RMIClientImplementation(RMIClient client){
         this.client=client;
     }

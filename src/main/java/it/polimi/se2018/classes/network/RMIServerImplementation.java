@@ -1,17 +1,21 @@
 package it.polimi.se2018.classes.network;
 
 import it.polimi.se2018.classes.events.*;
-import it.polimi.se2018.classes.model.*;
-
-import java.rmi.ConnectException;
-import java.rmi.NoSuchObjectException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Iterator;
 
+/**
+ * @author Andrea Folini
+ * get the remote method calls from the rmi client
+ */
 public class RMIServerImplementation extends UnicastRemoteObject implements RMIRemoteServerInterface {
     private Server server;
+
+    /**
+     * constructor
+     * @param server reference of the main server
+     * @throws RemoteException caused by an error creating the rmi server
+     */
     public RMIServerImplementation(Server server) throws RemoteException{
         super(0);
         this.server=server;

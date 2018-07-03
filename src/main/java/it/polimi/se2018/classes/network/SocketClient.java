@@ -3,13 +3,11 @@ package it.polimi.se2018.classes.network;
 import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.view.GUIHandler;
 import it.polimi.se2018.classes.visitor.ModelViewEventVisitor;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
-import java.rmi.RemoteException;
 
+/**
+ * intermediary between the client implementation and the interface handler
+ */
 public class SocketClient implements ClientInterface,ModelViewEventVisitor {
     private SocketClientImplementation clientImplementation;
     private GUIHandler interfaceHandler;
@@ -32,18 +30,33 @@ public class SocketClient implements ClientInterface,ModelViewEventVisitor {
     public void sendToServer(ViewControllerEvent viewControllerEvent){
         clientImplementation.sendToServer(viewControllerEvent);
     }
-    public void newUsername(String username){
-        clientImplementation.sendUsername(username);
-    }
+
+    /**
+     * notify the interface handler that the chosen username has been accepted
+     */
     public void okUsername(){
         interfaceHandler.okUsername(username);
     }
+
+    /**
+     * send to the interface handler the windows
+     * @param windowToChoseEvent contains 4 windows
+     */
     public void sendWindowToChose(WindowToChoseEvent windowToChoseEvent){
         interfaceHandler.windowToChose(windowToChoseEvent);
     }
+
+    /**
+     * notify the interface handler that the username has been rejected and ask for a new one
+     */
     public void askUsername(){
         interfaceHandler.askUsername();
     }
+
+    /**
+     * chose the right method  with the pattern visitor to notify the interface handler with the right event
+     * @param modelViewEvent the event from the network
+     */
     public void sendToClient(ModelViewEvent modelViewEvent){
         modelViewEvent.accept(this);
     }
@@ -88,18 +101,36 @@ public class SocketClient implements ClientInterface,ModelViewEventVisitor {
     public void visit (UpdateReconnectedClientEvent updateReconnectedClientEvent){
         interfaceHandler.updateReconnectedPlayer(updateReconnectedClientEvent);
     }
+
+    /**
+     * notify the interface handler that a turn ended because the time expired and a client will be suspended
+     * @param player the player that will be suspended
+     */
     public void endByTime(String player){
         interfaceHandler.endByTime(player);
     }
     public void reconnect(String username){
         clientImplementation.reconnect();
     }
+
+    /**
+     * notify the interface handler that another player got disconnected
+     * @param player the disconnected player
+     */
     public void playerDisconnected(String player){
         interfaceHandler.disconnectedPlayer(player);
     }
+
+    /**
+     * notify the interface handler that there are no other player in the game
+     */
     public void lastPlayerLeft(){
         interfaceHandler.lastPlayerLeft();
     }
+
+    /**
+     * notify the interface handler that connection with the server has been lost
+     */
     public void connectionLost(){
         if (!matchEnded){
             interfaceHandler.connectionToServerLost();
@@ -110,6 +141,10 @@ public class SocketClient implements ClientInterface,ModelViewEventVisitor {
         matchEnded=true;
         clientImplementation.closeConnection();
     }
+
+    /**
+     * notify the interface handler that a game ended, in the case that the player is still suspended
+     */
     public void gameEnded(){
         interfaceHandler.gameEnded();
     }

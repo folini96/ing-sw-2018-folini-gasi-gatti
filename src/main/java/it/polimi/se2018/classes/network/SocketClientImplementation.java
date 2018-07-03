@@ -6,10 +6,13 @@ import it.polimi.se2018.classes.events.ModelViewEvent;
 import it.polimi.se2018.classes.events.ViewControllerEvent;
 import it.polimi.se2018.classes.events.WindowToChoseEvent;
 
-import javax.swing.text.View;
 import java.io.*;
 import java.net.Socket;
 
+/**
+ * @author Andrea Folini
+ * send the events to the server and listen for the messages sent on the socket
+ */
 public class SocketClientImplementation extends Thread{
     private static final String ASK_USERNAME="username";
     private static final String OK_USERNAME ="ok username";
@@ -25,6 +28,15 @@ public class SocketClientImplementation extends Thread{
     private ObjectOutputStream writer;
     private ObjectInputStream reader;
     private SocketClient client;
+
+    /**
+     * constructor
+     * @param username name sent to the server
+     * @param host ip of the server
+     * @param port port of the server
+     * @param client the references of the class used to communicate with the interface handler
+     * @throws IOException caused by an error opening the socket
+     */
     public  SocketClientImplementation(String username, String host, int port, SocketClient client) throws IOException{
 
         this.client=client;
@@ -36,6 +48,11 @@ public class SocketClientImplementation extends Thread{
 
 
     }
+
+    /**
+     * send the client name to the server
+     * @param username the name chosen by the player
+     */
     public void sendUsername(String username){
         try{
              writer.reset();
@@ -44,6 +61,11 @@ public class SocketClientImplementation extends Thread{
             client.connectionLost();
         }
     }
+
+    /**
+     * send an event to the server
+     * @param viewControllerEvent the event from the interface
+     */
     public void sendToServer(ViewControllerEvent viewControllerEvent){
         try{
             writer.reset();
@@ -53,6 +75,10 @@ public class SocketClientImplementation extends Thread{
             client.connectionLost();
         }
     }
+
+    /**
+     * send a request to reconnect the client
+     */
     public void reconnect(){
         try{
             writer.reset();
@@ -61,6 +87,10 @@ public class SocketClientImplementation extends Thread{
             client.connectionLost();
         }
     }
+
+    /**
+     * loop to listen the messages on the socket
+     */
     @Override
     public void run() {
         try{
@@ -113,6 +143,10 @@ public class SocketClientImplementation extends Thread{
 
         }
     }
+
+    /**
+     * close the socket after the match ended
+     */
     public void closeConnection(){
         try {
             socket.close();

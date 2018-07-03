@@ -13,7 +13,10 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
+/**
+ * @author Andrea Folini
+ * intermediary between the client implementation and the interface handler
+ */
 public class RMIClient implements ClientInterface,ModelViewEventVisitor {
     private GUIHandler interfaceHandler;
     private RMIRemoteClientInterface remoteRef;
@@ -33,13 +36,19 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
          interfaceHandler.createClientError();
       }
    }
+
+    /**
+     * start a timer that will ping the server every second to catch a connection error
+     */
     public void startDisconnectionTimer(){
         TimerTask disconnectionTask=new TimerTask() {
             @Override
             public void run() {
                try{
-                   client.ping();
+                   server.ping();
+
                }catch (RemoteException e){
+                   disconnectionTimer.cancel();
                    interfaceHandler.connectionToServerLost();
                }
             }
@@ -47,6 +56,9 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
         disconnectionTimer.schedule(disconnectionTask,1000,1000);
     }
 
+    /**
+     * @param number set the lobby number of this client
+     */
     public void setLobbyNumber(int number){
         lobbyNumber=number;
     }
@@ -58,17 +70,34 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
            interfaceHandler.connectionToServerLost();
        }
    }
+
+    /**
+     * notify to the interface handler that the chosen username has been accepted
+     * @param username the chosen username
+     */
     public void okUsername(String username){
        interfaceHandler.okUsername(username);
     }
+
+    /**
+     * notify to the interface handler that the chosen username has been rejected and ask for a new one
+     */
     public void askUsername(){
        interfaceHandler.askUsername();
     }
 
-
+    /**
+     * send the windows to the player
+     * @param windowToChoseEvent contains the windows for the player
+     */
     public void sendWindowToChose(WindowToChoseEvent windowToChoseEvent){
         interfaceHandler.windowToChose(windowToChoseEvent);
     }
+
+    /**
+     * chose the right method  with the pattern visitor to notify the interface handler with the right event
+     * @param modelViewEvent the event from the network
+     */
     public void sendToClient(ModelViewEvent modelViewEvent){
        modelViewEvent.accept(this);
     }
@@ -113,6 +142,11 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
     public void visit (ModifiedTokenEvent modifiedTokenEvent){
         interfaceHandler.modifiedToken(modifiedTokenEvent);
     }
+
+    /**
+     * notify the interface handler that a turn ended because the time expired and a client will be suspended
+     * @param player the player that will be suspended
+     */
     public void endByTime(String player){
         interfaceHandler.endByTime(player);
     }
@@ -124,9 +158,18 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
         }
 
     }
+
+    /**
+     * notify the interface handler that another player got disconnected
+     * @param player the disconnected player
+     */
     public void playerDisconnected(String player){
         interfaceHandler.disconnectedPlayer(player);
     }
+
+    /**
+     * notify the interface handler that there are no other player in the game
+     */
     public void lastPlayerLeft(){
         interfaceHandler.lastPlayerLeft();
     }
@@ -134,6 +177,9 @@ public class RMIClient implements ClientInterface,ModelViewEventVisitor {
         disconnectionTimer.cancel();
 
     }
+    /**
+     * notify the interface handler that a game ended, in the case that the player is still suspended
+     */
     public void gameEnded(){
         deleteAfterMatch();
         interfaceHandler.gameEnded();
