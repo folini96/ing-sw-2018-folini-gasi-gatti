@@ -33,10 +33,9 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
- * class controller for the multiplayer GUI
  * @author Leonard Gasi
+ * controller of mainScreen.fxml, it is the interface of the game
  */
-
 public class MainScreenController implements Initializable {
 
 
@@ -247,6 +246,10 @@ public class MainScreenController implements Initializable {
         enablePlaceDiceButton();
     }
 
+    /**
+     * @param name name of a player
+     * @return position of the player in playersName
+     */
     private int getIndex(String name){
         for (int i=0; i<4; i++){
             if (name.equals(playersName.get(i)))
@@ -256,7 +259,7 @@ public class MainScreenController implements Initializable {
     }
 
     /**
-     * set other players name
+     * saves the name of the other players in playersName
      * @param players array with the players
      */
     private void setOtherPlayersName(ArrayList<Player> players){
@@ -270,7 +273,7 @@ public class MainScreenController implements Initializable {
 
     }
 
-    /** set main player name
+    /** sets main player name in playersName
      * @param name main player name
      */
     public void setMainPlayerName(String name){
@@ -280,15 +283,16 @@ public class MainScreenController implements Initializable {
 
     /**
      *
-     * @param round number that will be shown in round_label
+     * @param round number that will be shown in roundLabel
      */
     private void setRoundLabel( int round){
         roundLabel.setText( Integer.toString(round));
     }
 
     /**
-     *
-     * @param player name of the player that will be shown in current_player_label
+     * sets visible or not visible the attributes of a player
+     * @param player player
+     * @param b true=visible, false=not visible
      */
     private void setVisiblePlayerGUI (String player, boolean b){
         int i = getIndex(player);
@@ -298,19 +302,35 @@ public class MainScreenController implements Initializable {
         playersUselessLabelArray[i].setVisible(b);
     }
 
+    /**
+     * sets currentPlayerLabel
+     * @param player current player
+     */
     public void setCurrentPlayerLabel (String player){
         currentPlayerLabel.setText(player);
     }
 
+    /**
+     *
+     * @param player first player of the round
+     */
     public void setFirstPlayerLabel (String player){
         firstPlayerLabel.setText(player);
     }
 
+    /**
+     * shows the Private Object Card
+     * @param privateObjCard Private Object Card of the player
+     */
     private void setPrivateObjectImageView(PrivateObjCard privateObjCard){
         Image image = new Image(getClass().getResource(URL + PRIVATE_OBJECT_CARD_PREFIX + privateObjCard.getColor().name() + ".jpg").toExternalForm());
         privateObjectImageView.setImage(image);
     }
 
+    /**
+     * shows the Public Object Cards
+     * @param publicObjCards Public Object Cards
+     */
     private void setPublicObjectImageView(PublicObjCard[] publicObjCards){
         for (int i=0;i<3;i++){
             Image image = new Image(getClass().getResource(URL + publicObjCards[i].getName() + ".jpg").toExternalForm());
@@ -318,6 +338,10 @@ public class MainScreenController implements Initializable {
         }
     }
 
+    /**
+     * shows the Tool Cards
+     * @param toolCards Tool Cards
+     */
     private void setToolCardImageView(ToolCard[] toolCards){
         for (int i=0;i<3;i++){
             Image image = new Image(getClass().getResource(URL+TOOL_CARD_PREFIX + Integer.toString(toolCards[i].getNumber())+".jpg").toExternalForm());
@@ -327,19 +351,38 @@ public class MainScreenController implements Initializable {
 
     }
 
+    /**
+     * sets the labels with the name of the players
+     * @param name name of the player
+     */
     private void setPlayerLabel (String name){
         playersNameLabelArray[getIndex(name)].setText(name);
 
     }
 
+    /**
+     * sets the labels with the number of SF of the players
+     * @param name name of the player
+     * @param SF number of SF of the player
+     */
     public void setPlayerSFLabel(String name, int SF){
         playersSFLabelArray[getIndex(name)].setText(Integer.toString(SF));
     }
 
+    /**
+     * sets the number of SF of the Tool Cards
+     * @param position position of the Tool Card (0,1,2)
+     * @param SF number of SF of the Tool Card
+     */
     public void setToolCardSFLabel(int position, int SF){
         toolCardSFLabelArray[position].setText(Integer.toString(SF));
     }
 
+    /**
+     * updates the Scheme of the player
+     * @param name name of the player
+     * @param windowSide window of the player
+     */
     public void updateScheme(String name, WindowSide windowSide ){
         int p = getIndex(name);
         String resourceName;
@@ -362,11 +405,21 @@ public class MainScreenController implements Initializable {
         }
     }
 
+    /**
+     * updates roundLabel and the Draft pool on the screen
+     * @param draftPool new Draft pool
+     * @param round number of the last round
+     */
     public void updateRound(ArrayList<Dice> draftPool, int round){
         String url;
         setRoundLabel(round+1);
         updateDraft(draftPool);
     }
+
+    /**
+     * updates the Draft pool on the screen
+     * @param draftPool new Draft pool
+     */
     public void updateDraft(ArrayList<Dice> draftPool){
         for (int i=0; i<9; i++){
             String url;
@@ -382,6 +435,10 @@ public class MainScreenController implements Initializable {
         }
     }
 
+    /**
+     * decrements opacity of the grid and disables the labels of a player that has been disconnected
+     * @param name name of the disconnected player
+     */
     public void setDisconnectedPlayer(String name){
         playersGridPaneArray[getIndex(name)].setOpacity(0.45);
         playersNameLabelArray[getIndex(name)].setDisable(true);
@@ -389,6 +446,10 @@ public class MainScreenController implements Initializable {
         playersUselessLabelArray[getIndex(name)].setDisable(true);
     }
 
+    /**
+     * restores opacity of the bgrid and enables the labels of a player
+     * @param name name of the reconnected player
+     */
     public void setReconnectedPlayer(String name){
         playersGridPaneArray[getIndex(name)].setOpacity(1);
         playersNameLabelArray[getIndex(name)].setDisable(false);
@@ -397,7 +458,9 @@ public class MainScreenController implements Initializable {
     }
 
 
-
+    /**
+     * notifies that the main player has been disconnected
+     */
     public void alertMainPlayerSuspended(){
         final String MAIN_PLAYER_DISCONNECTED_MESSAGE = "Sei stato sospeso dalla partita per inattività. Premi il bottone Riconnetti per rientrare alla fine del turno in corso";
         disableMainPlayerButtons();
@@ -415,7 +478,11 @@ public class MainScreenController implements Initializable {
 
     }
 
-
+    /**
+     * updates the Round Track on the screen
+     * @param round round
+     * @param roundNumber number of the round
+     */
     public void updateRoundTrack(Round round, int roundNumber){
 
         List<Dice> dices = round.getLeftDices();
@@ -430,6 +497,12 @@ public class MainScreenController implements Initializable {
         }
     }
 
+    /**
+     * sets the GUI at the beginning of the game
+     * @param players players of the game
+     * @param publicObjCards Public Object Cards of the game
+     * @param toolCards Tool Cards of the game
+     */
     public void configGUI(ArrayList<Player> players, PublicObjCard[] publicObjCards, ToolCard[] toolCards){
         setOtherPlayersName(players);
         setToolCardImageView(toolCards);
@@ -468,44 +541,109 @@ public class MainScreenController implements Initializable {
 
     }
 
+    /**
+     * enables endTurnButton
+     */
     private void enableEndTurnButton(){
         endTurnButton.setDisable(false);
     }
+
+    /**
+     * disables endTurnButton
+     */
     private void disableEndTurnButton(){
         endTurnButton.setDisable(true);
     }
+
+    /**
+     * enables toolCardButton
+     */
     private void enableToolCardButton(){
         toolCardButton.setDisable(false);
     }
+
+    /**
+     * disables toolCardButton
+     */
+
     private void disableToolCardButton(){
         toolCardButton.setDisable(true);
     }
+
+    /**
+     * enables placeDiceButton
+     */
     private void enablePlaceDiceButton(){
         placeDiceButton.setDisable(false);
     }
+
+    /**
+     * disables placeDiceButton
+     */
     private void disablePlaceDiceButton(){
         placeDiceButton.setDisable(true);
     }
+
+    /**
+     * enables throwDice button
+     */
     private void enableThrowDiceButton(){
         throwDiceButton.setDisable(false);
     }
+
+    /**
+     * disables throwDice button
+     */
     private void disableThrowDiceButton(){
         throwDiceButton.setDisable(true);
     }
+
+    /**
+     * sets visible throwDiceButton
+     */
     private void setVisibleThrowDiceButton(){
         throwDiceButton.setVisible(true);
     }
+
+    /**
+     * sets not visible throwDiceButton
+     */
     private void setNotVisibleThrowDiceButton(){
         throwDiceButton.setVisible(false);
     }
+
+    /**
+     * enables main player buttons
+     */
     private void enableMainPlayerButtons(){enablePlaceDiceButton();enableEndTurnButton();enableToolCardButton();}
+
+    /**
+     * disables main player buttons
+     */
     private void disableMainPlayerButtons(){disablePlaceDiceButton();;disableEndTurnButton();disableToolCardButton();}
+
+    /**
+     * enable plusButton and minusButton
+     */
     private void enablePlusMinusButtons(){ diceMinusButton.setDisable(false); dicePlusButton.setDisable(false);}
+
+
+    /**
+     * disable plusButton and minusButton
+     */
     private void disablePlusMinusButtons(){ diceMinusButton.setDisable(true); dicePlusButton.setDisable(true);}
+
+    /**
+     * set visible plusButton and minusButton
+     */
     private void setVisiblePlusMinusButtons(){ diceMinusButton.setVisible(true);dicePlusButton.setVisible(true);}
+
+    /**
+     * set not visible plusButton and minusButton
+     */
     private void setNotVisiblePlusMinusButtons(){ diceMinusButton.setVisible(false);dicePlusButton.setVisible(false);}
     /**
-     * notice the end of the round
+     * called when the player wants to end the round. Notifies the event to the GUI handler.
      * @param event clicked on endTurnButton
      */
     @FXML
@@ -518,8 +656,8 @@ public class MainScreenController implements Initializable {
         guiHandler.endTurn();
     }
     /**
-     * notice the intention to use a Tool Card
-     * @param event
+     * called when the player want to use a Tool Card. Notifies the event to the GUI handler
+     * @param event toolCardButtonClicked
      */
     @FXML
     private void toolCardButtonClicked(ActionEvent event){
@@ -537,12 +675,20 @@ public class MainScreenController implements Initializable {
 
     }
 
+    /**
+     * resets the values that manage the place dice event
+     */
     public void resetValuesforPlaceDice(){
         reserveSelectedDice = -1;
         windowSelectedDice[0]=-1;
         windowSelectedDice[1]=-1;
         placeDiceButtonClicked=false;
     }
+
+    /**
+     * player wants to place a dice from the Draft Pool
+     * @param event placeDiceButton clicked
+     */
     @FXML
     private void placeDiceButtonClicked(ActionEvent event){
 
@@ -556,6 +702,10 @@ public class MainScreenController implements Initializable {
         placeDiceButtonClicked = true;
     }
 
+    /**
+     * player click on a dice on the Draft Pool
+     * @param event dice clicked
+     */
     @FXML
     private void selectedReserveDiceEvent(MouseEvent event){
         Node node = (Node) event.getSource();
@@ -598,6 +748,11 @@ public class MainScreenController implements Initializable {
         placeDiceButtonClicked=false;
         enablePlaceDiceButton();
     }
+
+    /**
+     * player selects a box on the window
+     * @param event box clicked
+     */
     @FXML
     private void selectedWindowBoxEvent(MouseEvent event){
         Node node = (Node) event.getSource();
@@ -670,6 +825,10 @@ public class MainScreenController implements Initializable {
 
     }
 
+    /**
+     * players clicks on a dice on the Round Track
+     * @param event dice clicked
+     */
     @FXML
     private void selectedRoundTrackDiceEvent (MouseEvent event){
 
@@ -702,18 +861,37 @@ public class MainScreenController implements Initializable {
 
     }
 
+    /**
+     * player clicks on a Tool Card
+     * @param event toolCard1 clicked
+     */
     @FXML
     private void toolCard1Clicked(MouseEvent event){
         selectedToolCard = 0;
     }
+
+    /**
+     * player clicks on a Tool Card
+     * @param event toolCard1 clicked
+     */
     @FXML
     private void toolCard2Clicked(MouseEvent event){
         selectedToolCard = 1;
     }
+
+    /**
+     * player clicks on a Tool Card
+     * @param event toolCard1 clicked
+     */
     @FXML
     private void toolCard3Clicked(MouseEvent event){
         selectedToolCard = 2;
     }
+
+    /**
+     * player wants to decrement the value of the selected dice
+     * @param event minusButton clicked
+     */
     @FXML
     private void minusButtonClicked(ActionEvent event){
         if (upOrDown){
@@ -728,6 +906,11 @@ public class MainScreenController implements Initializable {
         }
 
     }
+
+    /**
+     * player wants to increment the value of the selected dice
+     * @param event plusButton clicked
+     */
     @FXML
     private void plusButtonClicked(ActionEvent event){
        if (upOrDown){
@@ -742,12 +925,22 @@ public class MainScreenController implements Initializable {
        }
 
     }
+
+    /**
+     *
+     * @param event throwDiceButton clicked
+     */
     @FXML
     private void throwDiceButtonClicked(ActionEvent event){
         if (rerollDraft){
             guiHandler.rerollDraft();
         }
     }
+
+    /**
+     * shows zoom.fxml with Tools Cards
+     * @param event toolCardZoomButton clicked
+     */
     @FXML
     private void toolCardZoomButtonClicked(ActionEvent event){
         try{
@@ -771,6 +964,11 @@ public class MainScreenController implements Initializable {
         }
 
     }
+
+    /**
+     * shows zoom.fxml with Private Object Card
+     * @param event privateCardZoomButton clicked
+     */
     @FXML
     private void privateCardZoomButtonClicked(ActionEvent event){
         try{
@@ -791,6 +989,11 @@ public class MainScreenController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    /**
+     * shows zoom.fxml with Public Object Cards
+     * @param event publicCardZoomButton clicked
+     */
     @FXML
     private void publicCardZoomButtonClicked(ActionEvent event){
         try{
@@ -815,7 +1018,11 @@ public class MainScreenController implements Initializable {
     }
 
 
-
+    /**
+     * asks the new value of a dice to the player
+     * @param dice dice that will change its value
+     * @return chosen value
+     */
     public int choseNewValue(Dice dice){
         final String CHOSE_DICE_NUMBER_MESSAGE = "Il dado estratto è " + dice.getColor().name()+ ". Quale valore vuoi assegnare al dado?";
         List<String> choices = new ArrayList<>();
@@ -840,6 +1047,8 @@ public class MainScreenController implements Initializable {
         }
 
     }
+
+
     public void newDiceValue(Dice dice){
         boolean okValue=false;
         int diceValue=0;
@@ -852,6 +1061,12 @@ public class MainScreenController implements Initializable {
         }
         guiHandler.setValue(diceValue);
     }
+
+    /**
+     * sets opacity of all the cells except the chosen one
+     * @param row number of the row
+     * @param column number of the column
+     */
     public void setOpacityOthers(int row, int column){
         ObservableList<Node> lista = playersGridPaneArray[0].getChildren();
         ImageView selected = (ImageView) lista.get(row*5 + (column));
@@ -867,6 +1082,9 @@ public class MainScreenController implements Initializable {
 
     }
 
+    /**
+     * resets the opacity of all the cells of main player's grid
+     */
     public void resetOpacityOthers(){
         ObservableList<Node> lista = playersGridPaneArray[0].getChildren();
 
@@ -919,6 +1137,11 @@ public class MainScreenController implements Initializable {
         }
 
     }
+
+    /**
+     * notifies that the move is not valid
+     * @param message message to be shown
+     */
     public void notValideMoveMessagge(String message){
         if (placingDice){
             if (!((modifyDice)||(upOrDown)||(exchangeDice))){
@@ -1036,6 +1259,7 @@ public class MainScreenController implements Initializable {
         setPlayerSFLabel(modifiedTokenEvent.getPlayer(),modifiedTokenEvent.getPlayerToken());
         setToolCardSFLabel(modifiedTokenEvent.getToolCard(),modifiedTokenEvent.getToolCardToken());
     }
+
     public void sendEffect(SendEffectEvent effectEvent){
         usingTool=false;
         alreadyUsedTool=true;
@@ -1132,6 +1356,10 @@ public class MainScreenController implements Initializable {
         enableEndTurnButton();
     }
 
+    /**
+     * disables
+     * @param player
+     */
     public void endByTime(String player){
         if (getIndex(player)==0){
             disableMainPlayerButtons();
@@ -1142,6 +1370,11 @@ public class MainScreenController implements Initializable {
         }
 
     }
+
+    /**
+     * updates the GUI when the player is reconnected
+     * @param updateReconnectedClientEvent player reconnected
+     */
     public void updateReconnection(UpdateReconnectedClientEvent updateReconnectedClientEvent){
         if (getIndex(updateReconnectedClientEvent.getPlayer())==0){
             for (Player player:updateReconnectedClientEvent.getPlayers()){
@@ -1163,6 +1396,11 @@ public class MainScreenController implements Initializable {
             setReconnectedPlayer(updateReconnectedClientEvent.getPlayer());
         }
     }
+
+    /**
+     * notifies the points od the players and the winner
+     * @param endMatch
+     */
     public void matchEnd(EndMatchEvent endMatch){
         final String POINTS_FIRST_PART_MESSAGE = "Punteggi finali:\n\n";
         final String MAIN_PLAYER_WINNER_MESSAGE = "Hai vinto!";
@@ -1195,6 +1433,10 @@ public class MainScreenController implements Initializable {
 
         newMatch(pointsMessage);
     }
+
+    /**
+     * notifies that the player is the winner cause is the only one left
+     */
     public void lastPlayerLeft(){
         final String MAIN_PLAYER_WINNER_MESSAGE = "Hai vinto perchè sei rimasto l'unico giocatore in partita";
         final String NEW_GAME_MESSAGE = "\nVuoi iniziare una nuova partita?";
@@ -1202,6 +1444,10 @@ public class MainScreenController implements Initializable {
         message=MAIN_PLAYER_WINNER_MESSAGE+NEW_GAME_MESSAGE;
         newMatch(message);
     }
+
+    /**
+     * notifies that the connection has been lost
+     */
     public void connectionLost(){
         final String LOST_CONNECTION = "Hai perso la connesione con il server a causa di un errore di rete";
         final String NEW_GAME_MESSAGE = "\nVuoi iniziare una nuova partita?";
@@ -1210,6 +1456,11 @@ public class MainScreenController implements Initializable {
         newMatch(message);
 
     }
+
+    /**
+     * the player can chose to start a new game
+     * @param message message to be shown
+     */
     private void newMatch(String message){
         disableMainPlayerButtons();
         reserveGridPane.setDisable(true);

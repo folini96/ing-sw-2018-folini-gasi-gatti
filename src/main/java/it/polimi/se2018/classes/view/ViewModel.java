@@ -8,6 +8,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
+/**
+ * @author Leonard Gasi
+ * used to implement some methods that are usefull for the GUI controller classes
+ */
+
 public class ViewModel {
 
     /**
@@ -23,16 +28,6 @@ public class ViewModel {
             if ((i < 0) || (i > 255)) { return false; }
         }
         return true;
-    }
-
-    //da cancellare
-    public Stage showNewStage(String pattern)throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource(pattern));
-        Stage primaryStage = new Stage();
-        primaryStage.setTitle("Sagrada");
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
-        return primaryStage;
     }
 
     /**

@@ -14,8 +14,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * class controller for the userName selection GUI
  * @author Leonard Gasi
+ * controller of userName.fxml, it is used to ask the username to the player
  */
 public class UserNameController {
     private GUIHandler guiHandler;
@@ -23,8 +23,9 @@ public class UserNameController {
 
     @FXML
     private TextField userNameTextField;
+
     /**
-     * validate the chosen username
+     * validates the chosen username
      * @param event userNameConfirmButton clicked
      * @throws Exception
      */
@@ -35,13 +36,26 @@ public class UserNameController {
         guiHandler.createClient(name);
 
     }
+
+    /**
+     * set the reference to the intermediary with the network
+     * @param guiHandler reference to the GUIHandler
+     */
     public void setGuiHandler(GUIHandler guiHandler){
         this.guiHandler=guiHandler;
     }
+
+    /**
+     * notifies that the chosen username is not available
+     */
     public void askUsername(){
         final String INVALID_USERNAME = "Il nome che hai inserito è già in uso. Inserire un altro nome";
         viewModel.alertMessage(INVALID_USERNAME);
     }
+
+    /**
+     * closes userName.fxml and shows windowSelection.fxml
+     */
     public void closeUsernameScene(){
         userNameTextField.getScene().getWindow().hide();
         try{
@@ -61,6 +75,10 @@ public class UserNameController {
 
 
     }
+
+    /**
+     * notifies that the connection with the server has failed
+     */
     public void connectionError(){
         final String LOST_CONNECTION = "Non è stato possibile connettersi al server";
         String message;
