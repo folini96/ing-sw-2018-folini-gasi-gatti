@@ -1,23 +1,11 @@
 package it.polimi.se2018.classes.model;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.model.effects.EffectType;
-import it.polimi.se2018.classes.model.effects.Exchange;
 import it.polimi.se2018.classes.view.VirtualView;
 
-import java.awt.*;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
-import java.util.Random;
-
 
 /**
  * @author Alessandro Gatti
@@ -52,21 +40,21 @@ public class MatchHandlerModel extends Observable {
     }
 
     /**
-     * @return the tool cards in the game
-     */
-    public ToolCard[] getToolDeck(){
-        return toolDeck;
-    }
-
-    /**
      * @return the list of the players
      */
     public ArrayList<Player> getPlayers(){
         return players;
     }
 
+    /**
+     * @return the draft pool
+     */
     public ArrayList<Dice> getDraftPool(){
         return draftPool;
+    }
+
+    public Round[] getRoundTrack(){
+        return roundTrack;
     }
 
     /**
@@ -169,21 +157,41 @@ public class MatchHandlerModel extends Observable {
         setChanged();
         notifyObservers(new ModifiedWindowEvent(players.get(currentPlayer).getName(), players.get(currentPlayer).getWindow()));
     }
+
+    /**
+     * @param toolCard the number of the tool card in use
+     * @return true if the tool card in use is "Martelletto", false if not
+     */
     public boolean checkUseSecondTurn(int toolCard){
         if (toolDeck[toolCard].getName().equals("Martelletto")){
             return true;
         }
         return false;
     }
+
+    /**
+     * @param toolCard the number of the tool card in use
+     * @return true if the tool card in use is "Tenaglia a Rotelle"
+     */
     public boolean checkUseFirstTurn(int toolCard){
         if (toolDeck[toolCard].getName().equals("Tenaglia a Rotelle")){
             return true;
         }
         return false;
     }
+
+    /**
+     * @param toolCard the number of the tool card in use
+     * @return true if the tool card can only be used before the placement, false if not
+     */
     public boolean checkBeforePlacing(int toolCard){
         return toolDeck[toolCard].getBlockedAfterPlacement();
     }
+
+    /**
+     * @param toolCard the number of the tool card in use
+     * @return true if the diceBag is empty, false if not
+     */
     public boolean checkNotUseWithEmptyDiceBag(int toolCard){
         if (diceBag.getDiceSet().size()==0){
             return true;
@@ -191,6 +199,12 @@ public class MatchHandlerModel extends Observable {
             return false;
         }
     }
+
+    /**
+     * @param toolCard the number of the tool card in use
+     * @param currentPlayer the player currently playing
+     * @return true if the window is empty and the effect of the card is "move"
+     */
     public boolean checkNotUseWithEmptyWindow(int toolCard, int currentPlayer){
         if ((players.get(currentPlayer).getWindow().isEmpty())&&(toolDeck[toolCard].getEffect().toString().equals("Move"))){
             return true;
@@ -198,6 +212,11 @@ public class MatchHandlerModel extends Observable {
             return false;
         }
     }
+
+    /**
+     * @param toolCard the number of the tool card in use
+     * @return
+     */
     public boolean checkNotUseWithEmptyRoundTrack(int toolCard){
         if (((toolDeck[toolCard].getName().equals("Taglierina circolare"))||(toolDeck[toolCard].getName().equals("Taglierina Manuale")))&&(isEmptyRoundTrack())){
             return true;
@@ -464,38 +483,6 @@ public class MatchHandlerModel extends Observable {
     /**
      * @param moveDiceEvent the event that represents the move of a dice according to a tool card
      * @param currentPlayer the number of the player currently in control
-     * @return true if the move is allowed by the second tool card rules, false if not
-     */
-    public boolean checkCorrectSecondToolCardMove(MoveDiceEvent moveDiceEvent, int currentPlayer){
-        Dice dice=players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].getDice();
-        if(dice==null) return false;
-        if(!checkCorrectValueMatching(dice, moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) return false;
-        if(!checkBoxNotEmpty(moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) return false;
-        if(!checkColorVicinity(dice, moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) return false;
-        if(!checkValueVicinity(dice, moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) return false;
-        if(!checkDiceVicinity(moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) return false;
-        return true;
-    }
-
-    /**
-     * @param moveDiceEvent the event that represents the move of a dice according to a tool card
-     * @param currentPlayer the number of the player currently in control
-     * @return true if the move is allowed by the third tool card rules, false if not
-     */
-    public boolean checkCorrectThirdToolCardMove(MoveDiceEvent moveDiceEvent, int currentPlayer){
-        Dice dice=players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent.getDiceRow()][moveDiceEvent.getDiceColumn()].getDice();
-        if(dice==null) return false;
-        if(!checkCorrectColorMatching(dice, moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) return false;
-        if(!checkBoxNotEmpty(moveDiceEvent.getNewRow(),moveDiceEvent.getNewColumn(), currentPlayer)) return false;
-        if(!checkColorVicinity(dice, moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) return false;
-        if(!checkValueVicinity(dice, moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) return false;
-        if(!checkDiceVicinity(moveDiceEvent.getNewRow(), moveDiceEvent.getNewColumn(), currentPlayer)) return false;
-        return true;
-    }
-
-    /**
-     * @param moveDiceEvent the event that represents the move of a dice according to a tool card
-     * @param currentPlayer the number of the player currently in control
      * @return true if the move is allowed, false if not
      */
     public boolean checkCorrectMove(MoveDiceEvent moveDiceEvent, int currentPlayer, int toolCard){
@@ -546,24 +533,6 @@ public class MatchHandlerModel extends Observable {
         return true;
     }
 
-    public boolean checkSameColorMove(MoveDiceEvent moveDiceEvent1, MoveDiceEvent moveDiceEvent2, int currentPlayer){
-        int i, j, c=0;
-        ArrayList<Dice> leftDices;
-        Dice dice1=players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent1.getDiceRow()][moveDiceEvent1.getDiceColumn()].getDice();
-        Dice dice2=players.get(currentPlayer).getWindow().getBoxScheme()[moveDiceEvent2.getDiceRow()][moveDiceEvent2.getDiceColumn()].getDice();
-        if(dice1.getColor()!=dice2.getColor()) return false;
-
-        for(i=0; i<10; i++){
-            leftDices=roundTrack[i].getLeftDices();
-            for(j=0; j<leftDices.size(); j++){
-                if(leftDices.get(j).getColor() == dice1.getColor()){
-                    c++;
-                }
-            }
-        }
-        if(c==0)return false;
-        return true;
-    }
 
     public boolean checkNotDiceVicinity(int selectedRow, int selectedColumn, int currentPlayer){
         int i, j, vicinityCheck=0;
@@ -592,24 +561,6 @@ public class MatchHandlerModel extends Observable {
         return true;
     }
 
-
-    public boolean checkCorrectNinthToolCardPlacement(PlaceDiceEvent placeDiceEvent, int currentPlayer){
-        Dice dice=draftPool.get(placeDiceEvent.getDraftDice());
-
-        if(players.get(currentPlayer).getWindow().isEmpty()){
-            if(!checkCorrectFirstMove(placeDiceEvent.getRow(),placeDiceEvent.getColumn())) return false;
-            if(!checkCorrectColorMatching(dice, placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
-            if(!checkCorrectValueMatching(dice, placeDiceEvent.getRow(),placeDiceEvent.getColumn(), currentPlayer)) return false;
-            return true;
-        }
-        else {
-            if (!checkCorrectColorMatching(dice, placeDiceEvent.getRow(), placeDiceEvent.getColumn(), currentPlayer)) return false;
-            if (!checkCorrectValueMatching(dice, placeDiceEvent.getRow(), placeDiceEvent.getColumn(), currentPlayer)) return false;
-            if (!checkBoxNotEmpty(placeDiceEvent.getRow(), placeDiceEvent.getColumn(), currentPlayer)) return false;
-            if (!checkNotDiceVicinity(placeDiceEvent.getRow(), placeDiceEvent.getColumn(), currentPlayer)) return false;
-            return true;
-        }
-    }
     public boolean modifyDice (ModifyDiceEvent modifyDiceEvent,int toolCard){
         switch (toolDeck[toolCard].getEffect().getEffectType()){
             case UPORDOWNVALUEMODIFY:
