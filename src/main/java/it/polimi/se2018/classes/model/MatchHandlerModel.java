@@ -76,7 +76,7 @@ public class MatchHandlerModel extends Observable {
     }
 
     /**
-     * the method that notifies the start of a new match
+     * the method that notifies the start of a new match with it's attributes
      */
     public void startMatch(){
         setChanged();
@@ -203,7 +203,7 @@ public class MatchHandlerModel extends Observable {
     /**
      * @param toolCard the number of the tool card in use
      * @param currentPlayer the player currently playing
-     * @return true if the window is empty and the effect of the card is "move"
+     * @return true if the window is empty and the move is illegal, false if not
      */
     public boolean checkNotUseWithEmptyWindow(int toolCard, int currentPlayer){
         if ((players.get(currentPlayer).getWindow().isEmpty())&&(toolDeck[toolCard].getEffect().toString().equals("Move"))){
@@ -215,7 +215,7 @@ public class MatchHandlerModel extends Observable {
 
     /**
      * @param toolCard the number of the tool card in use
-     * @return
+     * @return true if the effect can't be used with an empty round track, false if not
      */
     public boolean checkNotUseWithEmptyRoundTrack(int toolCard){
         if (((toolDeck[toolCard].getName().equals("Taglierina circolare"))||(toolDeck[toolCard].getName().equals("Taglierina Manuale")))&&(isEmptyRoundTrack())){
@@ -224,6 +224,11 @@ public class MatchHandlerModel extends Observable {
             return false;
         }
     }
+
+    /**
+     * @param toolCard the number of the tool card in use
+     * @return true if the effect doesn't require the vicinity check for the position of the dice, false if not
+     */
     public boolean checkNoVicinityBound(int toolCard){
         if ((toolDeck[toolCard].getName()).equals("Riga in Sughero")){
             return true;
@@ -231,6 +236,10 @@ public class MatchHandlerModel extends Observable {
             return false;
         }
     }
+
+    /**
+     * @return true if the round track is empty, false if not
+     */
     private boolean isEmptyRoundTrack(){
         if (roundTrack[0]==null){
             return true;
@@ -238,6 +247,12 @@ public class MatchHandlerModel extends Observable {
             return false;
         }
     }
+
+    /**
+     * @param toolCard the number of the tool card in use
+     * @param currentPlayer the number that represent the player in control
+     * @return true if the player has enough tokens to activate the tool card, false if not
+     */
     public boolean checkEnoughToken(int toolCard, int currentPlayer){
         int currentToken=players.get(currentPlayer).getToken();
         int toolCardToken=toolDeck[toolCard].getToken();
@@ -259,11 +274,17 @@ public class MatchHandlerModel extends Observable {
             }
         }
     }
-    public void sendEffect(int toolCard,int currenPlayer){
+
+    /**
+     * used to send the information about the player, the effect he wants to activate and the tokens he has left
+     * @param toolCard the number of the tool card in use
+     * @param currentPlayer the number that represent the player in control
+     */
+    public void sendEffect(int toolCard,int currentPlayer){
         setChanged();
-        notifyObservers(new SendEffectEvent(toolDeck[toolCard].getEffect(),players.get(currenPlayer).getName()));
+        notifyObservers(new SendEffectEvent(toolDeck[toolCard].getEffect(),players.get(currentPlayer).getName()));
         setChanged();
-        notifyObservers(new ModifiedTokenEvent(players.get(currenPlayer).getName(),players.get(currenPlayer).getToken(),toolCard,toolDeck[toolCard].getToken()));
+        notifyObservers(new ModifiedTokenEvent(players.get(currentPlayer).getName(),players.get(currentPlayer).getToken(),toolCard,toolDeck[toolCard].getToken()));
     }
     /**
      * @param placeDiceEvent the number of the dice of the draft and the coordinate of the box the player wants to put the dice into
@@ -304,7 +325,6 @@ public class MatchHandlerModel extends Observable {
         if((row ==1 || row == 2) && (column ==1 || column == 2 || column ==3) ){
             return false;
         }
-
         return true;
     }
 
@@ -533,34 +553,11 @@ public class MatchHandlerModel extends Observable {
         return true;
     }
 
-
-    public boolean checkNotDiceVicinity(int selectedRow, int selectedColumn, int currentPlayer){
-        int i, j, vicinityCheck=0;
-        int row=selectedRow;
-        int column=selectedColumn;
-        Box[][] boxScheme;
-
-        WindowSide window = players.get(currentPlayer).getWindow();
-        boxScheme = window.getBoxScheme();
-
-        for(i=0; i<=3; i++){
-            for(j=0; j<=4; j++){
-                if(i==row-1 || i==row || i==row+1){
-                    if(j==column-1 || j==column || j==column+1){
-                        if(boxScheme[i][j].getDice()!=null){
-                            vicinityCheck++;
-                        }
-                    }
-                }
-            }
-        }
-        if(vicinityCheck>0){
-            return false;
-        }
-
-        return true;
-    }
-
+    /**
+     * @param modifyDiceEvent the event that represents the effect the player wants to use
+     * @param toolCard the tool card in use
+     * @return true if the effect was applied properly, false if not
+     */
     public boolean modifyDice (ModifyDiceEvent modifyDiceEvent,int toolCard){
         switch (toolDeck[toolCard].getEffect().getEffectType()){
             case UPORDOWNVALUEMODIFY:
@@ -579,6 +576,9 @@ public class MatchHandlerModel extends Observable {
         return true;
     }
 
+    /**
+     * @param dice the dice that is going to be rotated
+     */
     public void rotateDice(Dice dice){
         switch (dice.getValue()){
             case 1:
@@ -602,10 +602,18 @@ public class MatchHandlerModel extends Observable {
         }
     }
 
+    /**
+     * @param dice the dice that is going to be rerolled
+     */
     public void getNewRandomValue(Dice dice){
         dice.getRandomValue();
     }
 
+    /**
+     * @param dice the dice that is going to have his value changed
+     * @param upOrDown the number that indicates if the value is going to increase or decrease
+     * @return true if the effect was applied properly, false if not
+     */
     public boolean upOrDownValue(Dice dice, int upOrDown){
         if(upOrDown==1){
             System.out.println(upOrDown);
@@ -631,6 +639,10 @@ public class MatchHandlerModel extends Observable {
 
     }
 
+    /**
+     * @param moveDice the event that represents the effect the player wants to use
+     * @param currentPlayer the player currently in control
+     */
     public void moveDice(MoveDiceEvent moveDice, int currentPlayer){
         Dice dice = players.get(currentPlayer).getWindow().getBoxScheme()[moveDice.getDiceRow()][moveDice.getDiceColumn()].getDice();
         players.get(currentPlayer).getWindow().getBoxScheme()[moveDice.getNewRow()][moveDice.getNewColumn()].setDice(dice);
@@ -639,6 +651,9 @@ public class MatchHandlerModel extends Observable {
         notifyObservers(new ModifiedWindowEvent(players.get(currentPlayer).getName(), players.get(currentPlayer).getWindow()));
     }
 
+    /**
+     * used to reroll every dice in the draft pool
+     */
     public void rerollDraftPool(){
         for(Dice dice:draftPool){
             dice.getRandomValue();
@@ -647,8 +662,11 @@ public class MatchHandlerModel extends Observable {
         notifyObservers(new ModifiedDraftEvent(draftPool));
     }
 
-
-
+    /**
+     * @param toolCard the number of the tool card currently in use
+     * @param exchangeEvent the event that represents the effect the player wants to use
+     * @param currentPlayer the number of the player currently in control
+     */
     public void exchange(int toolCard,ExchangeEvent exchangeEvent, int currentPlayer){
         if (toolDeck[toolCard].getEffect().getEffectType().equals(EffectType.DRAFTPOOLBAGEXCHANGE)){
             exchangeDraftPoolDiceBag(exchangeEvent,currentPlayer);
@@ -657,6 +675,9 @@ public class MatchHandlerModel extends Observable {
         }
     }
 
+    /**
+     * @param exchangeEvent the event that represents the effect the player wants to use
+     */
     private void exchangeDraftPoolRoundTrack(ExchangeEvent exchangeEvent){
         Color draftDiceColor=draftPool.get(exchangeEvent.getDraftDice()).getColor();
         int draftDiceValue=draftPool.get(exchangeEvent.getDraftDice()).getValue();
@@ -670,7 +691,12 @@ public class MatchHandlerModel extends Observable {
         setChanged();
         notifyObservers(new ModifiedDraftEvent(draftPool));
     }
-    private void exchangeDraftPoolDiceBag(ExchangeEvent exchangeEvent,int currentPlayer){
+
+    /**
+     * @param exchangeEvent the event that represents the effect the player wants to use
+     * @param currentPlayer the number of the player currently in control
+     */
+    private void exchangeDraftPoolDiceBag(ExchangeEvent exchangeEvent, int currentPlayer){
         Dice draftDice=draftPool.get(exchangeEvent.getDraftDice());
         Dice newDice;
         diceBag.getDiceSet().add(new Dice(draftDice.getColor()));
@@ -679,11 +705,21 @@ public class MatchHandlerModel extends Observable {
         setChanged();
         notifyObservers(new NewDiceFromBagEvent(newDice,players.get(currentPlayer).getName()));
     }
+
+    /**
+     * @param setValueEvent the event that represents the effect the player wants to use
+     * @param modifiedDraftDice the number of the dice from the draft pool thar is going to be modified
+     */
     public void setValueDiceFromBag(SetValueEvent setValueEvent, int modifiedDraftDice){
         draftPool.get(modifiedDraftDice).setValue(setValueEvent.getNewValue());
         setChanged();
         notifyObservers(new ModifiedDraftEvent(draftPool));
     }
+
+    /**
+     * used to notify the reconnection of a client and all his attributes
+     * @param reconnectingClient the name of the client that is reconnecting
+     */
     public void sendReconnectionUpdate(String reconnectingClient){
         setChanged();
         notifyObservers(new UpdateReconnectedClientEvent(reconnectingClient,players,roundTrack,toolDeck,draftPool));

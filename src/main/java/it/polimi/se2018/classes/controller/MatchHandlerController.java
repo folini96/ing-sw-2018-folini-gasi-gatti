@@ -15,6 +15,9 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.util.*;
 
+/**
+ * @author Alessandro Gatti
+ */
 public class MatchHandlerController implements Observer,ViewControllerVisitor {
     private int playerNumber=0;
     private ArrayList<ChoseWindowEvent> chosenWindow=new ArrayList<>();
@@ -45,11 +48,16 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     private static final String NOT_VALIDE_IN_FIRST_TURN ="Non puoi utilizzare questa carta durante il primo turno";
     private static final String NOT_VALIDE_IN_SECOND_TURN ="Non puoi utilizzare questa carta durante il secondo turno";
 
-
+    /**
+     * @param view the virtual view to associate to the controller
+     */
     public void setView(VirtualView view) {
         this.view = view;
     }
 
+    /**
+     * @param usernames the usernames picked by the players
+     */
     public void handleStartMatch(ArrayList<String> usernames){
         noSecondTurn=new ArrayList<>();
         playerReconnecting=new ArrayList<>();
@@ -64,6 +72,10 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         matchHandlerModel.prepareMatch(playerNumber,playerNames);
         handleWindowCreation();
     }
+
+    /**
+     * @return three public object cards chosen randomly from the file
+     */
     private PublicObjCard[] parsePublicObjCard(){
         int i;
         int randomInt;
@@ -79,7 +91,6 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         JsonObject card = (JsonObject) o;
         publicObjCards[currentCard]=card.get("name").getAsString();
         currentCard++;
-
         }
         for (i=0; i<3; i++){
             do{
@@ -117,12 +128,15 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
                 case "varietadicolore":
                     chosenCards[i]=new PublicObjCardVarietaDiColore();
                     break;
-
             }
             cardNotAvailable.add(randomInt);
         }
         return chosenCards;
     }
+
+    /**
+     * @return private object cards chosen randomly from the file, one for each player in the game
+     */
     private PrivateObjCard[] parsePrivateObjCard(){
         int i;
         int randomInt;
@@ -168,6 +182,10 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         }
         return chosenCards;
     }
+
+    /**
+     * @return four random windows for each player
+     */
     private WindowSide[] parseWindowSide(){
         int i;
         int j;
@@ -232,8 +250,10 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         return chosenWindows;
     }
 
+    /**
+     * @return three tool cards chosen randomly from the file
+     */
     private ToolCard[] parseToolCard(){
-
         int i, randomInt;
         ToolCard[] toolCards = new ToolCard[12];
         ToolCard[] chosenToolCards = new ToolCard[3];
@@ -336,10 +356,16 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         return chosenToolCards;
     }
 
+    /**
+     * used to initialize the parsing of the windows
+     */
     private void handleWindowCreation(){
         view.windowToChose(parseWindowSide());
     }
 
+    /**
+     *used to initiate a new round with the new first player
+     */
     private void  handleStartRound(){
         currentPlayer=firstPlayer;
         turnPassed=0;
@@ -347,10 +373,18 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         matchHandlerModel.startRound(round, firstPlayer);
 
     }
+
+    /**
+     * used to initiate a new turn
+     */
     private void handleStartTurn(){
         noVicinityBound=false;
         matchHandlerModel.startTurn(currentPlayer);
     }
+
+    /**
+     * used to end a turn and start a new one, or end the round
+     */
     private void handleEndTurn(){
         boolean endRound;
         view.cancelTimer();
@@ -406,6 +440,10 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         }
 
     }
+
+    /**
+     * used to end a round and eventually the game
+     */
     private void handleEndRound(){
         noSecondTurn.clear();
         matchHandlerModel.endRound(round);
@@ -422,10 +460,16 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         }
     }
 
+    /**
+     * used to end the game
+     */
     private void handleEndMatch(){
         matchHandlerModel.endMatch();
     }
 
+    /**
+     * @param placeDiceEvent the event that represents the placement of a dice
+     */
     private void handlePlaceDice(PlaceDiceEvent placeDiceEvent){
         if(matchHandlerModel.checkCorrectPlacement(placeDiceEvent, currentPlayer, noVicinityBound)){
             matchHandlerModel.placeDice(placeDiceEvent,currentPlayer);
@@ -437,6 +481,10 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         }
 
     }
+
+    /**
+     * @param window the event that represents the choosing of a window
+     */
     private void handleWindowSelection(ChoseWindowEvent window){
         chosenWindow.add(window);
         if (chosenWindow.size()==playerNumber){
@@ -446,6 +494,10 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
         }
     }
 
+    /**
+     * used to handle the selection of a tool card and to check if it's effect is allowed to be activated
+     * @param toolCard the number of the tool card from the tool deck the player wants to activate
+     */
     private void handleToolCardSelection(int toolCard){
         if ((matchHandlerModel.checkUseSecondTurn(toolCard))&&((turnPassed<playerNumber))){
             Message message = new Message(NOT_VALIDE_IN_FIRST_TURN, playerNames.get(currentPlayer));
@@ -492,10 +544,21 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
             }
         }
     }
+
+    /**
+     * used to notify the occurrence of an event to the observer
+     * @param view the associated view
+     * @param arg an object used to represent  the event
+     */
     public void update(Observable view, Object arg) {
         ViewControllerEvent event=(ViewControllerEvent) arg;
         event.accept(this);
     }
+
+    /**
+     * used to apply a "move dice" effect and check if it is allowed
+     * @param moveDiceEvent the event that represents the moving of a dice in the window
+     */
     private void handleMoveDice(MoveDiceEvent moveDiceEvent){
         if(!matchHandlerModel.checkCorrectMove(moveDiceEvent,currentPlayer,activeToolCard)){
             Message message = new Message(NOT_VALIDE_MOVE, playerNames.get(currentPlayer));
@@ -504,25 +567,46 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
             matchHandlerModel.moveDice(moveDiceEvent,currentPlayer);
         }
     }
+
+    /**
+     * @param modifyDiceEvent the event that represents the modification of the value of a dice
+     */
     private void handleModifiyDice(ModifyDiceEvent modifyDiceEvent){
         if (!matchHandlerModel.modifyDice(modifyDiceEvent,activeToolCard)){
             Message message = new Message(NOT_VALIDE_MODIFY, playerNames.get(currentPlayer));
             message.accept(view);
         }
     }
+
+    /**
+     * @param rerollDraftEvent the event that represents the rerolling of all the dices in the draft pool
+     */
     private void handleRerollDraft(RerollDraftEvent rerollDraftEvent){
         matchHandlerModel.rerollDraftPool();
     }
+
+    /**
+     * @param exchangeEvent the event that represents the swapping of two dices
+     */
     private void handleExchangeDice(ExchangeEvent exchangeEvent){
         modifiedDraftDiceInExchange=exchangeEvent.getDraftDice();
         matchHandlerModel.exchange(activeToolCard,exchangeEvent,currentPlayer);
     }
+
+    /**
+     * @param setValueEvent the event that represents the setting of the value to a dice
+     */
     private void handleSetValue(SetValueEvent setValueEvent){
         matchHandlerModel.setValueDiceFromBag(setValueEvent,modifiedDraftDiceInExchange);
     }
+
+    /**
+     * @param reconnectClientEvent the event that represents the reconnection of a client
+     */
     private void handleReconnection(ReconnectClientEvent reconnectClientEvent){
         playerReconnecting.add(reconnectClientEvent.getPlayer());
     }
+
     public void visit(ChoseWindowEvent window){
         handleWindowSelection(window);
     }
