@@ -1,8 +1,8 @@
 package it.polimi.se2018.classes.view;
 
-import it.polimi.se2018.classes.view.MainScreenController;
+
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;

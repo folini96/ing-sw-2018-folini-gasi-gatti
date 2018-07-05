@@ -1,6 +1,5 @@
 package it.polimi.se2018.classes.model;
 
-import it.polimi.se2018.classes.view.VirtualView;
 
 import java.io.Serializable;
 
@@ -18,6 +17,7 @@ public class WindowSide implements Serializable {
      * Constructor
      * @param name the name of the window
      * @param difficult the difficulty associated to the window
+     * @param boxScheme the box scheme of this window
      */
     public WindowSide( String name, int difficult, Box[][] boxScheme){
         int i,j;

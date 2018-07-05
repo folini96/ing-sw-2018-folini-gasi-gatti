@@ -11,7 +11,7 @@ import java.rmi.RemoteException;
 public interface RMIRemoteClientInterface extends Remote {
     /**
      * @param number the client lobby number
-     * @throws RemoteException
+     * @throws RemoteException caused by an rmi connection error
      */
      void setLobbyNumber(int number) throws RemoteException;
 
@@ -58,7 +58,7 @@ public interface RMIRemoteClientInterface extends Remote {
     /**
      * notify that another player has been disconnected
      * @param player the disconnected player
-     * @throws RemoteException
+     * @throws RemoteException caused by an rmi connection error
      */
      void disconnectedPlayer(String player) throws RemoteException;
 
@@ -70,7 +70,7 @@ public interface RMIRemoteClientInterface extends Remote {
 
     /**
      * notify that a game ended, in the case that the client is still suspended
-     * @throws RemoteException
+     * @throws RemoteException caused by an rmi
      */
      void gameEnded() throws RemoteException;
 }

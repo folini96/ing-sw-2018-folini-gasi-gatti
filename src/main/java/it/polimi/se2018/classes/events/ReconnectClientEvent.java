@@ -3,6 +3,7 @@ package it.polimi.se2018.classes.events;
 import it.polimi.se2018.classes.visitor.ViewControllerVisitor;
 
 /**
+ * @author Andrea Folini
  * request from a player to reconnect; used from the server to notify the controller of the reconnection
  */
 public class ReconnectClientEvent implements ViewControllerEvent{

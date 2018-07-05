@@ -1,12 +1,8 @@
 package it.polimi.se2018.classes.view;
 
-import it.polimi.se2018.classes.model.*;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.stage.Stage;
+
 
 /**
  * @author Leonard Gasi

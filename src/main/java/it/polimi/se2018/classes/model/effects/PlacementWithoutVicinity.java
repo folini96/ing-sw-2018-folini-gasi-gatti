@@ -1,7 +1,5 @@
 package it.polimi.se2018.classes.model.effects;
 
-import it.polimi.se2018.classes.events.PlaceDiceEvent;
-import it.polimi.se2018.classes.model.MatchHandlerModel;
 import it.polimi.se2018.classes.view.MainScreenController;
 
 import java.io.Serializable;

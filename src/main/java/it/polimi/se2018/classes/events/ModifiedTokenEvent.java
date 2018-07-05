@@ -35,8 +35,7 @@ public class ModifiedTokenEvent implements ModelViewEvent,Serializable {
     }
 
     /**
-     * the token of the player
-     * @return
+     * @return the token of the player
      */
     public int getPlayerToken() {
         return playerToken;

@@ -1,8 +1,5 @@
 package it.polimi.se2018.classes.model.effects;
 
-import it.polimi.se2018.classes.model.Color;
-import it.polimi.se2018.classes.model.Dice;
-import it.polimi.se2018.classes.model.MatchHandlerModel;
 import it.polimi.se2018.classes.view.MainScreenController;
 
 import java.io.Serializable;

@@ -1,6 +1,6 @@
 package it.polimi.se2018.classes.view;
 
-import it.polimi.se2018.classes.model.*;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,7 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 

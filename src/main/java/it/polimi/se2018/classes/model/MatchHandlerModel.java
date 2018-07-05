@@ -2,7 +2,7 @@ package it.polimi.se2018.classes.model;
 
 import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.model.effects.EffectType;
-import it.polimi.se2018.classes.view.VirtualView;
+import it.polimi.se2018.classes.proxyview.VirtualView;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -27,6 +27,7 @@ public class MatchHandlerModel extends Observable {
      * @param view the view connected to the model of the game
      * @param publicObjDeck the public objective cards used in the game
      * @param privateObjDeck the private objective cards used in the game
+     * @param toolDeck the tool cards used in the game
      */
     public MatchHandlerModel(VirtualView view, PublicObjCard[] publicObjDeck, PrivateObjCard[] privateObjDeck, ToolCard[] toolDeck){
         addObserver(view);
@@ -289,6 +290,7 @@ public class MatchHandlerModel extends Observable {
     /**
      * @param placeDiceEvent the number of the dice of the draft and the coordinate of the box the player wants to put the dice into
      * @param currentPlayer the number of the player currently in control
+     * @param noVicinityBound true if the method doesn't need to control the vicinity bound when the dice is placed; false otherwise
      * @return true if the placement is allowed, false if not
      */
     public boolean checkCorrectPlacement(PlaceDiceEvent placeDiceEvent, int currentPlayer, boolean noVicinityBound){
@@ -503,6 +505,7 @@ public class MatchHandlerModel extends Observable {
     /**
      * @param moveDiceEvent the event that represents the move of a dice according to a tool card
      * @param currentPlayer the number of the player currently in control
+     * @param toolCard the index active tool card
      * @return true if the move is allowed, false if not
      */
     public boolean checkCorrectMove(MoveDiceEvent moveDiceEvent, int currentPlayer, int toolCard){
@@ -616,8 +619,6 @@ public class MatchHandlerModel extends Observable {
      */
     public boolean upOrDownValue(Dice dice, int upOrDown){
         if(upOrDown==1){
-            System.out.println(upOrDown);
-            System.out.println(dice.getValue());
             if(dice.getValue() < 6){
                 dice.setValue(dice.getValue()+1);
                 return true;
@@ -627,7 +628,6 @@ public class MatchHandlerModel extends Observable {
             }
         }
         else{
-            System.out.println(dice.getValue());
             if(dice.getValue()>1){
                 dice.setValue(dice.getValue()-1);
                 return true;

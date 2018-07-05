@@ -4,7 +4,7 @@ import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.model.*;
 import it.polimi.se2018.classes.model.effects.*;
 import it.polimi.se2018.classes.network.Server;
-import it.polimi.se2018.classes.view.VirtualView;
+import it.polimi.se2018.classes.proxyview.VirtualView;
 import org.junit.Test;
 
 import java.util.ArrayList;

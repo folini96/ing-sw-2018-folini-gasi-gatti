@@ -4,7 +4,7 @@ package it.polimi.se2018.classes.network;
 import it.polimi.se2018.classes.controller.MatchHandlerController;
 import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.model.*;
-import it.polimi.se2018.classes.view.VirtualView;
+import it.polimi.se2018.classes.proxyview.VirtualView;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -610,12 +610,12 @@ public class Server {
 
     /**
      * cancel a turn timer when the current player end his turn before the time expires
-     * @param matcNumber
+     * @param matchNumber the number of the match which timer needs to be canceled
      */
-    public void cancelTimer(int matcNumber){
-        if (playTimer.containsKey(matcNumber)){
-            playTimer.get(matcNumber).cancel();
-            playTimer.remove(matcNumber);
+    public void cancelTimer(int matchNumber){
+        if (playTimer.containsKey(matchNumber)){
+            playTimer.get(matchNumber).cancel();
+            playTimer.remove(matchNumber);
         }
     }
 

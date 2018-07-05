@@ -11,8 +11,8 @@ import java.rmi.RemoteException;
 public interface RMIRemoteServerInterface extends Remote {
      /**
      * take the request to add a client to the main server and check that the username is accepted
-     * @param client
-     * @param firstUsername
+     * @param client the remote reference of the client that wants to join the server
+     * @param firstUsername the name that the new client wants to use
      * @throws RemoteException caused by an rmi connection error
      */
      void addClient (RMIRemoteClientInterface client,String firstUsername) throws RemoteException;

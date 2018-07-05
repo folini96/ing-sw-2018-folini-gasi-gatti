@@ -1,6 +1,9 @@
 it.polimi.se2018
-it.polimi.se2018.classes
-it.polimi.se2018.classes.Events
 it.polimi.se2018.classes.controller
+it.polimi.se2018.classes.events
 it.polimi.se2018.classes.model
+it.polimi.se2018.classes.model.effects
 it.polimi.se2018.classes.network
+it.polimi.se2018.classes.proxyview
+it.polimi.se2018.classes.view
+it.polimi.se2018.classes.visitor

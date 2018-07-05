@@ -1,6 +1,6 @@
 package it.polimi.se2018.classes.view;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import it.polimi.se2018.classes.events.EndMatchEvent;
 import it.polimi.se2018.classes.events.ModifiedTokenEvent;
 import it.polimi.se2018.classes.events.SendEffectEvent;
@@ -23,10 +23,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 
-import javax.swing.*;
+
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.MalformedInputException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -1472,7 +1472,7 @@ public class MainScreenController implements Initializable {
 
     /**
      * notifies the points od the players and the winner
-     * @param endMatch
+     * @param endMatch contains the names of the players and their points
      */
     public void matchEnd(EndMatchEvent endMatch){
         final String POINTS_FIRST_PART_MESSAGE = "Punteggi finali:\n\n";
@@ -1529,7 +1529,7 @@ public class MainScreenController implements Initializable {
     }
 
     /**
-     * the player can chose to start a new game
+     * the player can choose to start a new game
      * @param message message to be shown
      */
     private void newMatch(String message){
@@ -1566,7 +1566,7 @@ public class MainScreenController implements Initializable {
     }
 
     /**
-     * notify that the game he tried to reconnect to has ended
+     * notify to the client that the match he tried to reconnect to has ended
      */
     public void matchEndedWhileDisconnected(){
         newMatch(GAME_ENDED_WHILE_DISCONNECTED+NEW_GAME_MESSAGE);

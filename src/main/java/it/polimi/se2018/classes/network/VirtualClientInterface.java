@@ -5,7 +5,7 @@ import it.polimi.se2018.classes.events.*;
 public interface VirtualClientInterface {
     /**
      * @return the lobby of this client
-<     */
+    */
     int getLobbyNumber();
 
     /**

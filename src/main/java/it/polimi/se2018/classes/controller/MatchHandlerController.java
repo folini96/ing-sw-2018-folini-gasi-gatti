@@ -7,12 +7,11 @@ import it.polimi.se2018.classes.events.*;
 import it.polimi.se2018.classes.events.PlaceDiceEvent;
 import it.polimi.se2018.classes.model.*;
 import it.polimi.se2018.classes.model.Box;
-import it.polimi.se2018.classes.view.VirtualView;
+import it.polimi.se2018.classes.proxyview.VirtualView;
 import it.polimi.se2018.classes.visitor.ViewControllerVisitor;
 
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.util.*;
 
 /**
@@ -417,14 +416,12 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
                     }
                 }
                 while ((noSecondTurn.contains(currentPlayer))&&(!endRound)){
-                    System.out.println(noSecondTurn+"   "+currentPlayer);
                     turnPassed++;
                     if (currentPlayer==0){
                         currentPlayer=(playerNumber-1);
                     }else{
                         currentPlayer--;
                     }
-                    System.out.println(turnPassed);
                     if (turnPassed==(playerNumber*2)){
                     endRound=true;
                     }
