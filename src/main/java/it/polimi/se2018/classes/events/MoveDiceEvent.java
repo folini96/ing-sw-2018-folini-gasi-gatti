@@ -76,6 +76,9 @@ public class MoveDiceEvent implements ViewControllerEvent,Serializable {
         return diceInRound;
     }
 
+    /**
+     * @param visitor the visitor that called the method
+     */
     public void accept(ViewControllerVisitor visitor){
         visitor.visit(this);
     }

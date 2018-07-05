@@ -15,6 +15,10 @@ public class ReconnectClientEvent implements ViewControllerEvent{
     public ReconnectClientEvent(String player){
         this.player=player;
     }
+
+    /**
+     * @param visitor the visitor that called the method
+     */
     @Override
     public void accept(ViewControllerVisitor visitor) {
         visitor.visit(this);

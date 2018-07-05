@@ -14,9 +14,10 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * class controller for the settings GUI
  * @author Leonard Gasi
+ * controller of settingsCOntroller.fxml, it is used to ask the type of the connection (RMI or socket), the server IP address and the number of the port to the player
  */
+
 public class SettingsController implements Initializable {
 
     private static final String SOCKET_CONNECTION = "Socket";
@@ -45,8 +46,8 @@ public class SettingsController implements Initializable {
 
 
     /**
-     * validate the settings
-     * @param event confirmButtonClicked
+     * validates the settings
+     * @param event confirmButton clicked
      * @throws Exception
      */
     @FXML
@@ -78,6 +79,11 @@ public class SettingsController implements Initializable {
 
 
     }
+
+    /**
+     * set the reference to the intermediary with the network
+     * @param guiHandler reference to the GUIHandler
+     */
     public void setGuiHandler(GUIHandler guiHandler){
         this.guiHandler=guiHandler;
     }

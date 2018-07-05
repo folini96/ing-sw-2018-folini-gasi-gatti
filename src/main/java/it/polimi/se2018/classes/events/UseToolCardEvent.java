@@ -25,6 +25,10 @@ public class UseToolCardEvent implements ViewControllerEvent, Serializable {
     public int getToolCard() {
         return toolCard;
     }
+
+    /**
+     * @param visitor the visitor that called the method
+     */
     public void accept(ViewControllerVisitor visitor){
         visitor.visit(this);
     }

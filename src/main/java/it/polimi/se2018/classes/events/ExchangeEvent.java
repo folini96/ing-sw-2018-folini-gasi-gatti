@@ -46,6 +46,9 @@ public class ExchangeEvent implements ViewControllerEvent,Serializable {
         return roundNumber;
     }
 
+    /**
+     * @param visitor the visitor that called the method
+     */
     @Override
     public void accept(ViewControllerVisitor visitor) {
         visitor.visit(this);
