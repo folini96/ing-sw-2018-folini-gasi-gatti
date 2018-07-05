@@ -1,384 +1,6 @@
 {
   "windows": [
     {
-      "name": "Virtus",
-      "difficult": "5",
-      "boxScheme": [
-        {
-          "row": "0",
-          "column": "0",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "0",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "2",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "0",
-          "column": "3",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "verde",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "verde",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "4",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "2",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "verde",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "3",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "2",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "3",
-          "column": "1",
-          "color": "verde",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "2",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "3",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "name": "Via Lux",
-      "difficult": "4",
-      "boxScheme": [
-        {
-          "row": "0",
-          "column": "0",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "2",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "0",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "4",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "2",
-          "column": "0",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "rosso",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "3",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "2",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "3",
-          "column": "3",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "3",
-          "column": "4",
-          "color": "rosso",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "name": "Bellesguard",
-      "difficult": "3",
-      "boxScheme": [
-        {
-          "row": "0",
-          "column": "0",
-          "color": "blu",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "1",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "0",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "blu",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "2",
-          "column": "3",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "2",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "1",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "3",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "3",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "3",
-          "column": "4",
-          "color": "verde",
-          "value": "0"
-        }
-      ]
-    },
-    {
       "name": "Kaleidoscopic Dream",
       "difficult": "4",
       "boxScheme": [
@@ -505,510 +127,6 @@
       ]
     },
     {
-      "name": "Aurorae Magnificus",
-      "difficult": "5",
-      "boxScheme": [
-        {
-          "row": "0",
-          "column": "0",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "0",
-          "column": "1",
-          "color": "verde",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "2",
-          "color": "blu",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "3",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "4",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "0",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "2",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "4",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "3",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "3",
-          "color": "verde",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "4",
-          "color": "null",
-          "value": "4"
-        }
-      ]
-    },
-    {
-      "name": "Sun Catcher",
-      "difficult": "3",
-      "boxScheme": [
-        {
-          "row": "0",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "1",
-          "color": "blu",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "2",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "0",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "rosso",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "2",
-          "column": "3",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "verde",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "1",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "3",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "4",
-          "color": "viola",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "name": "Shadow Thief",
-      "difficult": "5",
-      "boxScheme": [
-        {
-          "row": "0",
-          "column": "0",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "0",
-          "column": "1",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "0",
-          "color": "rosso",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "3",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "1",
-          "color": "rosso",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "2",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "3",
-          "column": "3",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "3",
-          "column": "4",
-          "color": "null",
-          "value": "3"
-        }
-      ]
-    },
-    {
-      "name": "Aurora Sagradis",
-      "difficult": "4",
-      "boxScheme": [
-        {
-          "row": "0",
-          "column": "0",
-          "color": "rosso",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "2",
-          "color": "blu",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "verde",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "4",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "2",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "3",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "2",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "2",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "3",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        }
-      ]
-    },
-    {
       "name": "Firmitas",
       "difficult": "5",
       "boxScheme": [
@@ -1124,1014 +242,6 @@
           "row": "3",
           "column": "3",
           "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "4",
-          "color": "null",
-          "value": "4"
-        }
-      ]
-    },
-    {
-      "name": "Battlo",
-      "difficult": "5",
-      "boxScheme": [
-        {
-          "row": "0",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "2",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "0",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "blu",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "1",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "0",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "verde",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "3",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "4",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "3",
-          "column": "1",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "3",
-          "column": "2",
-          "color": "rosso",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "3",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "3",
-          "column": "4",
-          "color": "null",
-          "value": "3"
-        }
-      ]
-    },
-    {
-      "name": "Industria",
-      "difficult": "5",
-      "boxScheme": [
-        {
-          "row": "0",
-          "column": "0",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "0",
-          "column": "1",
-          "color": "rosso",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "2",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "0",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "rosso",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "1",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "2",
-          "column": "3",
-          "color": "rosso",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "4",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "3",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "3",
-          "column": "4",
-          "color": "rosso",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "name": "Symphony of Light",
-      "difficult": "6",
-      "boxScheme": [
-        {
-          "row": "0",
-          "column": "0",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "0",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "2",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "0",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "1",
-          "column": "4",
-          "color": "rosso",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "blu",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "2",
-          "column": "3",
-          "color": "verde",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "1",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "3",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "3",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "3",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "name": "Firelight",
-      "difficult": "5",
-      "boxScheme": [
-        {
-          "row": "0",
-          "column": "0",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "0",
-          "column": "1",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "0",
-          "column": "2",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "0",
-          "column": "3",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "4",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "3",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "4",
-          "color": "rosso",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "3",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "2",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "3",
-          "color": "rosso",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "4",
-          "color": "null",
-          "value": "6"
-        }
-      ]
-    },
-    {
-      "name": "Lux Astram",
-      "difficult": "5",
-      "boxScheme": [
-        {
-          "row": "0",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "1",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "0",
-          "column": "2",
-          "color": "verde",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "3",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "1",
-          "column": "4",
-          "color": "verde",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "0",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "verde",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "2",
-          "column": "3",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "2",
-          "column": "4",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "name": "Gravitas",
-      "difficult": "5",
-      "boxScheme": [
-        {
-          "row": "0",
-          "column": "0",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "0",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "2",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "0",
-          "column": "3",
-          "color": "blu",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "blu",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "0",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "blu",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "3",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "2",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "blu",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "1",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "3",
-          "column": "2",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "3",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "4",
-          "color": "null",
-          "value": "1"
-        }
-      ]
-    },
-    {
-      "name": "Luz Celestial",
-      "difficult": "3",
-      "boxScheme": [
-        {
-          "row": "0",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "2",
-          "color": "rosso",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "3",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "verde",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "4",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "2",
-          "column": "0",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "3",
-          "color": "blu",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "1",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "2",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "3",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        }
-      ]
-    },
-    {
-      "name": "Chromatic Splendor",
-      "difficult": "4",
-      "boxScheme": [
-        {
-          "row": "0",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "2",
-          "color": "verde",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "null",
-          "value": "2"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "blu",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "4",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "2",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "rosso",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "2",
-          "column": "3",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "4",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "3",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
-          "column": "2",
-          "color": "null",
-          "value": "6"
-        },
-        {
-          "row": "3",
-          "column": "3",
-          "color": "null",
           "value": "0"
         },
         {
@@ -2395,19 +505,523 @@
       ]
     },
     {
-      "name": "Comitas",
-      "difficult": "5",
+      "name": "Lux Mundi",
+      "difficult": "6",
       "boxScheme": [
         {
           "row": "0",
           "column": "0",
-          "color": "giallo",
+          "color": "null",
           "value": "0"
         },
         {
           "row": "0",
           "column": "1",
           "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "2",
+          "color": "null",
+          "value": "1"
+        },
+        {
+          "row": "0",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "null",
+          "value": "1"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "2",
+          "color": "null",
+          "value": "3"
+        },
+        {
+          "row": "1",
+          "column": "3",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "4",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "2",
+          "column": "2",
+          "color": "null",
+          "value": "4"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "2",
+          "column": "4",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "name": "Lux Astram",
+      "difficult": "5",
+      "boxScheme": [
+        {
+          "row": "0",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "1",
+          "color": "null",
+          "value": "1"
+        },
+        {
+          "row": "0",
+          "column": "2",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "3",
+          "color": "viola",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "4",
+          "color": "null",
+          "value": "4"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "viola",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "2",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "1",
+          "column": "3",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "1",
+          "column": "4",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "null",
+          "value": "1"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "2",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "null",
+          "value": "3"
+        },
+        {
+          "row": "2",
+          "column": "4",
+          "color": "viola",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "name": "Gravitas",
+      "difficult": "5",
+      "boxScheme": [
+        {
+          "row": "0",
+          "column": "0",
+          "color": "null",
+          "value": "1"
+        },
+        {
+          "row": "0",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "2",
+          "color": "null",
+          "value": "3"
+        },
+        {
+          "row": "0",
+          "column": "3",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "1",
+          "column": "2",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "null",
+          "value": "4"
+        },
+        {
+          "row": "2",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "0",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "null",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "name": "Water of Life",
+      "difficult": "6",
+      "boxScheme": [
+        {
+          "row": "0",
+          "column": "0",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "0",
+          "column": "1",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "4",
+          "color": "null",
+          "value": "1"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "1",
+          "column": "2",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "null",
+          "value": "4"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "rosso",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "2",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "0",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "null",
+          "value": "3"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "viola",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "name": "Sun Catcher",
+      "difficult": "3",
+      "boxScheme": [
+        {
+          "row": "0",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "1",
+          "color": "blu",
           "value": "0"
         },
         {
@@ -2425,8 +1039,8 @@
         {
           "row": "0",
           "column": "4",
-          "color": "null",
-          "value": "6"
+          "color": "giallo",
+          "value": "0"
         },
         {
           "row": "1",
@@ -2449,8 +1063,765 @@
         {
           "row": "1",
           "column": "3",
+          "color": "rosso",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "2",
           "color": "null",
           "value": "5"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "0",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "null",
+          "value": "3"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "viola",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "name": "Shadow Thief",
+      "difficult": "5",
+      "boxScheme": [
+        {
+          "row": "0",
+          "column": "0",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "0",
+          "column": "1",
+          "color": "viola",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "4",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "2",
+          "color": "viola",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "rosso",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "2",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "viola",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "0",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "rosso",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "null",
+          "value": "4"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "null",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "name": "Aurorae Magnificus",
+      "difficult": "5",
+      "boxScheme": [
+        {
+          "row": "0",
+          "column": "0",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "0",
+          "column": "1",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "2",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "3",
+          "color": "viola",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "4",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "viola",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "4",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "2",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "4",
+          "color": "viola",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "0",
+          "color": "null",
+          "value": "1"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "null",
+          "value": "4"
+        }
+      ]
+    },
+
+    {
+      "name": "Aurora Sagradis",
+      "difficult": "4",
+      "boxScheme": [
+        {
+          "row": "0",
+          "column": "0",
+          "color": "rosso",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "2",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "4",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "null",
+          "value": "4"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "viola",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "2",
+          "color": "null",
+          "value": "3"
+        },
+        {
+          "row": "1",
+          "column": "3",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "4",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "null",
+          "value": "1"
+        },
+        {
+          "row": "2",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "2",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "name": "Symphony of Light",
+      "difficult": "6",
+      "boxScheme": [
+        {
+          "row": "0",
+          "column": "0",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "0",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "2",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "0",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "4",
+          "color": "null",
+          "value": "1"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "1",
+          "column": "2",
+          "color": "viola",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "3",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "1",
+          "column": "4",
+          "color": "rosso",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "2",
+          "color": "null",
+          "value": "4"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "null",
+          "value": "3"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "name": "Virtus",
+      "difficult": "5",
+      "boxScheme": [
+        {
+          "row": "0",
+          "column": "0",
+          "color": "null",
+          "value": "4"
+        },
+        {
+          "row": "0",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "2",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "0",
+          "column": "3",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "0",
+          "column": "4",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "2",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "1",
+          "column": "3",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "4",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "null",
+          "value": "3"
+        },
+        {
+          "row": "2",
+          "column": "2",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "null",
+          "value": "4"
+        },
+        {
+          "row": "2",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "0",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "null",
+          "value": "1"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "name": "Firelight",
+      "difficult": "5",
+      "boxScheme": [
+        {
+          "row": "0",
+          "column": "0",
+          "color": "null",
+          "value": "3"
+        },
+        {
+          "row": "0",
+          "column": "1",
+          "color": "null",
+          "value": "4"
+        },
+        {
+          "row": "0",
+          "column": "2",
+          "color": "null",
+          "value": "1"
+        },
+        {
+          "row": "0",
+          "column": "3",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "0",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "1",
+          "column": "2",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "1",
+          "column": "3",
+          "color": "null",
+          "value": "0"
         },
         {
           "row": "1",
@@ -2485,8 +1856,260 @@
         {
           "row": "2",
           "column": "4",
+          "color": "rosso",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "0",
           "color": "null",
           "value": "5"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "rosso",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "null",
+          "value": "6"
+        }
+      ]
+    },
+    {
+      "name": "Suns Glory",
+      "difficult": "6",
+      "boxScheme": [
+        {
+          "row": "0",
+          "column": "0",
+          "color": "null",
+          "value": "1"
+        },
+        {
+          "row": "0",
+          "column": "1",
+          "color": "viola",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "2",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "4",
+          "color": "null",
+          "value": "4"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "viola",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "4",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "2",
+          "column": "4",
+          "color": "null",
+          "value": "3"
+        },
+        {
+          "row": "3",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "null",
+          "value": "4"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "null",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "name": "Battlo",
+      "difficult": "5",
+      "boxScheme": [
+        {
+          "row": "0",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "2",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "0",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "1",
+          "column": "2",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "3",
+          "color": "null",
+          "value": "4"
+        },
+        {
+          "row": "1",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "null",
+          "value": "3"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "2",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "viola",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "4",
+          "color": "null",
+          "value": "2"
         },
         {
           "row": "3",
@@ -2498,24 +2121,150 @@
           "row": "3",
           "column": "1",
           "color": "null",
-          "value": "2"
+          "value": "4"
         },
         {
           "row": "3",
           "column": "2",
-          "color": "giallo",
+          "color": "rosso",
           "value": "0"
         },
         {
           "row": "3",
           "column": "3",
           "color": "null",
-          "value": "3"
+          "value": "5"
         },
         {
           "row": "3",
           "column": "4",
           "color": "null",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "name": "Bellesguard",
+      "difficult": "3",
+      "boxScheme": [
+        {
+          "row": "0",
+          "column": "0",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "1",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "0",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "4",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "null",
+          "value": "3"
+        },
+        {
+          "row": "1",
+          "column": "2",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "2",
+          "column": "2",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "2",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "null",
+          "value": "4"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "null",
+          "value": "1"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "verde",
           "value": "0"
         }
       ]
@@ -2647,74 +2396,200 @@
       ]
     },
     {
-      "name": "Water of Life",
-      "difficult": "6",
+      "name": "Luz Celestial",
+      "difficult": "3",
       "boxScheme": [
         {
           "row": "0",
           "column": "0",
           "color": "null",
-          "value": "6"
+          "value": "0"
         },
         {
           "row": "0",
           "column": "1",
-          "color": "blu",
+          "color": "null",
           "value": "0"
         },
         {
           "row": "0",
           "column": "2",
-          "color": "null",
+          "color": "rosso",
           "value": "0"
         },
         {
           "row": "0",
           "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "0",
-          "column": "4",
-          "color": "null",
-          "value": "1"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "1",
           "color": "null",
           "value": "5"
         },
         {
+          "row": "0",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "viola",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "null",
+          "value": "4"
+        },
+        {
           "row": "1",
           "column": "2",
-          "color": "blu",
+          "color": "null",
           "value": "0"
         },
         {
           "row": "1",
           "column": "3",
-          "color": "null",
+          "color": "verde",
           "value": "0"
         },
         {
           "row": "1",
           "column": "4",
           "color": "null",
-          "value": "0"
+          "value": "3"
         },
         {
           "row": "2",
           "column": "0",
           "color": "null",
-          "value": "4"
+          "value": "6"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "name": "Chromatic Splendor",
+      "difficult": "4",
+      "boxScheme": [
+        {
+          "row": "0",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "2",
+          "color": "verde",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "2",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "1",
+          "column": "3",
+          "color": "blu",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "4",
+          "color": "null",
+          "value": "1"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "null",
+          "value": "0"
         },
         {
           "row": "2",
@@ -2726,12 +2601,12 @@
           "row": "2",
           "column": "2",
           "color": "null",
-          "value": "2"
+          "value": "3"
         },
         {
           "row": "2",
           "column": "3",
-          "color": "blu",
+          "color": "viola",
           "value": "0"
         },
         {
@@ -2743,14 +2618,140 @@
         {
           "row": "3",
           "column": "0",
-          "color": "verde",
-          "value": "0"
+          "color": "null",
+          "value": "1"
         },
         {
           "row": "3",
           "column": "1",
           "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "null",
           "value": "6"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "null",
+          "value": "4"
+        }
+      ]
+    },
+    {
+      "name": "Comitas",
+      "difficult": "5",
+      "boxScheme": [
+        {
+          "row": "0",
+          "column": "0",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "2",
+          "color": "null",
+          "value": "2"
+        },
+        {
+          "row": "0",
+          "column": "3",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "0",
+          "column": "4",
+          "color": "null",
+          "value": "6"
+        },
+        {
+          "row": "1",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "1",
+          "color": "null",
+          "value": "4"
+        },
+        {
+          "row": "1",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "1",
+          "column": "3",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "1",
+          "column": "4",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "giallo",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "4",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "3",
+          "column": "0",
+          "color": "null",
+          "value": "1"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "null",
+          "value": "2"
         },
         {
           "row": "3",
@@ -2767,19 +2768,19 @@
         {
           "row": "3",
           "column": "4",
-          "color": "viola",
+          "color": "null",
           "value": "0"
         }
       ]
     },
     {
-      "name": "Lux Mundi",
-      "difficult": "6",
+      "name": "Via Lux",
+      "difficult": "4",
       "boxScheme": [
         {
           "row": "0",
           "column": "0",
-          "color": "null",
+          "color": "giallo",
           "value": "0"
         },
         {
@@ -2792,7 +2793,7 @@
           "row": "0",
           "column": "2",
           "color": "null",
-          "value": "1"
+          "value": "6"
         },
         {
           "row": "0",
@@ -2810,24 +2811,24 @@
           "row": "1",
           "column": "0",
           "color": "null",
-          "value": "1"
+          "value": "0"
         },
         {
           "row": "1",
           "column": "1",
-          "color": "verde",
-          "value": "0"
+          "color": "null",
+          "value": "1"
         },
         {
           "row": "1",
           "column": "2",
           "color": "null",
-          "value": "3"
+          "value": "5"
         },
         {
           "row": "1",
           "column": "3",
-          "color": "blu",
+          "color": "null",
           "value": "0"
         },
         {
@@ -2839,31 +2840,31 @@
         {
           "row": "2",
           "column": "0",
-          "color": "blu",
-          "value": "0"
+          "color": "null",
+          "value": "3"
         },
         {
           "row": "2",
           "column": "1",
-          "color": "null",
-          "value": "5"
+          "color": "giallo",
+          "value": "0"
         },
         {
           "row": "2",
           "column": "2",
-          "color": "null",
-          "value": "4"
+          "color": "rosso",
+          "value": "0"
         },
         {
           "row": "2",
           "column": "3",
-          "color": "null",
-          "value": "6"
+          "color": "viola",
+          "value": "0"
         },
         {
           "row": "2",
           "column": "4",
-          "color": "verde",
+          "color": "null",
           "value": "0"
         },
         {
@@ -2875,32 +2876,32 @@
         {
           "row": "3",
           "column": "1",
-          "color": "blu",
+          "color": "null",
           "value": "0"
         },
         {
           "row": "3",
           "column": "2",
           "color": "null",
-          "value": "5"
+          "value": "4"
         },
         {
           "row": "3",
           "column": "3",
-          "color": "verde",
-          "value": "0"
+          "color": "null",
+          "value": "3"
         },
         {
           "row": "3",
           "column": "4",
-          "color": "null",
+          "color": "rosso",
           "value": "0"
         }
       ]
     },
     {
-      "name": "Suns Glory",
-      "difficult": "6",
+      "name": "Industria",
+      "difficult": "5",
       "boxScheme": [
         {
           "row": "0",
@@ -2911,14 +2912,14 @@
         {
           "row": "0",
           "column": "1",
-          "color": "viola",
+          "color": "rosso",
           "value": "0"
         },
         {
           "row": "0",
           "column": "2",
-          "color": "giallo",
-          "value": "0"
+          "color": "null",
+          "value": "3"
         },
         {
           "row": "0",
@@ -2928,99 +2929,99 @@
         },
         {
           "row": "0",
-          "column": "4",
-          "color": "null",
-          "value": "4"
-        },
-        {
-          "row": "1",
-          "column": "0",
-          "color": "viola",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "1",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
-          "column": "3",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "1",
           "column": "4",
           "color": "null",
           "value": "6"
         },
         {
-          "row": "2",
+          "row": "1",
           "column": "0",
-          "color": "giallo",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "1",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "2",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "2",
-          "column": "3",
           "color": "null",
           "value": "5"
         },
         {
-          "row": "2",
-          "column": "4",
-          "color": "null",
-          "value": "3"
-        },
-        {
-          "row": "3",
-          "column": "0",
-          "color": "null",
-          "value": "0"
-        },
-        {
-          "row": "3",
+          "row": "1",
           "column": "1",
-          "color": "null",
-          "value": "5"
-        },
-        {
-          "row": "3",
-          "column": "2",
           "color": "null",
           "value": "4"
         },
         {
-          "row": "3",
+          "row": "1",
+          "column": "2",
+          "color": "rosso",
+          "value": "0"
+        },
+        {
+          "row": "1",
           "column": "3",
           "color": "null",
           "value": "2"
         },
         {
-          "row": "3",
+          "row": "1",
+          "column": "4",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "2",
+          "column": "2",
+          "color": "null",
+          "value": "5"
+        },
+        {
+          "row": "2",
+          "column": "3",
+          "color": "rosso",
+          "value": "0"
+        },
+        {
+          "row": "2",
           "column": "4",
           "color": "null",
           "value": "1"
+        },
+        {
+          "row": "3",
+          "column": "0",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "1",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "2",
+          "color": "null",
+          "value": "0"
+        },
+        {
+          "row": "3",
+          "column": "3",
+          "color": "null",
+          "value": "3"
+        },
+        {
+          "row": "3",
+          "column": "4",
+          "color": "rosso",
+          "value": "0"
         }
       ]
     }

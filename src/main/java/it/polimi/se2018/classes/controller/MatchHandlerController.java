@@ -485,6 +485,7 @@ public class MatchHandlerController implements Observer,ViewControllerVisitor {
     private void handleWindowSelection(ChoseWindowEvent window){
         chosenWindow.add(window);
         if (chosenWindow.size()==playerNumber){
+            view.cancelWindowTimer();
             matchHandlerModel.windowSelection(chosenWindow,windowSides);
             matchHandlerModel.startMatch();
             handleStartRound();

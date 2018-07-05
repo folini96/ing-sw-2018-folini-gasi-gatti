@@ -174,4 +174,11 @@ public class VirtualView extends Observable implements Observer,ModelViewEventVi
         setChanged();
         notifyObservers(connectionErrorEvent);
     }
+
+    /**
+     * cancel the server timer used for the window selection; used once every player in a match chose his window
+     */
+    public void cancelWindowTimer(){
+        server.cancelWindowTimer(matchNumber);
+    }
 }

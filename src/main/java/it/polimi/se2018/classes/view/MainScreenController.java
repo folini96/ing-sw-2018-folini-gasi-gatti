@@ -253,7 +253,7 @@ public class MainScreenController implements Initializable {
      * @return position of the player in playersName
      */
     private int getIndex(String name){
-        for (int i=0; i<4; i++){
+        for (int i=0; i<playersName.size(); i++){
             if (name.equals(playersName.get(i)))
                 return i;
         }

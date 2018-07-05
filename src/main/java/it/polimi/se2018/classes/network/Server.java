@@ -413,6 +413,16 @@ public class Server {
     }
 
     /**
+     * cancel the timer used to ping the clients during the window selection
+     * @param lobbyNumber the lobby number of the match
+     */
+    public void cancelWindowTimer(int lobbyNumber){
+        if (windowTimer.containsKey(lobbyNumber)){
+            windowTimer.get(lobbyNumber).cancel();
+            windowTimer.remove(lobbyNumber);
+        }
+    }
+    /**
      * handle a connection error during the window selection
      * @param disconnectedClient the client that lost connection
      * @param matchNumber the lobby number of the mathch
@@ -673,6 +683,8 @@ public class Server {
      */
     private void connectionError(VirtualClientInterface disconnectedClient, int matchNumber){
         disconnectedClients.add(disconnectedClient);
+
+
         if (checkNoPlayersLeft(matchNumber)){
             lockCommunication.put(matchNumber,true);
             cancelTimer(matchNumber);

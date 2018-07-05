@@ -6,12 +6,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 
 
@@ -53,7 +56,10 @@ public class WindowSelectionController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        windowSelectionLabel.setMaxWidth(Double.MAX_VALUE);
+        AnchorPane.setLeftAnchor(windowSelectionLabel, 0.0);
+        AnchorPane.setRightAnchor(windowSelectionLabel, 0.0);
+        windowSelectionLabel.setAlignment(Pos.CENTER);
         // tool cards array assignment
         windowsImageViewArray = new ImageView[4];
         windowsImageViewArray[0] = window1ImageView;
