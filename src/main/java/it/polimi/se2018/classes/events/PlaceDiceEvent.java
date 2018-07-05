@@ -43,6 +43,10 @@ public class PlaceDiceEvent implements ViewControllerEvent,Serializable {
     public int getColumn(){
         return column;
     }
+
+    /**
+     * @param visitor the visitor that called the method
+     */
     public void accept(ViewControllerVisitor visitor){
         visitor.visit(this);
     }

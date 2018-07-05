@@ -9,6 +9,9 @@ import java.io.Serializable;
  * used from the client to notify that he ended his turn, or from the server in the case the turn time expired or the client lost the connection
  */
 public class EndTurnEvent implements ViewControllerEvent, Serializable {
+    /**
+     * @param visitor the visitor that called the method
+     */
     public void accept(ViewControllerVisitor visitor){
         visitor.visit(this);
     }

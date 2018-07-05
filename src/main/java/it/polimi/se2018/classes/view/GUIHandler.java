@@ -458,7 +458,12 @@ public class GUIHandler extends Application {
      */
     public void reconnect(){
         if (matchEnded){
-            //todo:blocca riconnessione
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    mainScreenController.matchEndedWhileDisconnected();
+                }
+            });
         }else{
             virtualServer.reconnect(username);
         }

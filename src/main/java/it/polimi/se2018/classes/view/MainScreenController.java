@@ -57,6 +57,8 @@ public class MainScreenController implements Initializable {
     private static final String EXCHANGEWITHBAG = "Scegli il dado della riserva da riporre nel sacchetto";
     private static final String MOVESELECTEDCOLOR = "Scegli il dado del tracciato dal round e successivamente sposta i dadi sulla finestra.";
     private static final String PLACENOVICINITYBOUNDS = "Scegli un dado della riserva e piazzalo senza rispettare il vincolo di adiacenza ad un altro dado.";
+    private static final String GAME_ENDED_WHILE_DISCONNECTED = "La partita a cui vuoi riconnetterti è finita";
+    final String NEW_GAME_MESSAGE = "\nVuoi iniziare una nuova partita?";
     private ViewModel guiModel = new ViewModel();
     private GUIHandler guiHandler;
     private boolean usingTool;
@@ -1048,7 +1050,10 @@ public class MainScreenController implements Initializable {
 
     }
 
-
+    /**
+     * calls the method that ask to the player the value that he wants to assign to the new dice from the dice bag; continues to ask till he chose a value
+     * @param dice the new dice from the dice bag
+     */
     public void newDiceValue(Dice dice){
         boolean okValue=false;
         int diceValue=0;
@@ -1098,10 +1103,18 @@ public class MainScreenController implements Initializable {
     }
 
 
-
+    /**
+     * set the reference to the intermediary with the interface and the network
+     * @param guiHandler the reference
+     */
     public void setGuiHandler(GUIHandler guiHandler){
         this.guiHandler=guiHandler;
     }
+
+    /**
+     * after a notification that a new turn started, checks if the turn is of this player or of another one
+     * @param playerName the name of the current player
+     */
     public void checkStartTurn(String playerName){
         alreadyUsedTool=false;
         alreadyPlaced=false;
@@ -1181,6 +1194,12 @@ public class MainScreenController implements Initializable {
         guiModel.alertMessage(message);
 
     }
+
+    /**
+     * update the window that has been modified and modifies different parameters depending on what move was made
+     * @param window the updated window
+     * @param player the owner of the window
+     */
     public void modifiedWindow(WindowSide window,String player){
         if ((isMyTurn)&&(placingDice)){
             reserveGridPane.setDisable(true);
@@ -1220,6 +1239,11 @@ public class MainScreenController implements Initializable {
         upOrDown=false;
         updateScheme(player,window);
     }
+
+    /**
+     * update the draft pool and modifies different parameters depending on what move was made
+     * @param draftPool the updated draft pool
+     */
     public void modifiedDraft(ArrayList<Dice> draftPool){
         updateDraft(draftPool);
         if ((modifyDice)||(upOrDown)||(exchangeDice)){
@@ -1243,10 +1267,20 @@ public class MainScreenController implements Initializable {
             enablePlaceDiceButton();
         }
     }
+
+    /**
+     * notify the end of a round and updates the round track
+     * @param roundTrack the updated round track
+     */
     public void endRound(Round[] roundTrack){
         modifiedRoundTrack(roundTrack);
 
     }
+
+    /**
+     * for every round calls the method to update the images in the gridpane
+     * @param roundTrack the updated round track
+     */
     public void modifiedRoundTrack(Round[] roundTrack){
         for (int i=0;i<10;i++){
             if(roundTrack[i]!=null){
@@ -1255,17 +1289,31 @@ public class MainScreenController implements Initializable {
 
         }
     }
+
+    /**
+     * updates the values of the tool cards tokens and of the player token
+     * @param modifiedTokenEvent the event containing the new token values
+     */
     public void modifiedToken(ModifiedTokenEvent modifiedTokenEvent){
         setPlayerSFLabel(modifiedTokenEvent.getPlayer(),modifiedTokenEvent.getPlayerToken());
         setToolCardSFLabel(modifiedTokenEvent.getToolCard(),modifiedTokenEvent.getToolCardToken());
     }
 
+    /**
+     * gets the effect of the used tool card and calls the right method to handle it through a visitor pattern
+     * @param effectEvent the effect
+     */
     public void sendEffect(SendEffectEvent effectEvent){
         usingTool=false;
         alreadyUsedTool=true;
         disableToolCardButton();
         effectEvent.getEffect().accept(this);
     }
+
+    /**
+     * handle the effect that exchange a draft pool dice with one of the round track or of the dice bag
+     * @param exchange the event of the tool card
+     */
     public void visit(Exchange exchange){
         String cardMessage=ACTIVE_TOOL_CARD;
         reserveGridPane.setDisable(false);
@@ -1281,6 +1329,11 @@ public class MainScreenController implements Initializable {
         }
         guiModel.alertMessage(cardMessage);
     }
+
+    /**
+     * handle the effect that modify the value of a draft pool dice
+     * @param modify the effect of the tool card
+     */
     public void visit(Modify modify){
         String cardMessage=ACTIVE_TOOL_CARD;
         switch (modify.getEffectType()){
@@ -1299,6 +1352,11 @@ public class MainScreenController implements Initializable {
         }
         guiModel.alertMessage(cardMessage);
     }
+
+    /**
+     * handle the effect that allows to move dices in the window
+     * @param move the effect of the tool card
+     */
     public void visit(Move move){
         disableToolCardButton();
         if (!alreadyPlaced){
@@ -1330,6 +1388,11 @@ public class MainScreenController implements Initializable {
         }
         guiModel.alertMessage(cardMessage);
     }
+
+    /**
+     * handle the effect that allows to place a draft pool dice without vicinity bounds
+     * @param placementWithoutVicinity the effect of the tool card
+     */
     public void visit(PlacementWithoutVicinity placementWithoutVicinity){
         reserveSelectedDice=-1;
         enablePlaceDiceButton();
@@ -1337,6 +1400,11 @@ public class MainScreenController implements Initializable {
         cardMessage=cardMessage+PLACENOVICINITYBOUNDS;
         guiModel.alertMessage(cardMessage);
     }
+
+    /**
+     * handle the effect that rolls again the draft pool
+     * @param rerollDraftPool the effect of the tool card
+     */
     public void visit(RerollDraftPool rerollDraftPool){
         String cardMessage=ACTIVE_TOOL_CARD;
         cardMessage=cardMessage+REROLL;
@@ -1345,6 +1413,11 @@ public class MainScreenController implements Initializable {
         enableThrowDiceButton();
         rerollDraft=true;
     }
+
+    /**
+     * handle the effect that allows to place another dice in the same turn
+     * @param secondPlacement the effect of the tool card
+     */
     public void visit(SecondPlacement secondPlacement){
         String cardMessage=ACTIVE_TOOL_CARD;
         cardMessage=cardMessage+PLACEANOTHER;
@@ -1357,8 +1430,8 @@ public class MainScreenController implements Initializable {
     }
 
     /**
-     * disables
-     * @param player
+     * notify that the current turn ended because the time expired
+     * @param player the name of the current player
      */
     public void endByTime(String player){
         if (getIndex(player)==0){
@@ -1439,7 +1512,6 @@ public class MainScreenController implements Initializable {
      */
     public void lastPlayerLeft(){
         final String MAIN_PLAYER_WINNER_MESSAGE = "Hai vinto perchè sei rimasto l'unico giocatore in partita";
-        final String NEW_GAME_MESSAGE = "\nVuoi iniziare una nuova partita?";
         String message;
         message=MAIN_PLAYER_WINNER_MESSAGE+NEW_GAME_MESSAGE;
         newMatch(message);
@@ -1450,7 +1522,6 @@ public class MainScreenController implements Initializable {
      */
     public void connectionLost(){
         final String LOST_CONNECTION = "Hai perso la connesione con il server a causa di un errore di rete";
-        final String NEW_GAME_MESSAGE = "\nVuoi iniziare una nuova partita?";
         String message;
         message=LOST_CONNECTION+NEW_GAME_MESSAGE;
         newMatch(message);
@@ -1492,5 +1563,12 @@ public class MainScreenController implements Initializable {
         guiHandler.closeConnectionAfterEnd();
         placeDiceButton.getScene().getWindow().hide();
 
+    }
+
+    /**
+     * notify that the game he tried to reconnect to has ended
+     */
+    public void matchEndedWhileDisconnected(){
+        newMatch(GAME_ENDED_WHILE_DISCONNECTED+NEW_GAME_MESSAGE);
     }
 }

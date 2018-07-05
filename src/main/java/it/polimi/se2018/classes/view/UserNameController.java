@@ -80,6 +80,7 @@ public class UserNameController {
      * notifies that the connection with the server has failed
      */
     public void connectionError(){
+        SettingsController settingsController;
         final String LOST_CONNECTION = "Non è stato possibile connettersi al server";
         String message;
         message=LOST_CONNECTION;
@@ -87,6 +88,21 @@ public class UserNameController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+        try{
+            userNameTextField.getScene().getWindow().hide();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/fxml/settings.fxml"));
+            Parent root = loader.load();
+            settingsController= loader.getController();
+            settingsController.setGuiHandler(guiHandler);
+            Stage primaryStage = new Stage();
+            primaryStage.setTitle("Sagrada");
+            primaryStage.setScene(new Scene(root));
+            primaryStage.show();
+            primaryStage.setResizable(false);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
     }
 }

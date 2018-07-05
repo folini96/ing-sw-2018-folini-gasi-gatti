@@ -261,7 +261,7 @@ public class Server {
                     try{
                         client.lastPlayerLeft();
                     }catch (Exception e){
-                        System.out.println("No players left in lobby matchNumber");
+                        System.out.println("non è rimasto nessun giocatore nella lobby"+ matchNumber);
                     }
                 }
             }
@@ -575,7 +575,7 @@ public class Server {
                     try{
                         client.lastPlayerLeft();
                     }catch (Exception e){
-                        System.out.println("No players left in lobby matchNumber");
+                        System.out.println("non è rimasto nessun giocatore nella lobby"+ lobbyNumber);
                     }
                 }
             }

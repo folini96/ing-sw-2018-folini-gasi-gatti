@@ -1,19 +1,19 @@
 package it.polimi.se2018.classes.view;
 
 import it.polimi.se2018.classes.model.*;
-import it.polimi.se2018.classes.view.ViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import sun.nio.ch.WindowsAsynchronousFileChannelImpl;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,6 +35,9 @@ public class WindowSelectionController implements Initializable {
     private ImageView window3ImageView = new ImageView();
     @FXML
     private ImageView window4ImageView = new ImageView();
+    @FXML
+    private Label windowSelectionLabel=new Label();
+
 
     // ImageView array for Windows
     private ImageView[] windowsImageViewArray;
@@ -109,6 +112,7 @@ public class WindowSelectionController implements Initializable {
      */
     @FXML
     public void setWindowImageView( WindowSide[] windowSides){
+        windowSelectionLabel.setText("Scegli la tua finestra!");
         for (int i=0;i<4;i++){
             Image image = new Image(getClass().getResource(URL+windowSides[i].getName()+".jpg").toExternalForm());
             windowsImageViewArray[i].setImage(image);

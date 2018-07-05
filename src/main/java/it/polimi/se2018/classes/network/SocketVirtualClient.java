@@ -48,10 +48,7 @@ public class SocketVirtualClient extends Thread implements VirtualClientInterfac
     public String getUsername(){
         return username;
     }
-    public void notValideMoveMessage (Message message){
 
-
-    }
     public void sendToClient(ModelViewEvent modelViewEvent) throws IOException {
 
             writer.reset();

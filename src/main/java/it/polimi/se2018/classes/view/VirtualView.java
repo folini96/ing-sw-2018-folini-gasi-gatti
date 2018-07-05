@@ -44,7 +44,9 @@ public class VirtualView extends Observable implements Observer,ModelViewEventVi
         event.accept(this);
     }
 
-
+    /**
+     * @param message the event to visit
+     */
     public void visit (Message message){
         server.notValideMoveMessage(message, matchNumber);
     }
@@ -57,37 +59,85 @@ public class VirtualView extends Observable implements Observer,ModelViewEventVi
         setChanged();
         notifyObservers(viewControllerEvent);
     }
+
+    /**
+     * @param modifiedWindowEvent the event to visit
+     */
     public void visit (ModifiedWindowEvent modifiedWindowEvent){
         server.sendModifiedWindow(modifiedWindowEvent, matchNumber);
     }
+
+    /**
+     * @param startMatchEvent the event to visit
+     */
     public void visit(StartMatchEvent startMatchEvent){
         server.sendStartMatchEvent(startMatchEvent, matchNumber);
     }
+
+    /**
+     * @param startRoundEvent the event to visit
+     */
     public void visit (StartRoundEvent startRoundEvent){
         server.sendStartRoundEvent(startRoundEvent, matchNumber);
     }
+
+    /**
+     * @param startTurnEvent the event to visit
+     */
     public void visit (StartTurnEvent startTurnEvent){
         server.sendStartTurnEvent(startTurnEvent, matchNumber);
     }
+
+    /**
+     * @param endRoundEvent the event to visit
+     */
     public void visit (EndRoundEvent endRoundEvent){
         server.sendEndRoundEvent(endRoundEvent, matchNumber);
     }
+
+    /**
+     * @param modifiedDraftEvent the event to visit
+     */
     public void visit (ModifiedDraftEvent modifiedDraftEvent){server.sendModifiedDraft(modifiedDraftEvent, matchNumber);}
+
+    /**
+     * @param endMatchEvent the event to visit
+     */
     public void visit (EndMatchEvent endMatchEvent){
         server.sendEndMatchEvent(endMatchEvent, matchNumber);
     }
+
+    /**
+     * @param effectEvent the event to visit
+     */
     public void visit (SendEffectEvent effectEvent){
         server.sendEffect(effectEvent,matchNumber);
     }
+
+    /**
+     * @param modifiedRoundTrack the event to visit
+     */
     public void visit (ModifiedRoundTrack modifiedRoundTrack){
         server.sendModifiedRoundTrack(modifiedRoundTrack,matchNumber);
     }
+
+    /**
+     * @param newDiceFromBagEvent the event to visit
+     */
     public void visit (NewDiceFromBagEvent newDiceFromBagEvent){
         server.sendNewDiceFromBag(newDiceFromBagEvent,matchNumber);
     }
+
+    /**
+     * @param modifiedTokenEvent the event to visit
+     */
     public void visit (ModifiedTokenEvent modifiedTokenEvent){
         server.sendModifiedToken(modifiedTokenEvent,matchNumber);
     }
+
+    /**
+     * @param updateReconnectedClientEvent the event to visit
+     */
     public void visit (UpdateReconnectedClientEvent updateReconnectedClientEvent){
         server.sendReconnectionUpdate(updateReconnectedClientEvent,matchNumber);
     }
